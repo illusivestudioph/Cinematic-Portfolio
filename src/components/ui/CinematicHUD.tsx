@@ -1,7 +1,7 @@
 import React from 'react';
 import { usePortfolio } from '../../context/PortfolioContext';
-import { SCENE_LIST } from '../../config/timeline';
-import { Volume2, VolumeX, Disc3 } from 'lucide-react';
+import { SCENE_LIST, interpolateCamera } from '../../config/timeline';
+import { Volume2, VolumeX, Disc3, Camera } from 'lucide-react';
 
 export const CinematicHUD: React.FC = () => {
   const {
@@ -25,6 +25,8 @@ export const CinematicHUD: React.FC = () => {
   const pad = (n: number) => String(n).padStart(2, '0');
   const formattedTimecode = `00:${pad(mins)}:${pad(secs)}:${pad(frames)}`;
 
+  const camera = interpolateCamera(progress);
+
   return (
     <header className="fixed inset-0 pointer-events-none z-40 flex flex-col justify-between p-4 sm:p-6 transition-opacity duration-300">
       {/* Top Bar HUD */}
@@ -33,7 +35,7 @@ export const CinematicHUD: React.FC = () => {
           isIntroTitle ? 'opacity-40 hover:opacity-100' : 'opacity-100'
         }`}
       >
-        {/* Active Shot & Chapter (NO permanent ILLUSIVE STUDIO header as requested) */}
+        {/* Active Shot & Chapter */}
         <div className="flex items-center space-x-3 bg-black/60 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/10 pointer-events-auto shadow-lg">
           <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#38bdf8]" />
           <span className="font-mono text-xs font-bold text-cyan-300 tracking-wider">
@@ -45,8 +47,20 @@ export const CinematicHUD: React.FC = () => {
           </span>
         </div>
 
-        {/* Master Timeline Timecode & Audio Quick Toggle */}
+        {/* Master Timeline Timecode & Camera Telemetry & Audio Toggle */}
         <div className="flex items-center space-x-3 pointer-events-auto">
+          {/* Live 3D Camera Telemetry Badge */}
+          <div className="hidden lg:flex items-center space-x-2 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 shadow-lg font-mono text-[11px] text-slate-400 select-none">
+            <Camera className="w-3.5 h-3.5 text-cyan-400" />
+            <span className="text-cyan-300 font-bold tracking-wider">CAM RIG</span>
+            <span className="text-slate-600">//</span>
+            <span>Z: <span className="text-slate-200">{camera.z >= 0 ? `+${Math.round(camera.z)}` : Math.round(camera.z)}</span></span>
+            <span className="text-slate-600">//</span>
+            <span>YAW: <span className="text-slate-200">{camera.rotateY.toFixed(1)}°</span></span>
+            <span className="text-slate-600">//</span>
+            <span>PITCH: <span className="text-slate-200">{camera.rotateX.toFixed(1)}°</span></span>
+          </div>
+
           {/* Timecode Badge */}
           <div className="hidden md:flex items-center space-x-2 bg-black/60 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/10 shadow-lg">
             <Disc3 className="w-3.5 h-3.5 text-cyan-400 animate-spin-slow" />

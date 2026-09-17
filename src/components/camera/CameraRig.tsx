@@ -13,10 +13,14 @@ export const CameraRig: React.FC<CameraRigProps> = ({ children }) => {
     return interpolateCamera(progress);
   }, [progress]);
 
-  // CSS 3D transform for camera rig
-  // Camera moves opposite to world: looking ahead into -z means world moves towards camera (+z), etc.
+  // CSS 3D transform for cinematic camera rig
+  // Camera moves in 3D world space:
+  // - Panning camera right (+x) translates world left (-x)
+  // - Tilting camera down (+rotateX) pitches world up (-rotateX)
+  // - Panning camera right (+rotateY) rotates world left (-rotateY)
+  // - Dollying camera in (+z) brings world closer (+z)
   const cameraTransform = `
-    translate3d(${-camera.x}px, ${-camera.y}px, ${-camera.z * 0.4}px)
+    translate3d(${-camera.x}px, ${-camera.y}px, ${camera.z}px)
     rotateX(${-camera.rotateX}deg)
     rotateY(${-camera.rotateY}deg)
     rotateZ(${-camera.rotateZ}deg)
