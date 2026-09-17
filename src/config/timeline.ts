@@ -28,7 +28,7 @@ export const PINNED_BEATS: Record<string, PinnedSceneConfig> = {
     timecode: '00:00:00:00',
     description: 'Editor completely still on the RIGHT, clean negative space on LEFT with studio title.',
     cameraStart: { x: 0, y: 0, z: 0, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1 },
-    cameraEnd:   { x: 30, y: 0, z: -100, rotateX: 0, rotateY: 1, rotateZ: 0, scale: 1.05 },
+    cameraEnd:   { x: 15, y: 0, z: -30, rotateX: 0, rotateY: 0.8, rotateZ: 0, scale: 1.02 },
   },
   breakFrame: {
     id: 'breakFrame',
@@ -37,8 +37,8 @@ export const PINNED_BEATS: Record<string, PinnedSceneConfig> = {
     pinDistanceVh: 300,
     timecode: '00:00:15:00',
     description: 'Blink -> break pose -> pull chair -> sit at desk in the edit suite.',
-    cameraStart: { x: 30, y: 0, z: -100, rotateX: 0, rotateY: 1, rotateZ: 0, scale: 1.05 },
-    cameraEnd:   { x: 0, y: -20, z: -450, rotateX: 2, rotateY: -1, rotateZ: 0, scale: 1.25 },
+    cameraStart: { x: 15, y: 0, z: -30, rotateX: 0, rotateY: 0.8, rotateZ: 0, scale: 1.02 },
+    cameraEnd:   { x: 0, y: -8, z: -80, rotateX: 1, rotateY: -0.5, rotateZ: 0, scale: 1.03 },
   },
   catalyst: {
     id: 'catalyst',
@@ -47,8 +47,8 @@ export const PINNED_BEATS: Record<string, PinnedSceneConfig> = {
     pinDistanceVh: 350,
     timecode: '00:00:35:00',
     description: 'Camera pushes over the shoulder -> keyboard shortcut -> DaVinci Resolve timeline fills monitor.',
-    cameraStart: { x: 0, y: -20, z: -450, rotateX: 2, rotateY: -1, rotateZ: 0, scale: 1.25 },
-    cameraEnd:   { x: 0, y: 0, z: -1200, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1.9 },
+    cameraStart: { x: 0, y: -8, z: -80, rotateX: 1, rotateY: -0.5, rotateZ: 0, scale: 1.03 },
+    cameraEnd:   { x: 0, y: 0, z: -140, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1.05 },
   },
   showreelPeak: {
     id: 'showreelPeak',
@@ -57,8 +57,8 @@ export const PINNED_BEATS: Record<string, PinnedSceneConfig> = {
     pinDistanceVh: 250,
     timecode: '00:00:55:00',
     description: 'Monitor expands into the REAL showreel MP4 -> fullscreen montage with audio & custom controls.',
-    cameraStart: { x: 0, y: 0, z: -1200, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1.9 },
-    cameraEnd:   { x: 0, y: 0, z: -1200, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1.9 },
+    cameraStart: { x: 0, y: 0, z: -140, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1.05 },
+    cameraEnd:   { x: 0, y: 0, z: -140, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1.05 },
   },
   deconstruction: {
     id: 'deconstruction',
@@ -67,8 +67,8 @@ export const PINNED_BEATS: Record<string, PinnedSceneConfig> = {
     pinDistanceVh: 350,
     timecode: '00:01:20:00',
     description: 'Finished edit rewinds -> layers strip away -> raw footage / grading / node tree / editing process.',
-    cameraStart: { x: 0, y: 0, z: -1200, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1.9 },
-    cameraEnd:   { x: 40, y: -10, z: -2000, rotateX: -2, rotateY: 3, rotateZ: 0, scale: 1.4 },
+    cameraStart: { x: 0, y: 0, z: -140, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1.05 },
+    cameraEnd:   { x: 10, y: -5, z: -80, rotateX: -0.5, rotateY: 1, rotateZ: 0, scale: 1.02 },
   },
   ctaAnchor: {
     id: 'ctaAnchor',
@@ -77,7 +77,7 @@ export const PINNED_BEATS: Record<string, PinnedSceneConfig> = {
     pinDistanceVh: 300,
     timecode: '00:01:45:00',
     description: 'Camera pulls back to original desk -> editor presses Export -> looks into camera -> CTA in LEFT space.',
-    cameraStart: { x: 40, y: -10, z: -2000, rotateX: -2, rotateY: 3, rotateZ: 0, scale: 1.4 },
+    cameraStart: { x: 10, y: -5, z: -80, rotateX: -0.5, rotateY: 1, rotateZ: 0, scale: 1.02 },
     cameraEnd:   { x: 0, y: 0, z: 0, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1 },
   },
   footerFade: {
@@ -88,7 +88,7 @@ export const PINNED_BEATS: Record<string, PinnedSceneConfig> = {
     timecode: '00:02:05:00',
     description: 'Editor turns back to monitor -> becomes silhouette -> bottom darkens -> seamless footer.',
     cameraStart: { x: 0, y: 0, z: 0, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1 },
-    cameraEnd:   { x: 0, y: 15, z: 150, rotateX: 2, rotateY: 0, rotateZ: 0, scale: 0.95 },
+    cameraEnd:   { x: 0, y: 10, z: 40, rotateX: 1, rotateY: 0, rotateZ: 0, scale: 0.98 },
   },
 };
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { usePortfolio } from '../../context/PortfolioContext';
 import { PINNED_BEATS, getSceneWindow, isSceneVisible } from '../../config/timeline';
 import { ScrollClipSequence } from '../media/ScrollClipSequence';
+import { ScrollFrameSequence } from '../media/ScrollFrameSequence';
 
 /**
  * BEAT 02 — BREAKING THE FRAME
@@ -36,6 +37,8 @@ export const Beat02BreakFrame: React.FC = () => {
   let chairY = 0;
   let chairRotate = 0;
   let bodyLeanZ = 0;
+  const cameraDollyZ = t * 60; // Subtle camera dolly push (normalized)
+
   if (t < 0.2) {
     // BLINK — a micro-nudge, the first crack in the stillness
     const p = t / 0.2;
@@ -64,6 +67,8 @@ export const Beat02BreakFrame: React.FC = () => {
     bodyLeanZ = 18 + p * 22;
   }
 
+  const seqConfig = content.sequences?.beat02BreakFrame || content.editorSequence;
+
   return (
     <div
       className="absolute inset-0 overflow-hidden preserve-3d pointer-events-none z-20"
@@ -75,11 +80,24 @@ export const Beat02BreakFrame: React.FC = () => {
           <ScrollClipSequence clips={clips} progress={t} />
           <div className="absolute inset-0 bg-gradient-to-t from-[#050608]/70 via-transparent to-[#050608]/25 pointer-events-none" />
         </div>
+      ) : seqConfig.baseUrl ? (
+        /* ============ SINGLE WEBP SEQUENCE (per-beat config) ============ */
+        <div className="absolute inset-0">
+          <ScrollFrameSequence
+            baseUrl={seqConfig.baseUrl}
+            frameCount={seqConfig.frameCount}
+            padding={seqConfig.padding}
+            fallback={seqConfig.fallback}
+            progress={t}
+            alt="Breaking The Frame Sequence"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#050608]/70 via-transparent to-[#050608]/25 pointer-events-none" />
+        </div>
       ) : (
         /* ============ PROCEDURAL CHOREOGRAPHY SET ============ */
         <div
           className="relative w-full h-full flex items-center justify-center preserve-3d will-change-transform"
-          style={{ transform: `translate3d(0, 0, ${t * 280}px)` }}
+          style={{ transform: `translate3d(0, 0, ${cameraDollyZ}px)` }}
         >
           <div className="relative w-[94vw] max-w-6xl h-[80vh] flex items-center justify-center preserve-3d">
             {/* Monitor glow expanding as the editor leans in */}
@@ -94,7 +112,7 @@ export const Beat02BreakFrame: React.FC = () => {
 
               <div className="relative flex-1 my-2 rounded bg-slate-950 overflow-hidden flex items-center justify-center">
                 <img
-                  src={content.catalyst.clips[0]?.fallback || content.editorSequence.fallback}
+                  src={seqConfig.fallback || content.catalyst.clips[0]?.fallback || content.editorSequence.fallback}
                   alt="Editor monitor view"
                   className="w-full h-full object-cover opacity-85"
                 />
@@ -103,7 +121,7 @@ export const Beat02BreakFrame: React.FC = () => {
 
               <div className="h-5 flex items-center justify-between text-[9px] font-mono text-slate-400 border-t border-white/10 pt-1">
                 <span>PROJECT: MASTER_SHOWREEL_TIMELINE</span>
-                <span className="text-cyan-400">READY</span>
+                <span className="text-cyan-400 font-bold">READY</span>
               </div>
             </div>
 

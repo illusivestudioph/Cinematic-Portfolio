@@ -3,8 +3,8 @@ import type { PortfolioContent } from '../config/content';
 import { INITIAL_PORTFOLIO_CONTENT } from '../config/content';
 
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://cvpunprngqlugzmnjoen.supabase.co';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2cHVucHJuZ3FsdWd6bW5qb2VuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk2MjQxMTIsImV4cCI6MjEwNTIwMDExMn0.XRDWoZ6AKV2faZe5K9PcSDBIscRzciEg5dcAYxe06C8';
 
 export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
 

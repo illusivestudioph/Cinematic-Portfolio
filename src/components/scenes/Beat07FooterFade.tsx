@@ -2,6 +2,7 @@ import React from 'react';
 import { usePortfolio } from '../../context/PortfolioContext';
 import { PINNED_BEATS, getSceneWindow, isSceneVisible } from '../../config/timeline';
 import { CinematicBackdrop } from '../media/CinematicBackdrop';
+import { ScrollFrameSequence } from '../media/ScrollFrameSequence';
 
 /**
  * BEAT 07 — FOOTER FADE
@@ -33,19 +34,39 @@ export const Beat07FooterFade: React.FC = () => {
   const lowerDarkness = Math.min(1, Math.max(0, (t - 0.45) / 0.5));
   const footerReveal = Math.min(1, Math.max(0, (t - 0.4) / 0.45));
 
+  // Per-beat WebP sequence: when configured, real footage fades into the footer
+  const seqConfig = content.sequences?.beat07FooterFade;
+
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-30">
       {/* ============ THE SCENE — TURNING BACK TO THE MONITOR ============ */}
       <div className="absolute inset-0">
-        {/* Back at the desk; the look-at-camera frame dissolves back to the suite.
-            The editor gradually becomes a silhouette as the light withdraws. */}
-        <CinematicBackdrop
-          src={content.editorSequence.fallback}
-          alt="The editor turning back toward the monitor"
-          mode="anchored"
-          scale={1 + turnBackMix * 0.03}
-          filter={`brightness(${1 - silhouette * 0.88}) contrast(${1 + silhouette * 0.25}) saturate(${1 - silhouette * 0.55})`}
-        />
+        {/* Back at the desk; the editor gradually becomes a silhouette as the
+            light withdraws. Real footage sequence or the cinematic still. */}
+        <div
+          className="absolute inset-0 will-change-transform"
+          style={{
+            transform: `scale(${1 + turnBackMix * 0.03})`,
+            filter: `brightness(${1 - silhouette * 0.88}) contrast(${1 + silhouette * 0.25}) saturate(${1 - silhouette * 0.55})`,
+          }}
+        >
+          {seqConfig?.baseUrl ? (
+            <ScrollFrameSequence
+              baseUrl={seqConfig.baseUrl}
+              frameCount={seqConfig.frameCount}
+              padding={seqConfig.padding}
+              fallback={seqConfig.fallback}
+              progress={t}
+              alt="The editor turning back toward the monitor"
+            />
+          ) : (
+            <CinematicBackdrop
+              src={content.editorSequence.fallback}
+              alt="The editor turning back toward the monitor"
+              mode="anchored"
+            />
+          )}
+        </div>
 
         {/* The monitor illuminates the scene — a cyan pool of light that
             lingers on the editor, then withdraws with the darkening */}

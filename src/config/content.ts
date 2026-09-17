@@ -1,3 +1,33 @@
+import studioOpening from '../assets/studio-opening.jpg';
+import editorLook from '../assets/editor-look.jpg';
+import editorOts from '../assets/editor-ots.jpg';
+import timelineCloseup from '../assets/timeline-closeup.jpg';
+import footageGraded from '../assets/footage-graded.jpg';
+
+/**
+ * A single Supabase-hosted WebP frame sequence:
+ * {baseUrl}/frame_0001.webp ... frame_NNNN.webp
+ * Each sequence owns its frame count — never assume a fixed number.
+ */
+export interface WebPSequenceConfig {
+  baseUrl: string;
+  frameCount: number;
+  padding: number;
+  fallback: string;
+}
+
+/**
+ * One ~8s source clip inside a scroll-controlled cinematic movement.
+ * An 8-second clip never covers an entire beat — beats chain multiple clips.
+ */
+export interface FrameSequenceClip {
+  label: string;      // Movement label, e.g. "PULL UP CHAIR"
+  baseUrl: string;    // Supabase folder: {baseUrl}/frame_0001.webp ...
+  frameCount: number; // Per-clip frame count
+  padding: number;    // Zero-padding digits (4 = 0001)
+  fallback: string;   // Still frame shown until sequence frames load
+}
+
 export interface ProjectItem {
   id: string;
   title: string;
@@ -23,37 +53,24 @@ export interface ProcessStage {
   visualMetric: string;
 }
 
-import studioOpening from '../assets/studio-opening.jpg';
-import editorLook from '../assets/editor-look.jpg';
-import editorOts from '../assets/editor-ots.jpg';
-import timelineCloseup from '../assets/timeline-closeup.jpg';
-import footageGraded from '../assets/footage-graded.jpg';
-
-/**
- * One ~8s source clip inside a scroll-controlled cinematic movement.
- * An 8-second clip never covers an entire beat — beats chain multiple clips.
- * Each clip is its own Supabase-hosted WebP frame sequence with an
- * independent frame count (never assume a fixed number).
- */
-export interface FrameSequenceClip {
-  label: string;      // Movement label, e.g. "PULL UP CHAIR"
-  baseUrl: string;    // Supabase folder: {baseUrl}/frame_0001.webp ...
-  frameCount: number; // Per-clip frame count
-  padding: number;    // Zero-padding digits (4 = 0001)
-  fallback: string;   // Still frame shown until sequence frames load
-}
-
 export interface PortfolioContent {
   studioName: string;
   tagline: string;
   authorizedEmail: string;
 
   // Beat 01 opening portrait — single WebP sequence (frame 1 = the still)
-  editorSequence: {
-    baseUrl: string;
-    frameCount: number;
-    padding: number;
-    fallback: string;
+  editorSequence: WebPSequenceConfig;
+
+  // Dedicated per-beat WebP sequences for the scroll-controlled cinematic
+  // movements. Beats 02/03 prefer their multi-clip chains below when clips
+  // are configured; these single sequences cover the remaining beats.
+  sequences: {
+    beat01Static: WebPSequenceConfig;
+    beat02BreakFrame: WebPSequenceConfig;
+    beat03Catalyst: WebPSequenceConfig;
+    beat05Deconstruction: WebPSequenceConfig;
+    beat06CTAAnchor: WebPSequenceConfig;
+    beat07FooterFade: WebPSequenceConfig;
   };
 
   // Beat 02 — chained source clips: blink -> break pose -> approach -> chair -> sit
@@ -66,7 +83,7 @@ export interface PortfolioContent {
     clips: FrameSequenceClip[];
   };
 
-  // Beat 04 Showreel (real MP4, audio preserved)
+  // Beat 04 Showreel (REAL MP4 VIDEO, audio preserved — never WebP)
   showreel: {
     title: string;
     subtitle: string;
@@ -76,13 +93,13 @@ export interface PortfolioContent {
     aspectRatio: string;
   };
 
-  // Scene 09 Projects
+  // Projects
   projects: ProjectItem[];
 
-  // Scene 10 Process
+  // Process
   processStages: ProcessStage[];
 
-  // Scene 11 About
+  // About
   about: {
     title: string;
     headline: string;
@@ -92,7 +109,7 @@ export interface PortfolioContent {
     software: string[];
   };
 
-  // Scene 12 Contact
+  // Contact
   contact: {
     headline: string;
     subheadline: string;
@@ -111,13 +128,51 @@ export const INITIAL_PORTFOLIO_CONTENT: PortfolioContent = {
   authorizedEmail: "yhanlhester@gmail.com",
 
   editorSequence: {
-    // Configurable Supabase WebP sequence endpoint. Empty by default to use the
-    // cinematic studio still. When set, frame 0001 becomes the static portrait
-    // and Beat 01 scrubs gently inside the opening composition.
+    // Beat 01 opening portrait. Frame 0001 is the static portrait; leaving
+    // baseUrl empty uses the cinematic studio still.
     baseUrl: "",
     frameCount: 120,
     padding: 4,
     fallback: studioOpening,
+  },
+
+  sequences: {
+    beat01Static: {
+      baseUrl: "",
+      frameCount: 120,
+      padding: 4,
+      fallback: studioOpening, // Studio suite, editor still
+    },
+    beat02BreakFrame: {
+      baseUrl: "",
+      frameCount: 120,
+      padding: 4,
+      fallback: editorOts, // Hands on console, sitting at desk
+    },
+    beat03Catalyst: {
+      baseUrl: "",
+      frameCount: 120,
+      padding: 4,
+      fallback: editorOts, // Over-shoulder push to NLE monitor
+    },
+    beat05Deconstruction: {
+      baseUrl: "",
+      frameCount: 140,
+      padding: 4,
+      fallback: footageGraded, // Finished edit frame, deconstructing
+    },
+    beat06CTAAnchor: {
+      baseUrl: "",
+      frameCount: 120,
+      padding: 4,
+      fallback: studioOpening, // Studio pullback, original composition
+    },
+    beat07FooterFade: {
+      baseUrl: "",
+      frameCount: 100,
+      padding: 4,
+      fallback: studioOpening, // Silhouette facing monitor
+    },
   },
 
   breakFrame: {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { usePortfolio } from '../../context/PortfolioContext';
 import { PINNED_BEATS, getSceneWindow, isSceneVisible } from '../../config/timeline';
+import { ScrollFrameSequence } from '../media/ScrollFrameSequence';
 import { RotateCcw, GitFork, Volume2, Layers, Film, Palette, AudioWaveform, Camera } from 'lucide-react';
 
 /**
@@ -84,6 +85,10 @@ export const Beat05Deconstruction: React.FC = () => {
   const stage = STAGES[stageIndex];
   const activeNodes = STAGE_NODES[stage.id] ?? [];
   const finishedFrame = content.showreel.posterUrl;
+  // Per-beat WebP sequence: when configured, the real deconstruction footage
+  // rewinds inside the screen (progress driven backwards with scroll)
+  const seqConfig = content.sequences?.beat05Deconstruction;
+  const hasSeq = Boolean(seqConfig?.baseUrl);
   const timelineFrame = content.catalyst.clips[2]?.fallback || finishedFrame;
 
   return (
@@ -133,6 +138,22 @@ export const Beat05Deconstruction: React.FC = () => {
         <div className="relative flex-1 flex items-stretch gap-5 min-h-0">
           {/* ---- LEFT: The deconstructing screen ---- */}
           <div className="relative flex-1 min-w-0 rounded-2xl bg-black border-2 border-cyan-500/30 overflow-hidden shadow-2xl">
+            {hasSeq ? (
+              <>
+                {/* Real deconstruction footage — rewinds backwards with scroll */}
+                <ScrollFrameSequence
+                  baseUrl={seqConfig!.baseUrl}
+                  frameCount={seqConfig!.frameCount}
+                  padding={seqConfig!.padding}
+                  fallback={seqConfig!.fallback}
+                  progress={1 - t}
+                  alt="Rewind Deconstruction Sequence"
+                />
+                <div className="absolute inset-0 crt-scanlines opacity-20 pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20 pointer-events-none" />
+              </>
+            ) : (
+            <>
             {/* Base: the finished edit frame */}
             <img
               src={finishedFrame}
@@ -335,6 +356,8 @@ export const Beat05Deconstruction: React.FC = () => {
                   <span className="text-slate-500">UNTREATED SENSOR FEED</span>
                 </div>
               </div>
+            )}
+            </>
             )}
           </div>
 

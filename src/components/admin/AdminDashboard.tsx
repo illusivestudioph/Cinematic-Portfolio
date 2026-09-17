@@ -111,6 +111,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
 
   const [formData, setFormData] = useState<PortfolioContent>(content);
   const [activeTab, setActiveTab] = useState<'showreel' | 'sequences' | 'projects' | 'process' | 'about' | 'contact'>('showreel');
+  const [selectedSeqBeat, setSelectedSeqBeat] = useState<'beat01Static' | 'beat02BreakFrame' | 'beat03Catalyst' | 'beat05Deconstruction' | 'beat06CTAAnchor' | 'beat07FooterFade'>('beat01Static');
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
 
   const handleSave = async () => {
@@ -176,7 +177,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
             ILLUSIVE STUDIO // ADMIN GATE CONSOLE
           </h2>
           <span className="text-xs font-mono text-cyan-300/70 bg-cyan-950/80 px-2 py-0.5 rounded border border-cyan-500/30">
-            {userEmail || 'yhanlhester@gmail.com'}
+            {userEmail || 'STUDIO_ADMIN'}
           </span>
         </div>
 
@@ -433,6 +434,121 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
                 clips={formData.catalyst.clips}
                 onChange={(clips) => setFormData({ ...formData, catalyst: { clips } })}
               />
+
+              {/* ---- Per-beat single sequences (Beats 01–07) ---- */}
+              <div>
+                <h3 className="font-syne text-base font-bold uppercase text-white border-b border-white/10 pb-2">
+                  CINEMATIC WEBP SCROLL SEQUENCES (SUPABASE STORAGE)
+                </h3>
+                <p className="text-xs text-slate-400 mt-2">
+                  WebP frame sequences scrub dynamically with user scroll. Configure each beat's sequence URL independently. Frame count is configurable per sequence (typically 100–140 frames).
+                </p>
+              </div>
+
+              {/* Beat Selector Pills */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {[
+                  { key: 'beat01Static', label: 'BEAT 01 // STATIC ILLUSION' },
+                  { key: 'beat02BreakFrame', label: 'BEAT 02 // BREAK FRAME' },
+                  { key: 'beat03Catalyst', label: 'BEAT 03 // CATALYST' },
+                  { key: 'beat05Deconstruction', label: 'BEAT 05 // DECONSTRUCTION' },
+                  { key: 'beat06CTAAnchor', label: 'BEAT 06 // CTA PULLBACK' },
+                  { key: 'beat07FooterFade', label: 'BEAT 07 // FOOTER SILHOUETTE' },
+                ].map(({ key, label }) => (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => setSelectedSeqBeat(key as any)}
+                    className={`px-3 py-2 rounded-lg text-left font-mono text-[11px] border transition-all ${
+                      selectedSeqBeat === key
+                        ? 'bg-cyan-500/20 text-cyan-300 border-cyan-400/60 shadow-[0_0_15px_rgba(56,189,248,0.2)]'
+                        : 'bg-black/40 text-slate-400 border-white/5 hover:border-white/15'
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Active Selected Beat Form */}
+              {(() => {
+                const currentSeq = formData.sequences?.[selectedSeqBeat] || {
+                  baseUrl: '',
+                  frameCount: 120,
+                  padding: 4,
+                  fallback: '',
+                };
+
+                const updateCurrentSeq = (updates: Partial<typeof currentSeq>) => {
+                  const updatedSeq = { ...currentSeq, ...updates };
+                  setFormData({
+                    ...formData,
+                    editorSequence: selectedSeqBeat === 'beat01Static' ? updatedSeq : formData.editorSequence, // Beat 01 aliases editorSequence
+                    sequences: {
+                      ...formData.sequences,
+                      [selectedSeqBeat]: updatedSeq,
+                    },
+                  });
+                };
+
+                return (
+                  <div className="p-4 rounded-xl bg-black/40 border border-white/10 space-y-4">
+                    <div className="flex items-center justify-between pb-2 border-b border-white/10">
+                      <span className="font-mono text-xs font-bold text-cyan-400 uppercase">
+                        EDITING: {selectedSeqBeat.toUpperCase()} SEQUENCE
+                      </span>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-mono text-slate-400 mb-1">
+                        WebP Base URL (or template with {'{index}'})
+                      </label>
+                      <input
+                        type="text"
+                        value={currentSeq.baseUrl}
+                        onChange={(e) => updateCurrentSeq({ baseUrl: e.target.value })}
+                        className="w-full px-3 py-2 rounded bg-black/60 border border-white/10 text-xs font-mono text-slate-200 focus:border-cyan-400 outline-none"
+                        placeholder="https://...supabase.co/storage/v1/object/public/sequences/beat_01"
+                      />
+                      <span className="text-[10px] font-mono text-slate-500 mt-1 block">
+                        Leave empty to use the dedicated high-resolution editorial fallback image.
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-mono text-slate-400 mb-1">Total Frame Count</label>
+                        <input
+                          type="number"
+                          value={currentSeq.frameCount}
+                          onChange={(e) => updateCurrentSeq({ frameCount: parseInt(e.target.value) || 120 })}
+                          className="w-full px-3 py-2 rounded bg-black/60 border border-white/10 text-xs font-mono text-slate-200 focus:border-cyan-400 outline-none"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-mono text-slate-400 mb-1">Padding Digits (default 4 = 0001)</label>
+                        <input
+                          type="number"
+                          value={currentSeq.padding}
+                          onChange={(e) => updateCurrentSeq({ padding: parseInt(e.target.value) || 4 })}
+                          className="w-full px-3 py-2 rounded bg-black/60 border border-white/10 text-xs font-mono text-slate-200 focus:border-cyan-400 outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-mono text-slate-400 mb-1">Fallback Visual Image URL</label>
+                      <input
+                        type="text"
+                        value={currentSeq.fallback}
+                        onChange={(e) => updateCurrentSeq({ fallback: e.target.value })}
+                        className="w-full px-3 py-2 rounded bg-black/60 border border-white/10 text-xs font-mono text-slate-200 focus:border-cyan-400 outline-none"
+                      />
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
           )}
 

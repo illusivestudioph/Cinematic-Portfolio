@@ -25,7 +25,11 @@ export const Beat01StaticIllusion: React.FC = () => {
   // visitor begins to scroll (the illusion is about to break).
   const titleOpacity = Math.max(0, 1 - t / 0.45);
   const beatOpacity = t > 0.9 ? Math.max(0, (1 - t) / 0.1) : 1;
-  const hasSequence = Boolean(content.editorSequence.baseUrl);
+  // Beat 01 sequence: dedicated per-beat config wins, editorSequence is the alias
+  const seqConfig = content.sequences?.beat01Static?.baseUrl
+    ? content.sequences.beat01Static
+    : content.editorSequence;
+  const hasSequence = Boolean(seqConfig.baseUrl);
 
   return (
     <div
@@ -39,10 +43,10 @@ export const Beat01StaticIllusion: React.FC = () => {
       <div className="absolute inset-0">
         {hasSequence ? (
           <ScrollFrameSequence
-            baseUrl={content.editorSequence.baseUrl}
-            frameCount={content.editorSequence.frameCount}
-            padding={content.editorSequence.padding}
-            fallback={content.editorSequence.fallback}
+            baseUrl={seqConfig.baseUrl}
+            frameCount={seqConfig.frameCount}
+            padding={seqConfig.padding}
+            fallback={seqConfig.fallback}
             progress={0} // completely still — the stillness is the illusion
             alt="Professional editor, completely still in the editing studio"
           />

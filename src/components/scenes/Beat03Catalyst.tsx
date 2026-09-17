@@ -2,6 +2,7 @@ import React from 'react';
 import { usePortfolio } from '../../context/PortfolioContext';
 import { PINNED_BEATS, getSceneWindow, isSceneVisible } from '../../config/timeline';
 import { ScrollClipSequence } from '../media/ScrollClipSequence';
+import { ScrollFrameSequence } from '../media/ScrollFrameSequence';
 import { CinematicBackdrop } from '../media/CinematicBackdrop';
 import { Command, Film } from 'lucide-react';
 
@@ -32,6 +33,9 @@ export const Beat03Catalyst: React.FC = () => {
   const clips = content.catalyst.clips;
   const hasRealClips = clips.some((c) => c.baseUrl);
 
+  // Single per-beat WebP sequence (used when no clip chain is configured)
+  const seqConfig = content.sequences?.beat03Catalyst;
+
   // ---- Procedural camera-move phases ----
   // Phase 1 (0.00-0.40): over-the-shoulder push toward the monitor
   // Phase 2 (0.40-0.62): keyboard shortcut executes
@@ -53,6 +57,19 @@ export const Beat03Catalyst: React.FC = () => {
         /* ============ CHAINED CAMERA-MOVE CLIPS — FULL-SCREEN ============ */
         <div className="absolute inset-0">
           <ScrollClipSequence clips={clips} progress={t} />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#050608]/60 via-transparent to-[#050608]/20 pointer-events-none" />
+        </div>
+      ) : seqConfig?.baseUrl ? (
+        /* ============ SINGLE WEBP SEQUENCE (per-beat config) ============ */
+        <div className="absolute inset-0">
+          <ScrollFrameSequence
+            baseUrl={seqConfig.baseUrl}
+            frameCount={seqConfig.frameCount}
+            padding={seqConfig.padding}
+            fallback={seqConfig.fallback}
+            progress={t}
+            alt="Catalyst Sequence Over Shoulder"
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-[#050608]/60 via-transparent to-[#050608]/20 pointer-events-none" />
         </div>
       ) : (

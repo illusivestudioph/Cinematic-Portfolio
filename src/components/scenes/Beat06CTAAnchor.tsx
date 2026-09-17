@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { usePortfolio } from '../../context/PortfolioContext';
 import { PINNED_BEATS, getSceneWindow, isSceneVisible } from '../../config/timeline';
 import { CinematicBackdrop } from '../media/CinematicBackdrop';
+import { ScrollFrameSequence } from '../media/ScrollFrameSequence';
 import { Mail, ArrowUpRight, Check, Send } from 'lucide-react';
 
 /**
@@ -40,6 +41,10 @@ export const Beat06CTAAnchor: React.FC = () => {
   // The editor-looks-into-camera frame (the BLINK clip's still, swappable via CMS)
   const lookFrame = content.breakFrame.clips[0]?.fallback || content.editorSequence.fallback;
 
+  // Per-beat WebP sequence: when configured, the real pull-back footage plays
+  // full-screen and the stills below are skipped
+  const seqConfig = content.sequences?.beat06CTAAnchor;
+
   const copyEmail = () => {
     navigator.clipboard.writeText(content.contact.email);
     setIsCopied(true);
@@ -53,6 +58,20 @@ export const Beat06CTAAnchor: React.FC = () => {
     >
       {/* ============ THE ORIGINAL COMPOSITION — CALLBACK TO BEAT 01 ============ */}
       <div className="absolute inset-0">
+        {seqConfig?.baseUrl ? (
+          /* Real pull-back footage — the sequence IS the original composition */
+          <div className="absolute inset-0 will-change-transform" style={{ transform: `scale(${settleScale})` }}>
+            <ScrollFrameSequence
+              baseUrl={seqConfig.baseUrl}
+              frameCount={seqConfig.frameCount}
+              padding={seqConfig.padding}
+              fallback={seqConfig.fallback}
+              progress={t}
+              alt="Camera pulling back to the original desk composition"
+            />
+          </div>
+        ) : (
+          <>
         {/* The opening desk frame, returned to (camera settling back) */}
         <CinematicBackdrop
           src={content.editorSequence.fallback}
@@ -68,6 +87,8 @@ export const Beat06CTAAnchor: React.FC = () => {
             mode="anchored"
           />
         </div>
+          </>
+        )}
 
         {/* Same cinematic grade as the opening — LEFT negative space stays quiet */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#050608]/80 via-[#050608]/35 to-transparent" />
