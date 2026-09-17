@@ -97,6 +97,24 @@ export const Beat05Deconstruction: React.FC = () => {
       style={{ opacity }}
     >
       <div className="relative w-full h-full max-w-[110rem] mx-auto flex flex-col px-4 sm:px-8 lg:px-12 py-6 sm:py-8">
+        {/* Section Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="w-2 h-2 rounded-full bg-[#5EB423]" />
+              <span className="font-mono text-xs text-[#7FFF68] uppercase font-bold tracking-widest">
+                STAGE DECONSTRUCTION // 05
+              </span>
+            </div>
+            <h2 className="font-bricolage text-2xl sm:text-4xl font-extrabold text-white tracking-tight uppercase">
+              COLOR & SOUND DECONSTRUCTION
+            </h2>
+            <p className="text-xs sm:text-sm text-zinc-300 font-sans font-medium">
+              Peeling back the layers: from flat RAW log profiles to color science and spatial sound design.
+            </p>
+          </div>
+        </div>
+
         {/* ============ DECONSTRUCTION STAGE RAIL ============ */}
         <div className="flex items-center space-x-1 sm:space-x-2 overflow-x-auto pb-3">
           {STAGES.map((s, i) => {
@@ -106,26 +124,26 @@ export const Beat05Deconstruction: React.FC = () => {
             return (
               <React.Fragment key={s.id}>
                 {i > 0 && (
-                  <div className={`flex-1 min-w-3 h-[2px] rounded ${isPast || isCurrent ? 'bg-cyan-400/60' : 'bg-white/10'}`} />
+                  <div className={`flex-1 min-w-3 h-[2px] rounded ${isPast || isCurrent ? 'bg-[#5EB423]/60' : 'bg-white/10'}`} />
                 )}
                 <div
                   className={`flex items-center space-x-2 px-3 py-1.5 rounded-full border whitespace-nowrap transition-all duration-300 ${
                     isCurrent
-                      ? 'bg-cyan-500/20 border-cyan-400/60 shadow-[0_0_18px_rgba(56,189,248,0.35)]'
+                      ? 'bg-[#5EB423]/25 border-[#7FFF68] shadow-[0_0_18px_rgba(94,180,35,0.4)]'
                       : isPast
                         ? 'bg-white/5 border-white/15'
                         : 'bg-transparent border-white/10 opacity-50'
                   }`}
                 >
-                  <Icon className={`w-3.5 h-3.5 ${isCurrent ? 'text-cyan-300' : 'text-slate-500'}`} />
+                  <Icon className={`w-3.5 h-3.5 ${isCurrent ? 'text-[#7FFF68]' : 'text-slate-500'}`} />
                   <span
-                    className={`font-mono text-[10px] tracking-[0.15em] uppercase hidden sm:inline ${
-                      isCurrent ? 'text-white font-bold' : 'text-slate-500'
+                    className={`font-bricolage text-[11px] tracking-[0.1em] uppercase font-bold hidden sm:inline ${
+                      isCurrent ? 'text-white' : 'text-slate-400'
                     }`}
                   >
                     {s.label}
                   </span>
-                  <span className={`font-mono text-[10px] ${isCurrent ? 'text-cyan-300' : 'text-slate-600'} sm:hidden`}>
+                  <span className={`font-mono text-[10px] ${isCurrent ? 'text-[#7FFF68]' : 'text-slate-600'} sm:hidden`}>
                     {s.num}
                   </span>
                 </div>
@@ -344,7 +362,6 @@ export const Beat05Deconstruction: React.FC = () => {
                 <div className="absolute inset-0" style={{ filter: 'saturate(0.28) contrast(0.72) brightness(1.25) sepia(0.24)' }}>
                   <img src={finishedFrame} alt="Raw log rushes" className="w-full h-full object-cover animate-gate-weave" draggable={false} />
                 </div>
-                <div className="absolute inset-0 film-grain opacity-40 mix-blend-overlay pointer-events-none" />
                 <div className="absolute top-4 left-4 flex flex-wrap gap-2 font-mono text-[10px]">
                   <span className="bg-black/70 px-2.5 py-1 rounded border border-amber-500/40 text-amber-300">S-LOG3</span>
                   <span className="bg-black/70 px-2.5 py-1 rounded border border-white/10 text-slate-400">SGAMUT3.CINE</span>

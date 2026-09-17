@@ -76,11 +76,11 @@ export const Beat01StaticIllusion: React.FC = () => {
             transformOrigin: 'left center',
           }}
         >
-          {/* Film production tag with Mad Dogs Sticker Badge */}
+          {/* Studio Category Badge */}
           <div className="flex flex-wrap items-center gap-3 mb-4">
-            <StickerBadge text="MASTER SUITE" tag="REEL // 01" rotate={-3} variant="green" />
-            <span className="hidden sm:inline-block font-mono text-xs tracking-[0.3em] text-[#7FFF68] uppercase font-bold drop-shadow-[0_0_10px_rgba(94,180,35,0.8)]">
-              // 4K FILM SEQUENCE
+            <StickerBadge text="COMMERCIAL & FILM POST" tag="POST-PRODUCTION STUDIO" rotate={-2} variant="green" />
+            <span className="hidden sm:inline-block font-mono text-xs tracking-[0.25em] text-[#7FFF68] uppercase font-bold drop-shadow-[0_0_10px_rgba(94,180,35,0.8)]">
+              // EDITORIAL · COLOR · SOUND
             </span>
           </div>
 
@@ -94,32 +94,27 @@ export const Beat01StaticIllusion: React.FC = () => {
             stagger={0.04}
           />
 
-          <KineticText
-            text={content.tagline}
-            active={titleOpacity > 0.1}
-            as="p"
-            className="mt-4 sm:mt-6 font-mono text-xs sm:text-sm md:text-base tracking-[0.28em] text-slate-300 uppercase leading-relaxed max-w-md"
-            delay={0.15}
-            stagger={0.02}
-          />
+          {/* Clear, punchy statement of what this site is offering */}
+          <p className="mt-4 sm:mt-6 font-bricolage text-sm sm:text-base md:text-lg text-slate-200 font-semibold leading-snug max-w-lg">
+            High-impact video editing, DaVinci Resolve color science, and dynamic sound design for commercial campaigns, music videos, and cinematic films.
+          </p>
 
           {/* Mad Dogs Style Action Pills */}
           <div className="mt-8 flex flex-wrap items-center gap-3 sm:gap-4">
-            <a
-              href="#showreel"
-              className="maddogs-pill"
-              onClick={(e) => {
-                e.preventDefault();
-                window.scrollTo({ top: window.innerHeight * 1.5, behavior: 'smooth' });
-              }}
+            <button
+              onClick={() => window.scrollTo({ top: window.innerHeight * 5.0, behavior: 'smooth' })}
+              className="maddogs-cta-pill cursor-pointer"
             >
-              <span>EXPLORE FILM</span>
-              <span className="text-acid-green">✦</span>
-            </a>
-            <div className="maddogs-pill cursor-default">
-              <span>SOUND</span>
-              <span className="text-zinc-400">ON // 24 FPS</span>
-            </div>
+              <span>VIEW SHOWREEL</span>
+              <span className="text-black">↗</span>
+            </button>
+            <button
+              onClick={() => window.scrollTo({ top: window.innerHeight * 15.0, behavior: 'smooth' })}
+              className="maddogs-pill cursor-pointer"
+            >
+              <span>HIRE STUDIO</span>
+              <span className="text-[#7FFF68]">✦</span>
+            </button>
           </div>
 
           <div className="w-48 sm:w-72 h-[1px] bg-gradient-to-r from-[#5EB423] via-[#7FFF68]/40 to-transparent mt-8 shadow-[0_0_15px_#5EB423]" />
@@ -130,23 +125,24 @@ export const Beat01StaticIllusion: React.FC = () => {
               <div className="w-1.5 h-2.5 bg-[#7FFF68] rounded-full animate-bounce shadow-[0_0_8px_#7FFF68]" />
             </div>
             <span className="font-bricolage text-xs uppercase tracking-[0.25em] text-slate-300 font-bold">
-              Scroll to initiate breakdown
+              Scroll down to explore services & work
             </span>
           </div>
         </div>
       </div>
 
-      {/* Stillness marker — reinforces the "photograph" illusion */}
-      <div className="absolute bottom-6 right-8 sm:right-12 flex items-center space-x-2 font-mono text-[10px] tracking-[0.25em] text-slate-500 uppercase">
-        <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/70" />
-        <span>Still — 1/48 Shutter — ISO 800</span>
+      {/* Global studio footer badge */}
+      <div className="absolute bottom-6 left-8 sm:left-12 flex items-center space-x-3 text-slate-400 font-mono text-xs">
+        <span className="text-[#7FFF68] font-bold">ILLUSIVE STUDIO</span>
+        <span className="text-slate-600">//</span>
+        <span className="font-bricolage tracking-wider uppercase font-semibold text-slate-300">
+          Commercials · Narrative · Music Videos
+        </span>
       </div>
 
-      {/* Cinematic shot badge */}
-      <div className="absolute bottom-6 left-8 sm:left-12 flex items-center space-x-3 text-slate-400 font-mono text-xs">
-        <span className="text-cyan-400 font-bold">BEAT {beat.code}</span>
-        <span className="text-slate-600">//</span>
-        <span>{beat.name}</span>
+      <div className="absolute bottom-6 right-8 sm:right-12 hidden sm:flex items-center space-x-2 font-mono text-[10px] tracking-widest text-slate-400 uppercase">
+        <span className="w-2 h-2 rounded-full bg-[#5EB423] animate-pulse" />
+        <span>Accepting Projects for 2026</span>
       </div>
     </div>
   );

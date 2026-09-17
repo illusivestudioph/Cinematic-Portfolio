@@ -1,7 +1,7 @@
 import React from 'react';
 import { usePortfolio } from '../../context/PortfolioContext';
-import { SCENE_LIST, interpolateCamera } from '../../config/timeline';
-import { Volume2, VolumeX, Disc3, Camera } from 'lucide-react';
+import { SCENE_LIST } from '../../config/timeline';
+import { Volume2, VolumeX } from 'lucide-react';
 
 export const CinematicHUD: React.FC = () => {
   const {
@@ -13,73 +13,71 @@ export const CinematicHUD: React.FC = () => {
     developerClicks,
   } = usePortfolio();
 
-
-  // Fade in HUD gently as user starts interacting, subduing it slightly while initial studio title is prominent
   const isIntroTitle = progress < 0.02;
-
-  // Calculate master SMPTE timecode (normalized across ~2:12 duration)
-  const totalSeconds = progress * 132; // 2 minutes 12 seconds = 132 seconds
-  const mins = Math.floor(totalSeconds / 60);
-  const secs = Math.floor(totalSeconds % 60);
-  const frames = Math.floor((totalSeconds % 1) * 24);
-  const pad = (n: number) => String(n).padStart(2, '0');
-  const formattedTimecode = `00:${pad(mins)}:${pad(secs)}:${pad(frames)}`;
-
-  const camera = interpolateCamera(progress);
 
   return (
     <header className="fixed inset-0 pointer-events-none z-40 flex flex-col justify-between p-4 sm:p-6 transition-opacity duration-300">
       {/* Top Bar HUD */}
-      <div 
-        className={`flex items-center justify-between transition-opacity duration-500 ${
-          isIntroTitle ? 'opacity-40 hover:opacity-100' : 'opacity-100'
-        }`}
-      >
-        {/* Active Shot & Chapter */}
-        <div className="flex items-center space-x-3 bg-black/60 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/10 pointer-events-auto shadow-lg">
-          <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#38bdf8]" />
-          <span className="font-mono text-xs font-bold text-cyan-300 tracking-wider">
-            BEAT {activeScene.code}
-          </span>
-          <span className="text-slate-600 font-mono text-xs">//</span>
-          <span className="font-mono text-xs text-slate-300 tracking-wider uppercase hidden sm:inline">
-            {activeScene.name}
-          </span>
+      {/* Top Bar Navigation */}
+      <div className="flex items-center justify-between w-full">
+        {/* Studio Brand Ident */}
+        <div className="flex items-center space-x-3 pointer-events-auto">
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="flex items-center gap-2.5 bg-black/75 backdrop-blur-md px-4 py-2 rounded-full border border-white/15 shadow-xl hover:border-[#5EB423] transition-all"
+          >
+            <span className="w-2.5 h-2.5 rounded-full bg-[#5EB423] shadow-[0_0_10px_#5EB423]" />
+            <span className="font-bricolage font-extrabold text-sm tracking-wider text-white uppercase">
+              ILLUSIVE STUDIO
+            </span>
+            <span className="hidden sm:inline font-mono text-[10px] text-zinc-400 border-l border-white/20 pl-2">
+              POST-PRODUCTION
+            </span>
+          </a>
         </div>
 
-        {/* Master Timeline Timecode & Camera Telemetry & Audio Toggle */}
-        <div className="flex items-center space-x-3 pointer-events-auto">
-          {/* Live 3D Camera Telemetry Badge */}
-          <div className="hidden lg:flex items-center space-x-2 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 shadow-lg font-mono text-[11px] text-slate-400 select-none">
-            <Camera className="w-3.5 h-3.5 text-cyan-400" />
-            <span className="text-cyan-300 font-bold tracking-wider">CAM RIG</span>
-            <span className="text-slate-600">//</span>
-            <span>Z: <span className="text-slate-200">{camera.z >= 0 ? `+${Math.round(camera.z)}` : Math.round(camera.z)}</span></span>
-            <span className="text-slate-600">//</span>
-            <span>YAW: <span className="text-slate-200">{camera.rotateY.toFixed(1)}°</span></span>
-            <span className="text-slate-600">//</span>
-            <span>PITCH: <span className="text-slate-200">{camera.rotateX.toFixed(1)}°</span></span>
-          </div>
-
-          {/* Timecode Badge */}
-          <div className="hidden md:flex items-center space-x-2 bg-black/60 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/10 shadow-lg">
-            <Disc3 className="w-3.5 h-3.5 text-cyan-400 animate-spin-slow" />
-            <span className="font-mono text-xs text-slate-300 tracking-widest">
-              TC <span className="text-cyan-400 font-bold">{formattedTimecode}</span>
-              <span className="text-slate-600 mx-1.5">/</span>
-              <span className="text-slate-500">00:02:12:00</span>
-            </span>
-          </div>
+        {/* Studio Navigation & Audio Controls */}
+        <div className="flex items-center space-x-2.5 sm:space-x-3 pointer-events-auto">
+          <nav className="hidden md:flex items-center gap-1 bg-black/75 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/15 shadow-xl text-xs font-bricolage font-bold uppercase tracking-wider text-zinc-300">
+            <button
+              onClick={() => window.scrollTo({ top: window.innerHeight * 1.5, behavior: 'smooth' })}
+              className="px-3 py-1 rounded-full hover:text-white hover:bg-white/10 transition-colors"
+            >
+              Services
+            </button>
+            <button
+              onClick={() => window.scrollTo({ top: window.innerHeight * 5.0, behavior: 'smooth' })}
+              className="px-3 py-1 rounded-full hover:text-white hover:bg-white/10 transition-colors"
+            >
+              Showreel
+            </button>
+            <button
+              onClick={() => window.scrollTo({ top: window.innerHeight * 9.0, behavior: 'smooth' })}
+              className="px-3 py-1 rounded-full hover:text-white hover:bg-white/10 transition-colors"
+            >
+              Workflow
+            </button>
+            <button
+              onClick={() => window.scrollTo({ top: window.innerHeight * 15.0, behavior: 'smooth' })}
+              className="px-3 py-1 rounded-full text-[#7FFF68] hover:bg-[#5EB423]/20 transition-colors"
+            >
+              Contact
+            </button>
+          </nav>
 
           {/* Quick Audio Mute Toggle */}
           <button
             onClick={() => setIsMuted(!isMuted)}
-            className="flex items-center space-x-2 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 hover:border-cyan-400/50 text-slate-300 hover:text-cyan-300 transition-all duration-200 shadow-lg"
+            className="flex items-center space-x-2 bg-black/75 backdrop-blur-md px-3.5 py-2 rounded-full border border-white/15 hover:border-[#5EB423] text-zinc-300 hover:text-[#7FFF68] transition-all shadow-xl font-bricolage font-bold text-xs"
             title={isMuted ? 'Unmute Audio' : 'Mute Audio'}
           >
-            {isMuted ? <VolumeX className="w-4 h-4 text-red-400" /> : <Volume2 className="w-4 h-4 text-cyan-400" />}
-            <span className="font-mono text-[11px] tracking-wider uppercase hidden sm:inline">
-              {isMuted ? 'MUTED' : 'AUDIO ON'}
+            {isMuted ? <VolumeX className="w-3.5 h-3.5 text-zinc-400" /> : <Volume2 className="w-3.5 h-3.5 text-[#7FFF68]" />}
+            <span className="hidden sm:inline uppercase tracking-wider text-[11px]">
+              {isMuted ? 'SOUND OFF' : 'SOUND ON'}
             </span>
           </button>
         </div>

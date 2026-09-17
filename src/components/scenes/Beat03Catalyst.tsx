@@ -126,49 +126,39 @@ export const Beat03Catalyst: React.FC = () => {
         </div>
       )}
 
-      {/* Mad Dogs Kinetic Quote & Sticker */}
-      <div className="absolute top-24 sm:top-28 left-8 sm:left-14 z-30 pointer-events-none flex flex-col items-start gap-3">
-        <StickerBadge text="TIMELINE ACTIVATION" tag="CATALYST // 03" rotate={-2} variant="green" />
+      {/* Editorial Craft Callout */}
+      <div className="absolute top-20 sm:top-24 left-6 sm:left-12 lg:left-20 z-30 pointer-events-none flex flex-col items-start gap-2.5 max-w-md">
+        <StickerBadge text="PRECISION CRAFT" tag="WORKFLOW // 03" rotate={-1.5} variant="green" />
         <KineticText
-          text="THE CATALYST"
+          text="THE EDITORIAL SUITE"
           active={opacity > 0.1}
           as="h2"
           className="font-bricolage text-3xl sm:text-5xl font-black tracking-tight text-white uppercase text-glow-white"
         />
-        {/* Handwriting annotation in Caveat font */}
-        <p className="font-caveat text-xl sm:text-2xl text-[#7FFF68] -rotate-2 tracking-wide font-bold drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
+        <p className="font-bricolage text-sm text-slate-200 font-semibold tracking-wide">
+          Sculpting raw footage into rhythm, tension, and emotional velocity.
+        </p>
+        <p className="font-caveat text-xl sm:text-2xl text-[#7FFF68] -rotate-1 tracking-wide font-bold drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
           "Every cut reshapes the narrative."
         </p>
       </div>
 
-      {/* ============ KEYBOARD SHORTCUT TRIGGER (fires with or without real clips) ============ */}
+      {/* Subtle Live Playhead Indicator */}
       <div
-        className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none transition-opacity duration-150"
+        className="absolute bottom-16 sm:bottom-20 left-1/2 -translate-x-1/2 flex items-center space-x-2.5 maddogs-pill pointer-events-none py-2 px-5 text-xs transition-opacity duration-200"
         style={{ opacity: hotkeyPop }}
       >
-        <div className="flex items-center space-x-2.5">
-          {['⌘', '⇧', 'E'].map((key) => (
-            <div
-              key={key}
-              className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-zinc-950 border-2 border-[#5EB423] shadow-[0_0_35px_rgba(94,180,35,0.6),inset_0_-3px_0_rgba(0,0,0,0.8)] flex items-center justify-center font-bricolage text-2xl sm:text-3xl font-black text-white"
-            >
-              {key}
-            </div>
-          ))}
-        </div>
-        <div className="mt-4 flex items-center space-x-2 bg-black/90 border border-[#5EB423] px-5 py-2 rounded-full shadow-[0_0_20px_rgba(94,180,35,0.4)]">
-          <Command className="w-4 h-4 text-[#7FFF68]" />
-          <span className="font-mono text-xs text-white tracking-[0.25em] uppercase font-bold">
-            Timeline Online // Sequence 03
-          </span>
-        </div>
+        <Command className="w-3.5 h-3.5 text-[#7FFF68]" />
+        <span className="font-bricolage font-bold uppercase tracking-wider text-white">
+          TIMELINE ACTIVATED // 24 FPS PICTURE LOCK
+        </span>
       </div>
 
       {/* Cinematic shot badge */}
       <div className="absolute bottom-6 left-8 sm:left-12 flex items-center space-x-3 text-slate-300 font-mono text-xs">
-        <span className="text-[#7FFF68] font-bold">BEAT {beat.code}</span>
+        <span className="text-[#7FFF68] font-bold">WORKFLOW</span>
         <span className="text-slate-600">//</span>
-        <span className="font-bricolage tracking-wider uppercase font-semibold">{beat.name}</span>
+        <span className="font-bricolage tracking-wider uppercase font-semibold">Editorial Timeline & Pacing</span>
       </div>
     </div>
   );

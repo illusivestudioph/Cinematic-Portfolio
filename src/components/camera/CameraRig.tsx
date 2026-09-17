@@ -45,18 +45,9 @@ export const CameraRig: React.FC<CameraRigProps> = ({ children }) => {
         </div>
       </div>
 
-      {/* Cinematic Overlays: Vignette & Film Grain */}
-      <div className="fixed inset-0 pointer-events-none z-40 cinematic-vignette opacity-80" />
-      <div className="fixed inset-0 pointer-events-none z-40 film-grain opacity-25 mix-blend-screen" />
-      <div className="fixed inset-0 pointer-events-none z-40 crt-scanlines opacity-10" />
+      {/* Clean Cinematic Vignette - No CRT scanlines or static */}
+      <div className="fixed inset-0 pointer-events-none z-40 cinematic-vignette opacity-50" />
 
-      {/* Subtle Anamorphic Lens Streak on fast movement */}
-      <div 
-        className="fixed top-1/2 left-0 right-0 h-[2px] pointer-events-none z-40 anamorphic-flare transition-opacity duration-300"
-        style={{
-          opacity: Math.min(0.7, Math.abs(camera.rotateY) * 0.15 + (progress > 0.5 && progress < 0.7 ? 0.3 : 0)),
-        }}
-      />
     </div>
   );
 };

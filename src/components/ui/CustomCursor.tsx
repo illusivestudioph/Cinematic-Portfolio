@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { usePortfolio } from '../../context/PortfolioContext';
 
 export const CustomCursor: React.FC = () => {
-  const { progress } = usePortfolio();
   const cursorRef = useRef<HTMLDivElement | null>(null);
   const posRef = useRef({ x: -100, y: -100, targetX: -100, targetY: -100 });
   const [isHovered, setIsHovered] = useState(false);
@@ -71,9 +69,6 @@ export const CustomCursor: React.FC = () => {
 
   if (isTouchDevice) return null;
 
-  // Show the kinetic scroll prompt during the intro (Beat 01)
-  const showScrollCue = progress < 0.05 && !isHovered;
-
   return (
     <div
       ref={cursorRef}
@@ -118,26 +113,8 @@ export const CustomCursor: React.FC = () => {
 
         {/* Hover Label Pill */}
         {isHovered && hoverLabel && (
-          <div className="absolute top-7 left-1/2 -translate-x-1/2 bg-black/90 border border-cyan-400/50 px-2 py-0.5 rounded text-[9px] font-mono text-cyan-300 uppercase tracking-widest whitespace-nowrap shadow-lg">
+          <div className="absolute top-7 left-1/2 -translate-x-1/2 bg-black/90 border border-[#5EB423] px-2.5 py-1 rounded-full text-[10px] font-bricolage text-[#7FFF68] uppercase tracking-wider font-bold whitespace-nowrap shadow-lg">
             {hoverLabel}
-          </div>
-        )}
-
-        {/* Kinetic Scroll Prompt (Inspired by Mad Dogs scroll-down-notice) */}
-        {showScrollCue && (
-          <div className="absolute left-6 top-1/2 -translate-y-1/2 flex items-center space-x-2 bg-black/75 backdrop-blur-md px-3 py-1.5 rounded-full border border-cyan-500/30 whitespace-nowrap shadow-2xl animate-pulse">
-            {/* Mouse wheel glyph */}
-            <div className="w-3.5 h-5 rounded-full border border-cyan-400 flex items-start justify-center p-0.5">
-              <span className="w-0.5 h-1.5 rounded-full bg-cyan-300 animate-bounce" />
-            </div>
-            <div className="flex flex-col">
-              <span className="font-syne text-[10px] font-bold text-white tracking-widest uppercase">
-                SCROLL TO DIRECT
-              </span>
-              <span className="font-mono text-[8px] text-cyan-400/80 tracking-wider">
-                CONTROL 3D REEL
-              </span>
-            </div>
           </div>
         )}
       </div>

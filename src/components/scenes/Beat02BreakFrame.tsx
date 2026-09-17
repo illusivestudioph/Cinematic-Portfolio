@@ -30,45 +30,6 @@ export const Beat02BreakFrame: React.FC = () => {
   const clips = content.breakFrame.clips;
   const hasRealClips = clips.some((c) => c.baseUrl);
 
-  // Movement choreography segments (matched to the source-clip chain)
-  const movements = clips.length > 0 ? clips.map((c) => c.label) : ['BLINK'];
-  const seg = 1 / movements.length;
-  const movementIndex = Math.min(movements.length - 1, Math.floor(t / seg));
-
-  // Procedural choreography values (used when no real clips are configured)
-  let chairY = 0;
-  let chairRotate = 0;
-  let bodyLeanZ = 0;
-  const cameraDollyZ = t * 60; // Subtle camera dolly push (normalized)
-
-  if (t < 0.2) {
-    // BLINK — a micro-nudge, the first crack in the stillness
-    const p = t / 0.2;
-    chairY = -p * 8;
-  } else if (t < 0.4) {
-    // BREAK POSE — the rigid photograph pose releases
-    const p = (t - 0.2) / 0.2;
-    chairY = -8 + p * 18;
-    chairRotate = -p * 5;
-  } else if (t < 0.6) {
-    // MOVE TO WORKSTATION — body weight shifts toward the desk
-    const p = (t - 0.4) / 0.2;
-    chairY = 10 + p * 6;
-    chairRotate = -5 + p * 2;
-  } else if (t < 0.8) {
-    // PULL UP CHAIR — the chair rolls in
-    const p = (t - 0.6) / 0.2;
-    chairY = 16 - p * 14;
-    chairRotate = -3 + p * 3;
-    bodyLeanZ = p * 18;
-  } else {
-    // SIT & SETTLE — settling into the editing position, preparing to type
-    const p = (t - 0.8) / 0.2;
-    chairY = 2 - p * 2;
-    chairRotate = p * 1.5;
-    bodyLeanZ = 18 + p * 22;
-  }
-
   const seqConfig = content.sequences?.beat02BreakFrame || content.editorSequence;
 
   return (
@@ -96,106 +57,80 @@ export const Beat02BreakFrame: React.FC = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-[#050608]/70 via-transparent to-[#050608]/25 pointer-events-none" />
         </div>
       ) : (
-        /* ============ PROCEDURAL CHOREOGRAPHY SET ============ */
-        <div
-          className="relative w-full h-full flex items-center justify-center preserve-3d will-change-transform"
-          style={{ transform: `translate3d(0, 0, ${cameraDollyZ}px)` }}
-        >
-          <div className="relative w-[94vw] max-w-6xl h-[80vh] flex items-center justify-center preserve-3d">
-            {/* Monitor glow expanding as the editor leans in */}
-            <div className="relative w-[80vw] sm:w-[620px] h-72 sm:h-88 rounded-2xl bg-black border-2 border-cyan-500/40 shadow-[0_0_80px_rgba(56,189,248,0.3)] p-3.5 flex flex-col justify-between overflow-hidden">
-              <div className="flex items-center justify-between text-[10px] font-mono text-slate-400 border-b border-white/10 pb-1.5">
-                <span className="text-cyan-400 flex items-center gap-1.5 font-bold">
-                  <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-                  BAY_A // SESSION_INIT
-                </span>
-                <span className="text-amber-400 font-bold">00:00:18:04</span>
-              </div>
-
-              <div className="relative flex-1 my-2 rounded bg-slate-950 overflow-hidden flex items-center justify-center">
-                <img
-                  src={seqConfig.fallback || content.catalyst.clips[0]?.fallback || content.editorSequence.fallback}
-                  alt="Editor monitor view"
-                  className="w-full h-full object-cover opacity-85"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-              </div>
-
-              <div className="h-5 flex items-center justify-between text-[9px] font-mono text-slate-400 border-t border-white/10 pt-1">
-                <span>PROJECT: MASTER_SHOWREEL_TIMELINE</span>
-                <span className="text-cyan-400 font-bold">READY</span>
-              </div>
-            </div>
-
-            {/* Editor breaking the pose at the desk */}
-            <div
-              className="mt-6 flex flex-col items-center preserve-3d will-change-transform"
-              style={{
-                transform: `translate3d(0, ${chairY}px, ${bodyLeanZ}px) rotateZ(${chairRotate}deg)`,
-              }}
-            >
-              {/* Keyboard & trackballs */}
-              <div className="w-96 sm:w-[500px] h-10 rounded-lg bg-slate-950 border border-white/10 shadow-lg flex items-center justify-between px-6">
-                <div className="flex space-x-1">
-                  {[...Array(18)].map((_, i) => (
-                    <div key={i} className="w-4 h-3 rounded-xs bg-slate-800/80 border border-white/5" />
-                  ))}
+        /* ============ SERVICES & CAPABILITIES GRID ============ */
+        <div className="relative w-full h-full flex items-center justify-center p-6 sm:p-12 z-20">
+          <div className="w-full max-w-6xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 pointer-events-auto">
+            {[
+              {
+                step: '01',
+                title: 'OFFLINE EDITING',
+                desc: 'Rhythmic commercial cutting, narrative pacing, multi-cam sync, and documentary storytelling.',
+                tag: 'Commercials & Film',
+              },
+              {
+                step: '02',
+                title: 'COLOR GRADING',
+                desc: 'DaVinci Resolve ACES pipeline, 35mm film emulation, custom LUT development, and shot matching.',
+                tag: 'Color Science',
+              },
+              {
+                step: '03',
+                title: 'SOUND DESIGN',
+                desc: 'Dynamic cinematic soundscapes, foley sculpting, vocal treatment, and broadcast-ready loudness mixing.',
+                tag: 'Audio Stems',
+              },
+              {
+                step: '04',
+                title: 'FINAL DELIVERY',
+                desc: 'Cinema DCP, Apple ProRes 4444 XQ, social aspect ratios (9:16, 1:1), and web delivery.',
+                tag: 'Mastering',
+              },
+            ].map((srv) => (
+              <div
+                key={srv.step}
+                className="group relative p-6 rounded-2xl bg-black/80 border border-white/15 backdrop-blur-xl hover:border-[#5EB423] transition-all duration-300 shadow-2xl flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center justify-between font-mono text-xs text-[#7FFF68] mb-3">
+                    <span className="font-bold">{srv.step}</span>
+                    <span className="text-[10px] uppercase tracking-wider text-zinc-400">{srv.tag}</span>
+                  </div>
+                  <h3 className="font-bricolage text-xl font-extrabold text-white tracking-tight uppercase group-hover:text-[#7FFF68] transition-colors">
+                    {srv.title}
+                  </h3>
+                  <p className="mt-2 text-xs sm:text-sm text-zinc-300 leading-relaxed font-sans font-medium">
+                    {srv.desc}
+                  </p>
                 </div>
-                <div className="flex space-x-3">
-                  <div className="w-5 h-5 rounded-full bg-cyan-950 border border-cyan-400/50 shadow-[0_0_8px_#38bdf8]" />
-                  <div className="w-5 h-5 rounded-full bg-slate-900 border border-white/20" />
-                  <div className="w-5 h-5 rounded-full bg-purple-950 border border-purple-400/50 shadow-[0_0_8px_#c084fc]" />
+                <div className="mt-6 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-zinc-400">
+                  <span>CAPABILITY</span>
+                  <span className="text-[#5EB423] group-hover:translate-x-1 transition-transform">PROCEED ↗</span>
                 </div>
               </div>
-
-              {/* Moving shoulders / chair back */}
-              <div className="w-56 sm:w-64 h-28 bg-gradient-to-t from-black via-[#090b10] to-slate-900/80 rounded-t-full border-t border-white/10 shadow-2xl -mt-2" />
-            </div>
+            ))}
           </div>
         </div>
       )}
 
       {/* Kinetic Scene Title & Badge Overlay */}
-      <div className="absolute top-24 sm:top-28 left-8 sm:left-14 z-30 pointer-events-none flex flex-col items-start gap-3">
-        <StickerBadge text="PHYSICS BREAK" tag="CHOREOGRAPHY // 02" rotate={2.5} variant="dark" />
+      <div className="absolute top-20 sm:top-24 left-8 sm:left-14 z-30 pointer-events-none flex flex-col items-start gap-2">
+        <StickerBadge text="STUDIO CAPABILITIES" tag="SERVICES // 02" rotate={1.5} variant="green" />
         <KineticText
-          text="BREAKING THE STILLNESS"
+          text="FULL-CYCLE POST PRODUCTION"
           active={opacity > 0.1}
           as="h2"
           className="font-bricolage text-3xl sm:text-5xl font-black tracking-tight text-white uppercase text-glow-white"
         />
-        <p className="font-mono text-xs text-[#7FFF68] tracking-widest uppercase">
-          // MOTION ENGAGED · FRAME POSE RELEASED
+        <p className="font-bricolage text-sm text-slate-200 font-semibold tracking-wide uppercase">
+          From Raw Sensor Rushes to High-Fidelity Broadcast Master
         </p>
       </div>
 
-      {/* Movement readout — the choreography stepper styled as Mad Dogs pill */}
-      {!hasRealClips && (
-      <div className="absolute bottom-16 sm:bottom-20 left-1/2 -translate-x-1/2 flex items-center space-x-2 maddogs-pill pointer-events-none py-2 px-5 text-xs">
-        {movements.map((m, i) => (
-          <React.Fragment key={m + i}>
-            {i > 0 && <span className="text-zinc-600 text-[10px]">→</span>}
-            <span
-              className={`font-mono text-[11px] tracking-wider uppercase whitespace-nowrap transition-all duration-300 ${
-                i === movementIndex
-                  ? 'text-[#7FFF68] font-black drop-shadow-[0_0_8px_#5EB423]'
-                  : i < movementIndex
-                    ? 'text-slate-300'
-                    : 'text-zinc-600'
-              }`}
-            >
-              {m}
-            </span>
-          </React.Fragment>
-        ))}
-      </div>
-      )}
-
       {/* Cinematic shot badge */}
       <div className="absolute bottom-6 left-8 sm:left-12 flex items-center space-x-3 text-slate-300 font-mono text-xs">
-        <span className="text-[#7FFF68] font-bold">BEAT {beat.code}</span>
+        <span className="text-[#7FFF68] font-bold">SERVICES</span>
         <span className="text-slate-600">//</span>
-        <span className="font-bricolage tracking-wider uppercase font-semibold">{beat.name}</span>
+        <span className="font-bricolage tracking-wider uppercase font-semibold">Post-Production Pipeline</span>
       </div>
     </div>
   );
