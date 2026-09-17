@@ -36,10 +36,9 @@ export const Beat06CTAAnchor: React.FC = () => {
   const settleScale = 1.12 - Math.min(1, t / 0.35) * 0.12; // pull-back settle
   const exportT = Math.max(0, Math.min(1, (t - 0.35) / 0.2));
   const exportDone = exportT >= 1;
-  const lookMix = Math.max(0, Math.min(1, (t - 0.58) / 0.16));
   const ctaOpacity = Math.min(1, Math.max(0, (t - 0.55) / 0.25));
   // The editor-looks-into-camera frame (the BLINK clip's still, swappable via CMS)
-  const lookFrame = content.breakFrame.clips[0]?.fallback || content.editorSequence.fallback;
+  const lookFrame = content.breakFrame.clips[0]?.fallback || content.sequences?.beat06CTAAnchor?.fallback || content.editorSequence.fallback;
 
   // Per-beat WebP sequence: when configured, the real pull-back footage plays
   // full-screen and the stills below are skipped
@@ -71,23 +70,13 @@ export const Beat06CTAAnchor: React.FC = () => {
             />
           </div>
         ) : (
-          <>
-        {/* The opening desk frame, returned to (camera settling back) */}
-        <CinematicBackdrop
-          src={content.editorSequence.fallback}
-          alt="The editor back at the original desk composition"
-          mode="anchored"
-          scale={settleScale}
-        />
-        {/* The editor looks directly into the camera */}
-        <div className="absolute inset-0 transition-opacity duration-500" style={{ opacity: lookMix }}>
+          /* Direct, steady editor look frame — no popping of Beat 01 studioOpening */
           <CinematicBackdrop
             src={lookFrame}
-            alt="The editor looking directly into the camera"
+            alt="The editor at the desk looking directly into the camera"
             mode="anchored"
+            scale={settleScale}
           />
-        </div>
-          </>
         )}
 
         {/* Same cinematic grade as the opening — LEFT negative space stays quiet */}

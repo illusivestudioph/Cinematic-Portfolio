@@ -165,13 +165,13 @@ export const INITIAL_PORTFOLIO_CONTENT: PortfolioContent = {
       baseUrl: "",
       frameCount: 120,
       padding: 4,
-      fallback: studioOpening, // Studio pullback, original composition
+      fallback: editorLook, // Editor looking directly into camera
     },
     beat07FooterFade: {
       baseUrl: "",
       frameCount: 100,
       padding: 4,
-      fallback: studioOpening, // Silhouette facing monitor
+      fallback: editorLook, // Silhouette facing monitor / fading to black
     },
   },
 

@@ -61,7 +61,7 @@ export const Beat07FooterFade: React.FC = () => {
             />
           ) : (
             <CinematicBackdrop
-              src={content.editorSequence.fallback}
+              src={seqConfig?.fallback || content.sequences?.beat07FooterFade?.fallback || content.editorSequence.fallback}
               alt="The editor turning back toward the monitor"
               mode="anchored"
             />

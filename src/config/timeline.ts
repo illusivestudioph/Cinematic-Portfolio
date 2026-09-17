@@ -171,8 +171,15 @@ export function getSceneWindow(sceneId: string, globalProgress: number): SceneWi
 
 /** Visibility test with a small bleed so beats cross-fade during transitions */
 export function isSceneVisible(sceneId: string, globalProgress: number, bleed = 0.03): boolean {
-  const { globalStart, globalEnd } = getSceneWindow(sceneId, globalProgress);
-  return globalProgress >= globalStart - bleed && globalProgress <= globalEnd + bleed;
+  const p = Math.max(0, Math.min(1, globalProgress));
+  const { globalStart, globalEnd } = getSceneWindow(sceneId, p);
+  const isFirst = sceneId === SCENE_INTERVALS[0].id;
+  const isLast = sceneId === SCENE_INTERVALS[SCENE_INTERVALS.length - 1].id;
+
+  if (isFirst && p <= globalEnd + bleed) return true;
+  if (isLast && p >= globalStart - bleed) return true;
+
+  return p >= globalStart - bleed && p <= globalEnd + bleed;
 }
 
 /**
