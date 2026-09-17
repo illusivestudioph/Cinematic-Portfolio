@@ -4,6 +4,7 @@ import { useScrollTimeline } from './hooks/useScrollTimeline';
 import { TOTAL_PIN_DISTANCE_VH } from './config/timeline';
 import { CameraRig } from './components/camera/CameraRig';
 import { CinematicHUD } from './components/ui/CinematicHUD';
+import { CustomCursor } from './components/ui/CustomCursor';
 import { AdminGateModal } from './components/admin/AdminGateModal';
 
 // The 7 Continuous Cinematic Beats
@@ -44,6 +45,9 @@ const PortfolioReelApp: React.FC = () => {
 
       {/* Persistent Cinematic HUD Overlay */}
       <CinematicHUD />
+
+      {/* Fluid Interactive Director Cursor */}
+      <CustomCursor />
 
       {/* Hidden Admin Gate Modal (5 clicks on Developer in footer) */}
       <AdminGateModal />

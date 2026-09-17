@@ -200,8 +200,8 @@ export const INITIAL_PORTFOLIO_CONTENT: PortfolioContent = {
     title: "ILLUSIVE STUDIO // MASTER EDITORIAL REEL",
     subtitle: "Narrative, Commercial, High-Energy Pacing",
     duration: "01:45",
-    // High quality editorial showreel video (royalty-free cinematic reel stream)
-    videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+    // High-definition cinematic master showreel video placeholder
+    videoUrl: "https://vjs.zencdn.net/v/oceans.mp4",
     posterUrl: footageGraded,
     aspectRatio: "16:9",
   },
@@ -216,7 +216,7 @@ export const INITIAL_PORTFOLIO_CONTENT: PortfolioContent = {
       description: "High-octane cutting, aggressive micro-match cuts, atmospheric sub-bass audio sound design, and razor-sharp pacing for the CRIMEXBT brand identity film.",
       role: "Lead Editor, Sound Design & Color Grade",
       tools: ["Premiere Pro", "DaVinci Resolve", "Soundly", "After Effects"],
-      videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
+      videoUrl: "https://media.w3.org/2010/05/sintel/trailer_hd.mp4",
       thumbnailUrl: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1280&q=80",
       aspectRatio: "16:9",
       metrics: [
@@ -234,7 +234,7 @@ export const INITIAL_PORTFOLIO_CONTENT: PortfolioContent = {
       description: "Kinetic automotive showcase engineered with rhythmic speed ramps, whip pans, engine frequency matching, and high-contrast anamorphic color science.",
       role: "Editor & Motion Sound Designer",
       tools: ["DaVinci Resolve", "Avid Media Composer"],
-      videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+      videoUrl: "https://vjs.zencdn.net/v/oceans.mp4",
       thumbnailUrl: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1280&q=80",
       aspectRatio: "16:9",
       metrics: [
@@ -252,7 +252,7 @@ export const INITIAL_PORTFOLIO_CONTENT: PortfolioContent = {
       description: "Ethereal, rhythmic psychological visual piece interweaving raw handheld grit with meticulously synchronized beat-drops and split-second strobe montages.",
       role: "Creative Director & Lead Editor",
       tools: ["Premiere Pro", "DaVinci Resolve", "Dehancer Pro"],
-      videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+      videoUrl: "https://media.w3.org/2010/05/sintel/trailer_hd.mp4",
       thumbnailUrl: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1280&q=80",
       aspectRatio: "2.39:1",
       metrics: [

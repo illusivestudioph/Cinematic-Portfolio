@@ -67,21 +67,22 @@ export const Beat01StaticIllusion: React.FC = () => {
       {/* ============ LEFT NEGATIVE SPACE — STUDIO IDENT ============ */}
       <div className="relative w-full h-full flex items-center">
         <div
-          className="pl-6 sm:pl-12 md:pl-20 lg:pl-28 flex flex-col items-start max-w-xl text-left pointer-events-auto select-none"
+          className="pl-6 sm:pl-12 md:pl-20 lg:pl-28 flex flex-col items-start max-w-xl text-left pointer-events-auto select-none preserve-3d"
           style={{
             opacity: titleOpacity,
-            transform: `translateY(${t * 30}px)`,
+            transform: `translate3d(0, ${t * 40}px, ${t * 120}px) rotateX(${t * 6}deg)`,
+            transformOrigin: 'left center',
           }}
         >
           {/* Film production tag */}
           <div className="flex items-center space-x-3 mb-4 opacity-85">
             <span className="h-[2px] w-6 bg-cyan-400 shadow-[0_0_8px_#38bdf8]" />
             <span className="font-mono text-xs tracking-[0.35em] text-cyan-400 uppercase font-bold">
-              Illusive Studio // Reel
+              Illusive Studio // Master Sequence
             </span>
           </div>
 
-          {/* Grand studio typography */}
+          {/* Grand studio typography with 3D perspective presence */}
           <h1 className="font-syne text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter text-white uppercase text-glow-white leading-none">
             {content.studioName}
           </h1>

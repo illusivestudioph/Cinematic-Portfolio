@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 
 interface ScrollFrameSequenceProps {
   baseUrl: string;
@@ -21,7 +21,6 @@ export const ScrollFrameSequence: React.FC<ScrollFrameSequenceProps> = ({
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const cacheRef = useRef<Map<number, HTMLImageElement>>(new Map());
-  const [usingFallback, setUsingFallback] = useState(!baseUrl);
   const fallbackImgRef = useRef<HTMLImageElement | null>(null);
 
   // Smooth rAF interpolation states
@@ -46,30 +45,77 @@ export const ScrollFrameSequence: React.FC<ScrollFrameSequenceProps> = ({
     return `${cleanBase}frame_${padded}.webp`;
   }, [baseUrl, fallback, padding]);
 
+  // Draw image to canvas with crisp scaling & optional cinematic frame metadata overlay
+  const drawFrameToCanvas = useCallback((img: HTMLImageElement | null, frameIndex: number, currentProgress: number) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d', { alpha: false });
+    if (!ctx) return;
+
+    // Use container dimensions or natural image dimensions
+    const width = img?.naturalWidth || 1920;
+    const height = img?.naturalHeight || 1080;
+
+    if (canvas.width !== width || canvas.height !== height) {
+      canvas.width = width;
+      canvas.height = height;
+    }
+
+    if (img && img.complete && img.naturalWidth > 0) {
+      // If we are in sequence placeholder mode (no baseUrl yet), apply dynamic scroll framing
+      if (!baseUrl) {
+        ctx.save();
+        // Subtle optical zoom & pan driven by scroll progress
+        const zoom = 1.0 + currentProgress * 0.06;
+        const panX = Math.sin(currentProgress * Math.PI) * 15;
+        const panY = currentProgress * -10;
+        
+        ctx.translate(width / 2, height / 2);
+        ctx.scale(zoom, zoom);
+        ctx.translate(-width / 2 + panX, -height / 2 + panY);
+        ctx.drawImage(img, 0, 0, width, height);
+        ctx.restore();
+
+        // Overlay subtle cinematic film registration graticules
+        ctx.save();
+        ctx.strokeStyle = 'rgba(56, 189, 248, 0.25)';
+        ctx.lineWidth = 1.5;
+
+        // 2.39:1 Cinema scope crop guides
+        const scopeHeight = width / 2.39;
+        const scopeTop = (height - scopeHeight) / 2;
+        ctx.strokeRect(30, scopeTop, width - 60, scopeHeight);
+
+        // Technical sequence stamp
+        const padFrame = String(frameIndex).padStart(padding, '0');
+        const padTotal = String(frameCount).padStart(padding, '0');
+        ctx.font = '14px monospace';
+        ctx.fillStyle = 'rgba(56, 189, 248, 0.75)';
+        ctx.fillText(`SEQ_PLACEHOLDER // FRAME: ${padFrame}/${padTotal} (24 FPS)`, 45, height - 40);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+        ctx.fillText(`CANVAS SCRUB: ${(currentProgress * 100).toFixed(1)}% // [DOG FRAMES READY]`, width - 450, height - 40);
+
+        ctx.restore();
+      } else {
+        // Direct clean frame render for real WebP sequences
+        ctx.drawImage(img, 0, 0, width, height);
+      }
+    } else {
+      // Dark slate void before image finishes loading
+      ctx.fillStyle = '#050608';
+      ctx.fillRect(0, 0, width, height);
+    }
+  }, [baseUrl, frameCount, padding]);
+
   // Preload fallback image
   useEffect(() => {
     const img = new Image();
     img.src = fallback;
     img.onload = () => {
       fallbackImgRef.current = img;
-      drawFrameToCanvas(img);
+      drawFrameToCanvas(img, 1, 0);
     };
-  }, [fallback]);
-
-  // Draw image to canvas with crisp scaling
-  const drawFrameToCanvas = useCallback((img: HTMLImageElement | null) => {
-    const canvas = canvasRef.current;
-    if (!canvas || !img || !img.complete || img.naturalWidth === 0) return;
-    const ctx = canvas.getContext('2d', { alpha: false });
-    if (!ctx) return;
-
-    if (canvas.width !== img.naturalWidth || canvas.height !== img.naturalHeight) {
-      canvas.width = img.naturalWidth;
-      canvas.height = img.naturalHeight;
-    }
-
-    ctx.drawImage(img, 0, 0);
-  }, []);
+  }, [fallback, drawFrameToCanvas]);
 
   // Preloader: maintain a sliding window of frames around current target
   const preloadSurroundingFrames = useCallback((centerFrame: number) => {
@@ -85,9 +131,6 @@ export const ScrollFrameSequence: React.FC<ScrollFrameSequenceProps> = ({
         img.onload = () => {
           cacheRef.current.set(i, img);
         };
-        img.onerror = () => {
-          // If frame cannot be loaded, fallback is preserved
-        };
       }
     }
   }, [baseUrl, frameCount, getFrameUrl]);
@@ -99,10 +142,10 @@ export const ScrollFrameSequence: React.FC<ScrollFrameSequenceProps> = ({
     const tick = () => {
       if (!active) return;
 
-      // Smooth damping (0.15 factor gives responsive, silky feel)
+      // Smooth damping (0.18 factor gives responsive, silky feel)
       const diff = targetProgressRef.current - currentProgressRef.current;
-      if (Math.abs(diff) > 0.0002) {
-        currentProgressRef.current += diff * 0.15;
+      if (Math.abs(diff) > 0.0001) {
+        currentProgressRef.current += diff * 0.18;
       } else {
         currentProgressRef.current = targetProgressRef.current;
       }
@@ -110,10 +153,12 @@ export const ScrollFrameSequence: React.FC<ScrollFrameSequenceProps> = ({
       // Convert interpolated progress to frame index (1-based)
       const frameIdx = Math.max(1, Math.min(frameCount, Math.round(currentProgressRef.current * (frameCount - 1)) + 1));
 
-      // Trigger preloading around current frame
-      preloadSurroundingFrames(frameIdx);
+      // Trigger preloading around current frame if baseUrl configured
+      if (baseUrl) {
+        preloadSurroundingFrames(frameIdx);
+      }
 
-      // Only draw if frame changed or hasn't rendered yet
+      // Render frame
       if (renderedFrameRef.current !== frameIdx || renderedFrameRef.current === -1) {
         let img = cacheRef.current.get(frameIdx);
         if (!img || !img.complete) {
@@ -133,11 +178,11 @@ export const ScrollFrameSequence: React.FC<ScrollFrameSequenceProps> = ({
         }
 
         if (img && img.complete) {
-          drawFrameToCanvas(img);
+          drawFrameToCanvas(img, frameIdx, currentProgressRef.current);
           renderedFrameRef.current = frameIdx;
-          if (usingFallback) setUsingFallback(false);
         } else if (fallbackImgRef.current) {
-          drawFrameToCanvas(fallbackImgRef.current);
+          drawFrameToCanvas(fallbackImgRef.current, frameIdx, currentProgressRef.current);
+          renderedFrameRef.current = frameIdx;
         }
       }
 
@@ -152,26 +197,16 @@ export const ScrollFrameSequence: React.FC<ScrollFrameSequenceProps> = ({
         cancelAnimationFrame(rafIdRef.current);
       }
     };
-  }, [drawFrameToCanvas, frameCount, preloadSurroundingFrames, usingFallback]);
+  }, [baseUrl, drawFrameToCanvas, frameCount, preloadSurroundingFrames]);
 
   return (
     <div className={`relative overflow-hidden w-full h-full flex items-center justify-center ${className}`}>
       {/* High performance Canvas rendering surface */}
       <canvas
         ref={canvasRef}
-        className="w-full h-full object-cover select-none pointer-events-none"
+        className="w-full h-full object-cover select-none pointer-events-none will-change-transform"
         aria-label={alt}
       />
-
-      {/* Fallback image when no frames are active or while initial asset loads */}
-      {usingFallback && (
-        <img
-          src={fallback}
-          alt={alt}
-          className="absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-300"
-          loading="eager"
-        />
-      )}
     </div>
   );
 };
