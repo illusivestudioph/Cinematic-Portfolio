@@ -8,5 +8,10 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  server: {
+    host: '0.0.0.0',
+    // Allow the sandbox preview proxy host so the live preview iframe can reach the dev server
+    allowedHosts: ['.e2b.app'],
+  },
 })
 

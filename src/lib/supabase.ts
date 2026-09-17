@@ -12,7 +12,7 @@ export const supabase: SupabaseClient | null = isSupabaseConfigured
   ? createClient(supabaseUrl, supabaseAnonKey)
   : null;
 
-const STORAGE_KEY = 'illusive_studio_cms_data';
+const STORAGE_KEY = 'illusive_studio_cms_data_v2';
 
 /**
  * Loads content either from Supabase table or local storage cache

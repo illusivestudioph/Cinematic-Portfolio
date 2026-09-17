@@ -1,3 +1,33 @@
+import studioOpening from '../assets/studio-opening.jpg';
+import editorLook from '../assets/editor-look.jpg';
+import editorOts from '../assets/editor-ots.jpg';
+import timelineCloseup from '../assets/timeline-closeup.jpg';
+import footageGraded from '../assets/footage-graded.jpg';
+
+/**
+ * A single Supabase-hosted WebP frame sequence:
+ * {baseUrl}/frame_0001.webp ... frame_NNNN.webp
+ * Each sequence owns its frame count — never assume a fixed number.
+ */
+export interface WebPSequenceConfig {
+  baseUrl: string;
+  frameCount: number;
+  padding: number;
+  fallback: string;
+}
+
+/**
+ * One ~8s source clip inside a scroll-controlled cinematic movement.
+ * An 8-second clip never covers an entire beat — beats chain multiple clips.
+ */
+export interface FrameSequenceClip {
+  label: string;      // Movement label, e.g. "PULL UP CHAIR"
+  baseUrl: string;    // Supabase folder: {baseUrl}/frame_0001.webp ...
+  frameCount: number; // Per-clip frame count
+  padding: number;    // Zero-padding digits (4 = 0001)
+  fallback: string;   // Still frame shown until sequence frames load
+}
+
 export interface ProjectItem {
   id: string;
   title: string;
@@ -23,22 +53,17 @@ export interface ProcessStage {
   visualMetric: string;
 }
 
-export interface WebPSequenceConfig {
-  baseUrl: string;
-  frameCount: number;
-  padding: number;
-  fallback: string;
-}
-
 export interface PortfolioContent {
   studioName: string;
   tagline: string;
   authorizedEmail: string;
-  
-  // Legacy alias for compatibility
+
+  // Beat 01 opening portrait — single WebP sequence (frame 1 = the still)
   editorSequence: WebPSequenceConfig;
 
-  // Dedicated WebP sequences for the scroll-controlled beats
+  // Dedicated per-beat WebP sequences for the scroll-controlled cinematic
+  // movements. Beats 02/03 prefer their multi-clip chains below when clips
+  // are configured; these single sequences cover the remaining beats.
   sequences: {
     beat01Static: WebPSequenceConfig;
     beat02BreakFrame: WebPSequenceConfig;
@@ -48,7 +73,17 @@ export interface PortfolioContent {
     beat07FooterFade: WebPSequenceConfig;
   };
 
-  // Scene 04 Showreel (REAL MP4 VIDEO, not WebP)
+  // Beat 02 — chained source clips: blink -> break pose -> approach -> chair -> sit
+  breakFrame: {
+    clips: FrameSequenceClip[];
+  };
+
+  // Beat 03 — chained camera-move clips: OTS push -> monitor approach -> timeline
+  catalyst: {
+    clips: FrameSequenceClip[];
+  };
+
+  // Beat 04 Showreel (REAL MP4 VIDEO, audio preserved — never WebP)
   showreel: {
     title: string;
     subtitle: string;
@@ -58,13 +93,13 @@ export interface PortfolioContent {
     aspectRatio: string;
   };
 
-  // Scene 09 Projects
+  // Projects
   projects: ProjectItem[];
 
-  // Scene 10 Process
+  // Process
   processStages: ProcessStage[];
 
-  // Scene 11 About
+  // About
   about: {
     title: string;
     headline: string;
@@ -74,7 +109,7 @@ export interface PortfolioContent {
     software: string[];
   };
 
-  // Scene 12 Contact
+  // Contact
   contact: {
     headline: string;
     subheadline: string;
@@ -93,10 +128,12 @@ export const INITIAL_PORTFOLIO_CONTENT: PortfolioContent = {
   authorizedEmail: "yhanlhester@gmail.com",
 
   editorSequence: {
+    // Beat 01 opening portrait. Frame 0001 is the static portrait; leaving
+    // baseUrl empty uses the cinematic studio still.
     baseUrl: "",
     frameCount: 120,
     padding: 4,
-    fallback: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=1920&q=85",
+    fallback: studioOpening,
   },
 
   sequences: {
@@ -104,38 +141,59 @@ export const INITIAL_PORTFOLIO_CONTENT: PortfolioContent = {
       baseUrl: "",
       frameCount: 120,
       padding: 4,
-      fallback: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=1920&q=85", // Studio suite, editor still
+      fallback: studioOpening, // Studio suite, editor still
     },
     beat02BreakFrame: {
       baseUrl: "",
       frameCount: 120,
       padding: 4,
-      fallback: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=1920&q=85", // Hands on console, sitting at desk
+      fallback: editorOts, // Hands on console, sitting at desk
     },
     beat03Catalyst: {
       baseUrl: "",
       frameCount: 120,
       padding: 4,
-      fallback: "https://images.unsplash.com/photo-1535016120720-40c646be5580?auto=format&fit=crop&w=1920&q=85", // Over-shoulder push to NLE monitor
+      fallback: editorOts, // Over-shoulder push to NLE monitor
     },
     beat05Deconstruction: {
       baseUrl: "",
       frameCount: 140,
       padding: 4,
-      fallback: "https://images.unsplash.com/photo-1518173946687-a4c8a383392e?auto=format&fit=crop&w=1920&q=85", // Color grading suite / raw film deconstruct
+      fallback: footageGraded, // Finished edit frame, deconstructing
     },
     beat06CTAAnchor: {
       baseUrl: "",
       frameCount: 120,
       padding: 4,
-      fallback: "https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?auto=format&fit=crop&w=1920&q=85", // Studio pullback, direct view
+      fallback: studioOpening, // Studio pullback, original composition
     },
     beat07FooterFade: {
       baseUrl: "",
       frameCount: 100,
       padding: 4,
-      fallback: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=1920&q=85", // Silhouette facing monitor
+      fallback: studioOpening, // Silhouette facing monitor
     },
+  },
+
+  breakFrame: {
+    // Multiple ~8s source clips chained into one continuous movement.
+    // Leave baseUrl empty to use the procedural choreography set.
+    clips: [
+      { label: "BLINK", baseUrl: "", frameCount: 90, padding: 4, fallback: editorLook },
+      { label: "BREAK POSE", baseUrl: "", frameCount: 90, padding: 4, fallback: studioOpening },
+      { label: "MOVE TO WORKSTATION", baseUrl: "", frameCount: 110, padding: 4, fallback: studioOpening },
+      { label: "PULL UP CHAIR", baseUrl: "", frameCount: 100, padding: 4, fallback: editorOts },
+      { label: "SIT & SETTLE", baseUrl: "", frameCount: 120, padding: 4, fallback: editorOts },
+    ],
+  },
+
+  catalyst: {
+    // Several camera-move clips: over-the-shoulder -> push to monitor -> timeline.
+    clips: [
+      { label: "OVER-THE-SHOULDER PUSH", baseUrl: "", frameCount: 120, padding: 4, fallback: editorOts },
+      { label: "PUSH TOWARD MONITOR", baseUrl: "", frameCount: 110, padding: 4, fallback: editorOts },
+      { label: "TIMELINE ACTIVATION", baseUrl: "", frameCount: 100, padding: 4, fallback: timelineCloseup },
+    ],
   },
 
   showreel: {
@@ -144,7 +202,7 @@ export const INITIAL_PORTFOLIO_CONTENT: PortfolioContent = {
     duration: "01:45",
     // High quality editorial showreel video (royalty-free cinematic reel stream)
     videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
-    posterUrl: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1920&q=85",
+    posterUrl: footageGraded,
     aspectRatio: "16:9",
   },
 

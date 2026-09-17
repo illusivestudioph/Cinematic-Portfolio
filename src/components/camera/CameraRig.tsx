@@ -32,7 +32,7 @@ export const CameraRig: React.FC<CameraRigProps> = ({ children }) => {
       >
         {/* World Space Container */}
         <div
-          className="w-full h-full preserve-3d transition-transform duration-75 ease-out will-change-transform flex items-center justify-center"
+          className="w-full h-full preserve-3d will-change-transform flex items-center justify-center"
           style={{
             transform: cameraTransform,
           }}
