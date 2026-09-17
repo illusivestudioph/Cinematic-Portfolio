@@ -5,6 +5,8 @@ import { ScrollClipSequence } from '../media/ScrollClipSequence';
 import { ScrollFrameSequence } from '../media/ScrollFrameSequence';
 import { CinematicBackdrop } from '../media/CinematicBackdrop';
 import { Command, Film } from 'lucide-react';
+import { KineticText } from '../animation/KineticText';
+import { StickerBadge } from '../animation/StickerBadge';
 
 /**
  * BEAT 03 — THE CATALYST
@@ -124,6 +126,21 @@ export const Beat03Catalyst: React.FC = () => {
         </div>
       )}
 
+      {/* Mad Dogs Kinetic Quote & Sticker */}
+      <div className="absolute top-24 sm:top-28 left-8 sm:left-14 z-30 pointer-events-none flex flex-col items-start gap-3">
+        <StickerBadge text="TIMELINE ACTIVATION" tag="CATALYST // 03" rotate={-2} variant="green" />
+        <KineticText
+          text="THE CATALYST"
+          active={opacity > 0.1}
+          as="h2"
+          className="font-bricolage text-3xl sm:text-5xl font-black tracking-tight text-white uppercase text-glow-white"
+        />
+        {/* Handwriting annotation in Caveat font */}
+        <p className="font-caveat text-xl sm:text-2xl text-[#7FFF68] -rotate-2 tracking-wide font-bold drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
+          "Every cut reshapes the narrative."
+        </p>
+      </div>
+
       {/* ============ KEYBOARD SHORTCUT TRIGGER (fires with or without real clips) ============ */}
       <div
         className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none transition-opacity duration-150"
@@ -133,25 +150,25 @@ export const Beat03Catalyst: React.FC = () => {
           {['⌘', '⇧', 'E'].map((key) => (
             <div
               key={key}
-              className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-slate-900/95 border border-cyan-400/60 shadow-[0_0_25px_rgba(56,189,248,0.45),inset_0_-3px_0_rgba(0,0,0,0.6)] flex items-center justify-center font-syne text-xl sm:text-2xl font-black text-white"
+              className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-zinc-950 border-2 border-[#5EB423] shadow-[0_0_35px_rgba(94,180,35,0.6),inset_0_-3px_0_rgba(0,0,0,0.8)] flex items-center justify-center font-bricolage text-2xl sm:text-3xl font-black text-white"
             >
               {key}
             </div>
           ))}
         </div>
-        <div className="mt-3 flex items-center space-x-2 bg-black/80 border border-cyan-400/50 px-4 py-1.5 rounded-full">
-          <Command className="w-3.5 h-3.5 text-cyan-300" />
-          <span className="font-mono text-[11px] text-white tracking-[0.25em] uppercase font-bold">
-            Timeline online
+        <div className="mt-4 flex items-center space-x-2 bg-black/90 border border-[#5EB423] px-5 py-2 rounded-full shadow-[0_0_20px_rgba(94,180,35,0.4)]">
+          <Command className="w-4 h-4 text-[#7FFF68]" />
+          <span className="font-mono text-xs text-white tracking-[0.25em] uppercase font-bold">
+            Timeline Online // Sequence 03
           </span>
         </div>
       </div>
 
       {/* Cinematic shot badge */}
-      <div className="absolute bottom-6 left-8 sm:left-12 flex items-center space-x-3 text-slate-400 font-mono text-xs">
-        <span className="text-cyan-400 font-bold">BEAT {beat.code}</span>
+      <div className="absolute bottom-6 left-8 sm:left-12 flex items-center space-x-3 text-slate-300 font-mono text-xs">
+        <span className="text-[#7FFF68] font-bold">BEAT {beat.code}</span>
         <span className="text-slate-600">//</span>
-        <span>{beat.name}</span>
+        <span className="font-bricolage tracking-wider uppercase font-semibold">{beat.name}</span>
       </div>
     </div>
   );

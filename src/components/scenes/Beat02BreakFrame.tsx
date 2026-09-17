@@ -3,6 +3,8 @@ import { usePortfolio } from '../../context/PortfolioContext';
 import { PINNED_BEATS, getSceneWindow, isSceneVisible } from '../../config/timeline';
 import { ScrollClipSequence } from '../media/ScrollClipSequence';
 import { ScrollFrameSequence } from '../media/ScrollFrameSequence';
+import { KineticText } from '../animation/KineticText';
+import { StickerBadge } from '../animation/StickerBadge';
 
 /**
  * BEAT 02 — BREAKING THE FRAME
@@ -153,20 +155,33 @@ export const Beat02BreakFrame: React.FC = () => {
         </div>
       )}
 
-      {/* Movement readout — the choreography stepper (procedural set only;
-          with real clips the ScrollClipSequence shot label takes over) */}
+      {/* Kinetic Scene Title & Badge Overlay */}
+      <div className="absolute top-24 sm:top-28 left-8 sm:left-14 z-30 pointer-events-none flex flex-col items-start gap-3">
+        <StickerBadge text="PHYSICS BREAK" tag="CHOREOGRAPHY // 02" rotate={2.5} variant="dark" />
+        <KineticText
+          text="BREAKING THE STILLNESS"
+          active={opacity > 0.1}
+          as="h2"
+          className="font-bricolage text-3xl sm:text-5xl font-black tracking-tight text-white uppercase text-glow-white"
+        />
+        <p className="font-mono text-xs text-[#7FFF68] tracking-widest uppercase">
+          // MOTION ENGAGED · FRAME POSE RELEASED
+        </p>
+      </div>
+
+      {/* Movement readout — the choreography stepper styled as Mad Dogs pill */}
       {!hasRealClips && (
-      <div className="absolute bottom-16 sm:bottom-20 left-1/2 -translate-x-1/2 flex items-center space-x-1.5 bg-black/70 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 pointer-events-none">
+      <div className="absolute bottom-16 sm:bottom-20 left-1/2 -translate-x-1/2 flex items-center space-x-2 maddogs-pill pointer-events-none py-2 px-5 text-xs">
         {movements.map((m, i) => (
           <React.Fragment key={m + i}>
-            {i > 0 && <span className="text-slate-700 text-[10px]">→</span>}
+            {i > 0 && <span className="text-zinc-600 text-[10px]">→</span>}
             <span
-              className={`font-mono text-[10px] tracking-[0.18em] uppercase whitespace-nowrap transition-all duration-300 ${
+              className={`font-mono text-[11px] tracking-wider uppercase whitespace-nowrap transition-all duration-300 ${
                 i === movementIndex
-                  ? 'text-cyan-300 font-bold'
+                  ? 'text-[#7FFF68] font-black drop-shadow-[0_0_8px_#5EB423]'
                   : i < movementIndex
-                    ? 'text-slate-400'
-                    : 'text-slate-700'
+                    ? 'text-slate-300'
+                    : 'text-zinc-600'
               }`}
             >
               {m}
@@ -177,10 +192,10 @@ export const Beat02BreakFrame: React.FC = () => {
       )}
 
       {/* Cinematic shot badge */}
-      <div className="absolute bottom-6 left-8 sm:left-12 flex items-center space-x-3 text-slate-400 font-mono text-xs">
-        <span className="text-cyan-400 font-bold">BEAT {beat.code}</span>
+      <div className="absolute bottom-6 left-8 sm:left-12 flex items-center space-x-3 text-slate-300 font-mono text-xs">
+        <span className="text-[#7FFF68] font-bold">BEAT {beat.code}</span>
         <span className="text-slate-600">//</span>
-        <span>{beat.name}</span>
+        <span className="font-bricolage tracking-wider uppercase font-semibold">{beat.name}</span>
       </div>
     </div>
   );

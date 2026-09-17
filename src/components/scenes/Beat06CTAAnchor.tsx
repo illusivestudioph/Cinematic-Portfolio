@@ -4,6 +4,8 @@ import { PINNED_BEATS, getSceneWindow, isSceneVisible } from '../../config/timel
 import { CinematicBackdrop } from '../media/CinematicBackdrop';
 import { ScrollFrameSequence } from '../media/ScrollFrameSequence';
 import { Mail, ArrowUpRight, Check, Send } from 'lucide-react';
+import { KineticText } from '../animation/KineticText';
+import { StickerBadge } from '../animation/StickerBadge';
 
 /**
  * BEAT 06 — CTA ANCHOR
@@ -128,35 +130,60 @@ export const Beat06CTAAnchor: React.FC = () => {
             transform: `translateY(${(1 - ctaOpacity) * 25}px)`,
           }}
         >
-          <span className="font-syne text-4xl sm:text-6xl md:text-7xl font-black text-white uppercase tracking-tight leading-none">
-            {content.contact.headline}
-          </span>
+          {/* Mad Dogs Sticker Badge */}
+          <div className="mb-4">
+            <StickerBadge text="FINAL DELIVERY" tag="COMMISSION // 2026" rotate={-2} variant="green" />
+          </div>
 
-          <p className="mt-4 sm:mt-6 font-syne text-xl sm:text-3xl md:text-4xl font-bold text-cyan-400 uppercase tracking-wide text-glow-cyan">
+          <KineticText
+            text={content.contact.headline}
+            active={ctaOpacity > 0.1}
+            as="h2"
+            className="font-bricolage text-4xl sm:text-6xl md:text-7xl font-black text-white uppercase tracking-tight leading-none"
+            wordClassName="text-glow-white"
+          />
+
+          <p className="mt-4 sm:mt-6 font-caveat text-2xl sm:text-4xl text-[#7FFF68] font-bold tracking-wide -rotate-1 drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
             {content.contact.subheadline}
           </p>
 
-          <div className="mt-8 flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
+          <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto">
+            {/* Mad Dogs Solid Neon CTA Pill */}
             <a
               href={`mailto:${content.contact.email}?subject=Project%20Inquiry%20—%20ILLUSIVE%20STUDIO`}
-              className="w-full sm:w-auto group px-7 py-3.5 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-syne font-black text-xs sm:text-sm tracking-widest uppercase flex items-center justify-center space-x-2.5 shadow-[0_0_25px_rgba(56,189,248,0.4)] hover:shadow-[0_0_40px_rgba(56,189,248,0.7)] hover:scale-105 transition-all duration-300"
+              className="maddogs-cta-pill"
             >
               <span>{content.contact.ctaButtonText}</span>
-              <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              <ArrowUpRight className="w-5 h-5 stroke-[2.5]" />
             </a>
 
-            <button
-              onClick={copyEmail}
-              className="w-full sm:w-auto px-5 py-3.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/15 text-slate-300 font-mono text-xs tracking-wider flex items-center justify-center space-x-2 transition-all duration-200"
-            >
-              {isCopied ? <Check className="w-4 h-4 text-emerald-400" /> : <Mail className="w-4 h-4 text-cyan-400" />}
-              <span>{isCopied ? 'COPIED' : content.contact.email}</span>
-            </button>
+            {/* Social Pills */}
+            <div className="flex items-center gap-3">
+              <button
+                onClick={copyEmail}
+                className="maddogs-pill cursor-pointer"
+              >
+                <span>{isCopied ? 'COPIED' : 'EMAIL'}</span>
+                {isCopied ? <Check className="w-4 h-4 text-[#7FFF68]" /> : <Mail className="w-4 h-4 text-white" />}
+              </button>
+
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="maddogs-pill"
+              >
+                <span>Instagram</span>
+                <span className="text-[#7FFF68]">↗</span>
+              </a>
+            </div>
           </div>
 
-          <div className="mt-6 flex items-center space-x-2 text-xs font-mono text-slate-400">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-            <span>{content.contact.availability}</span>
+          <div className="mt-8 flex items-center space-x-2 text-xs font-mono text-slate-300">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#7FFF68] animate-ping" />
+            <span className="font-bricolage tracking-widest uppercase font-bold text-white/90">
+              {content.contact.availability}
+            </span>
           </div>
         </div>
       </div>

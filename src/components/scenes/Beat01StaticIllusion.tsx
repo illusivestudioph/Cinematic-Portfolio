@@ -3,6 +3,8 @@ import { usePortfolio } from '../../context/PortfolioContext';
 import { PINNED_BEATS, getSceneWindow, isSceneVisible } from '../../config/timeline';
 import { ScrollFrameSequence } from '../media/ScrollFrameSequence';
 import { CinematicBackdrop } from '../media/CinematicBackdrop';
+import { KineticText } from '../animation/KineticText';
+import { StickerBadge } from '../animation/StickerBadge';
 
 /**
  * BEAT 01 — STATIC ILLUSION
@@ -74,32 +76,61 @@ export const Beat01StaticIllusion: React.FC = () => {
             transformOrigin: 'left center',
           }}
         >
-          {/* Film production tag */}
-          <div className="flex items-center space-x-3 mb-4 opacity-85">
-            <span className="h-[2px] w-6 bg-cyan-400 shadow-[0_0_8px_#38bdf8]" />
-            <span className="font-mono text-xs tracking-[0.35em] text-cyan-400 uppercase font-bold">
-              Illusive Studio // Master Sequence
+          {/* Film production tag with Mad Dogs Sticker Badge */}
+          <div className="flex flex-wrap items-center gap-3 mb-4">
+            <StickerBadge text="MASTER SUITE" tag="REEL // 01" rotate={-3} variant="green" />
+            <span className="hidden sm:inline-block font-mono text-xs tracking-[0.3em] text-[#7FFF68] uppercase font-bold drop-shadow-[0_0_10px_rgba(94,180,35,0.8)]">
+              // 4K FILM SEQUENCE
             </span>
           </div>
 
-          {/* Grand studio typography with 3D perspective presence */}
-          <h1 className="font-syne text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter text-white uppercase text-glow-white leading-none">
-            {content.studioName}
-          </h1>
+          {/* Grand studio typography with Kinetic line masking */}
+          <KineticText
+            text={content.studioName}
+            active={titleOpacity > 0.1}
+            as="h1"
+            className="font-bricolage text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter text-white uppercase leading-none"
+            wordClassName="text-glow-white"
+            stagger={0.04}
+          />
 
-          <p className="mt-4 sm:mt-6 font-mono text-xs sm:text-sm md:text-base tracking-[0.35em] text-slate-400 uppercase leading-relaxed max-w-md">
-            {content.tagline}
-          </p>
+          <KineticText
+            text={content.tagline}
+            active={titleOpacity > 0.1}
+            as="p"
+            className="mt-4 sm:mt-6 font-mono text-xs sm:text-sm md:text-base tracking-[0.28em] text-slate-300 uppercase leading-relaxed max-w-md"
+            delay={0.15}
+            stagger={0.02}
+          />
 
-          <div className="w-48 sm:w-72 h-[1px] bg-gradient-to-r from-cyan-400/90 via-cyan-400/40 to-transparent mt-6 shadow-[0_0_15px_#38bdf8]" />
+          {/* Mad Dogs Style Action Pills */}
+          <div className="mt-8 flex flex-wrap items-center gap-3 sm:gap-4">
+            <a
+              href="#showreel"
+              className="maddogs-pill"
+              onClick={(e) => {
+                e.preventDefault();
+                window.scrollTo({ top: window.innerHeight * 1.5, behavior: 'smooth' });
+              }}
+            >
+              <span>EXPLORE FILM</span>
+              <span className="text-acid-green">✦</span>
+            </a>
+            <div className="maddogs-pill cursor-default">
+              <span>SOUND</span>
+              <span className="text-zinc-400">ON // 24 FPS</span>
+            </div>
+          </div>
+
+          <div className="w-48 sm:w-72 h-[1px] bg-gradient-to-r from-[#5EB423] via-[#7FFF68]/40 to-transparent mt-8 shadow-[0_0_15px_#5EB423]" />
 
           {/* Scroll prompt */}
-          <div className="mt-10 flex items-center space-x-3 opacity-75">
-            <div className="w-4 h-7 rounded-full border border-slate-500 flex justify-center p-1">
-              <div className="w-1 h-2 bg-cyan-400 rounded-full animate-bounce" />
+          <div className="mt-8 flex items-center space-x-3 opacity-80">
+            <div className="w-5 h-8 rounded-full border-2 border-white/40 flex justify-center p-1 backdrop-blur-md">
+              <div className="w-1.5 h-2.5 bg-[#7FFF68] rounded-full animate-bounce shadow-[0_0_8px_#7FFF68]" />
             </div>
-            <span className="font-mono text-[11px] tracking-[0.3em] text-slate-400 uppercase">
-              Scroll to break frame
+            <span className="font-bricolage text-xs uppercase tracking-[0.25em] text-slate-300 font-bold">
+              Scroll to initiate breakdown
             </span>
           </div>
         </div>
