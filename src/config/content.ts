@@ -23,12 +23,32 @@ export interface ProcessStage {
   visualMetric: string;
 }
 
+import studioOpening from '../assets/studio-opening.jpg';
+import editorLook from '../assets/editor-look.jpg';
+import editorOts from '../assets/editor-ots.jpg';
+import timelineCloseup from '../assets/timeline-closeup.jpg';
+import footageGraded from '../assets/footage-graded.jpg';
+
+/**
+ * One ~8s source clip inside a scroll-controlled cinematic movement.
+ * An 8-second clip never covers an entire beat — beats chain multiple clips.
+ * Each clip is its own Supabase-hosted WebP frame sequence with an
+ * independent frame count (never assume a fixed number).
+ */
+export interface FrameSequenceClip {
+  label: string;      // Movement label, e.g. "PULL UP CHAIR"
+  baseUrl: string;    // Supabase folder: {baseUrl}/frame_0001.webp ...
+  frameCount: number; // Per-clip frame count
+  padding: number;    // Zero-padding digits (4 = 0001)
+  fallback: string;   // Still frame shown until sequence frames load
+}
+
 export interface PortfolioContent {
   studioName: string;
   tagline: string;
   authorizedEmail: string;
-  
-  // Scene 02/03 WebP Sequence settings
+
+  // Beat 01 opening portrait — single WebP sequence (frame 1 = the still)
   editorSequence: {
     baseUrl: string;
     frameCount: number;
@@ -36,7 +56,17 @@ export interface PortfolioContent {
     fallback: string;
   };
 
-  // Scene 07 Showreel
+  // Beat 02 — chained source clips: blink -> break pose -> approach -> chair -> sit
+  breakFrame: {
+    clips: FrameSequenceClip[];
+  };
+
+  // Beat 03 — chained camera-move clips: OTS push -> monitor approach -> timeline
+  catalyst: {
+    clips: FrameSequenceClip[];
+  };
+
+  // Beat 04 Showreel (real MP4, audio preserved)
   showreel: {
     title: string;
     subtitle: string;
@@ -81,11 +111,34 @@ export const INITIAL_PORTFOLIO_CONTENT: PortfolioContent = {
   authorizedEmail: "yhanlhester@gmail.com",
 
   editorSequence: {
-    // Configurable Supabase WebP sequence endpoint. Empty by default to use the rich procedural fallback.
+    // Configurable Supabase WebP sequence endpoint. Empty by default to use the
+    // cinematic studio still. When set, frame 0001 becomes the static portrait
+    // and Beat 01 scrubs gently inside the opening composition.
     baseUrl: "",
     frameCount: 120,
     padding: 4,
-    fallback: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=1920&q=85",
+    fallback: studioOpening,
+  },
+
+  breakFrame: {
+    // Multiple ~8s source clips chained into one continuous movement.
+    // Leave baseUrl empty to use the procedural choreography set.
+    clips: [
+      { label: "BLINK", baseUrl: "", frameCount: 90, padding: 4, fallback: editorLook },
+      { label: "BREAK POSE", baseUrl: "", frameCount: 90, padding: 4, fallback: studioOpening },
+      { label: "MOVE TO WORKSTATION", baseUrl: "", frameCount: 110, padding: 4, fallback: studioOpening },
+      { label: "PULL UP CHAIR", baseUrl: "", frameCount: 100, padding: 4, fallback: editorOts },
+      { label: "SIT & SETTLE", baseUrl: "", frameCount: 120, padding: 4, fallback: editorOts },
+    ],
+  },
+
+  catalyst: {
+    // Several camera-move clips: over-the-shoulder -> push to monitor -> timeline.
+    clips: [
+      { label: "OVER-THE-SHOULDER PUSH", baseUrl: "", frameCount: 120, padding: 4, fallback: editorOts },
+      { label: "PUSH TOWARD MONITOR", baseUrl: "", frameCount: 110, padding: 4, fallback: editorOts },
+      { label: "TIMELINE ACTIVATION", baseUrl: "", frameCount: 100, padding: 4, fallback: timelineCloseup },
+    ],
   },
 
   showreel: {
@@ -94,7 +147,7 @@ export const INITIAL_PORTFOLIO_CONTENT: PortfolioContent = {
     duration: "01:45",
     // High quality editorial showreel video (royalty-free cinematic reel stream)
     videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
-    posterUrl: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1920&q=85",
+    posterUrl: footageGraded,
     aspectRatio: "16:9",
   },
 

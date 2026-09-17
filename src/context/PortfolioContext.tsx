@@ -31,7 +31,7 @@ interface PortfolioContextType {
   signOutAdmin: () => Promise<void>;
 }
 
-const PortfolioContext = createContext<PortfolioContextType | null>(null);
+export const PortfolioContext = createContext<PortfolioContextType | null>(null);
 
 export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [progress, setProgress] = useState(0);

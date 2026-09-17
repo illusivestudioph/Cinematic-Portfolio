@@ -1,11 +1,109 @@
 import React, { useState } from 'react';
 import { usePortfolio } from '../../context/PortfolioContext';
-import type { PortfolioContent, ProjectItem } from '../../config/content';
+import type { PortfolioContent, ProjectItem, FrameSequenceClip } from '../../config/content';
 import { Save, LogOut, Film, Image as ImageIcon, Briefcase, Layers, User, PhoneCall, Check, Plus, Trash2, ArrowUp, ArrowDown } from 'lucide-react';
 
 interface AdminDashboardProps {
   onClose: () => void;
 }
+
+/** Editor for one chained multi-clip WebP sequence (Beats 02 & 03) */
+export const ClipChainEditor: React.FC<{
+  title: string;
+  hint: string;
+  clips: FrameSequenceClip[];
+  onChange: (clips: FrameSequenceClip[]) => void;
+}> = ({ title, hint, clips, onChange }) => {
+  const updateClip = (index: number, patch: Partial<FrameSequenceClip>) => {
+    const next = [...clips];
+    next[index] = { ...next[index], ...patch };
+    onChange(next);
+  };
+
+  const addClip = () => {
+    onChange([...clips, { label: 'NEW MOVEMENT', baseUrl: '', frameCount: 100, padding: 4, fallback: '' }]);
+  };
+
+  const removeClip = (index: number) => {
+    onChange(clips.filter((_, i) => i !== index));
+  };
+
+  const inputCls = 'w-full px-3 py-2 rounded bg-black/60 border border-white/10 text-xs font-mono text-slate-200 focus:border-cyan-400 outline-none';
+
+  return (
+    <div className="space-y-3 p-4 rounded-xl bg-black/40 border border-white/10">
+      <div className="flex items-center justify-between">
+        <h4 className="font-syne text-sm font-bold uppercase text-white">{title}</h4>
+        <div className="flex items-center space-x-2">
+          <span className="text-[10px] font-mono text-slate-500">{clips.length} CLIPS</span>
+          <button
+            onClick={addClip}
+            className="flex items-center space-x-1 px-2.5 py-1 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 text-[11px] font-mono"
+          >
+            <Plus className="w-3 h-3" />
+            <span>ADD CLIP</span>
+          </button>
+        </div>
+      </div>
+      <p className="text-[11px] text-slate-500 font-mono">{hint}</p>
+
+      <div className="space-y-3">
+        {clips.map((clip, idx) => (
+          <div key={idx} className="p-3 rounded-lg bg-black/50 border border-white/5 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="font-mono text-[10px] text-cyan-400 font-bold">CLIP {String(idx + 1).padStart(2, '0')}</span>
+              <button
+                onClick={() => removeClip(idx)}
+                className="text-slate-600 hover:text-red-400 transition-colors"
+                title="Remove clip"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+              </button>
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              <div className="col-span-3">
+                <label className="block text-[10px] font-mono text-slate-500 mb-1">Movement label</label>
+                <input type="text" value={clip.label} onChange={(e) => updateClip(idx, { label: e.target.value })} className={inputCls} />
+              </div>
+              <div className="col-span-3">
+                <label className="block text-[10px] font-mono text-slate-500 mb-1">WebP base URL (Supabase bucket folder)</label>
+                <input
+                  type="text"
+                  value={clip.baseUrl}
+                  onChange={(e) => updateClip(idx, { baseUrl: e.target.value })}
+                  className={inputCls}
+                  placeholder="https://...supabase.co/storage/v1/object/public/sequences/break-frame/blink"
+                />
+              </div>
+              <div>
+                <label className="block text-[10px] font-mono text-slate-500 mb-1">Frames</label>
+                <input
+                  type="number"
+                  value={clip.frameCount}
+                  onChange={(e) => updateClip(idx, { frameCount: parseInt(e.target.value) || 100 })}
+                  className={inputCls}
+                />
+              </div>
+              <div>
+                <label className="block text-[10px] font-mono text-slate-500 mb-1">Padding</label>
+                <input
+                  type="number"
+                  value={clip.padding}
+                  onChange={(e) => updateClip(idx, { padding: parseInt(e.target.value) || 4 })}
+                  className={inputCls}
+                />
+              </div>
+              <div>
+                <label className="block text-[10px] font-mono text-slate-500 mb-1">Fallback still URL</label>
+                <input type="text" value={clip.fallback} onChange={(e) => updateClip(idx, { fallback: e.target.value })} className={inputCls} />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
   const { content, updateContent, signOutAdmin, userEmail } = usePortfolio();
@@ -240,68 +338,101 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
 
           {/* TAB 2: WEBP SEQUENCES */}
           {activeTab === 'sequences' && (
-            <div className="space-y-4 max-w-2xl">
+            <div className="space-y-6 max-w-3xl">
               <h3 className="font-syne text-base font-bold uppercase text-white border-b border-white/10 pb-2">
-                SCENE 02/03 WEBP SCROLL SEQUENCE (SUPABASE STORAGE)
+                WEBP SCROLL SEQUENCES (SUPABASE STORAGE)
               </h3>
               <p className="text-xs text-slate-400">
-                WebP sequences should be hosted directly in Supabase Storage or external CDN. If the base URL is left empty, the rich procedural 3D studio suite set is rendered.
+                WebP frame sequences drive the scroll-controlled cinematic camera movements (Beats 01–03); the showreel and finished
+                projects stay as real MP4s. Each sequence has its own frame count — never assume a fixed number. Leave base URLs
+                empty to use the cinematic procedural set.
               </p>
 
-              <div>
-                <label className="block text-xs font-mono text-slate-400 mb-1">WebP Base URL (Supabase bucket)</label>
-                <input
-                  type="text"
-                  value={formData.editorSequence.baseUrl}
-                  onChange={(e) => setFormData({
-                    ...formData,
-                    editorSequence: { ...formData.editorSequence, baseUrl: e.target.value }
-                  })}
-                  className="w-full px-3 py-2 rounded bg-black/60 border border-white/10 text-xs font-mono text-slate-200 focus:border-cyan-400 outline-none"
-                  placeholder="https://...supabase.co/storage/v1/object/public/sequences/editor"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
+              {/* Beat 01 — opening portrait sequence */}
+              <div className="space-y-3 p-4 rounded-xl bg-black/40 border border-white/10">
+                <h4 className="font-syne text-sm font-bold uppercase text-white">BEAT 01 — OPENING PORTRAIT SEQUENCE</h4>
+                <p className="text-[11px] text-slate-500 font-mono">
+                  Single sequence. Frame 0001 is the static portrait; leaving it empty uses the cinematic studio still.
+                </p>
                 <div>
-                  <label className="block text-xs font-mono text-slate-400 mb-1">Total Frame Count</label>
+                  <label className="block text-xs font-mono text-slate-400 mb-1">WebP Base URL (Supabase bucket)</label>
                   <input
-                    type="number"
-                    value={formData.editorSequence.frameCount}
-                    onChange={(e) => setFormData({
-                      ...formData,
-                      editorSequence: { ...formData.editorSequence, frameCount: parseInt(e.target.value) || 120 }
-                    })}
+                    type="text"
+                    value={formData.editorSequence.baseUrl}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        editorSequence: { ...formData.editorSequence, baseUrl: e.target.value },
+                      })
+                    }
                     className="w-full px-3 py-2 rounded bg-black/60 border border-white/10 text-xs font-mono text-slate-200 focus:border-cyan-400 outline-none"
+                    placeholder="https://...supabase.co/storage/v1/object/public/sequences/editor"
                   />
                 </div>
 
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-mono text-slate-400 mb-1">Total Frame Count</label>
+                    <input
+                      type="number"
+                      value={formData.editorSequence.frameCount}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          editorSequence: { ...formData.editorSequence, frameCount: parseInt(e.target.value) || 120 },
+                        })
+                      }
+                      className="w-full px-3 py-2 rounded bg-black/60 border border-white/10 text-xs font-mono text-slate-200 focus:border-cyan-400 outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-mono text-slate-400 mb-1">Padding Digits (default 4 = 0001)</label>
+                    <input
+                      type="number"
+                      value={formData.editorSequence.padding}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          editorSequence: { ...formData.editorSequence, padding: parseInt(e.target.value) || 4 },
+                        })
+                      }
+                      className="w-full px-3 py-2 rounded bg-black/60 border border-white/10 text-xs font-mono text-slate-200 focus:border-cyan-400 outline-none"
+                    />
+                  </div>
+                </div>
+
                 <div>
-                  <label className="block text-xs font-mono text-slate-400 mb-1">Padding Digits (default 4 = 0001)</label>
+                  <label className="block text-xs font-mono text-slate-400 mb-1">Fallback Studio Still URL</label>
                   <input
-                    type="number"
-                    value={formData.editorSequence.padding}
-                    onChange={(e) => setFormData({
-                      ...formData,
-                      editorSequence: { ...formData.editorSequence, padding: parseInt(e.target.value) || 4 }
-                    })}
+                    type="text"
+                    value={formData.editorSequence.fallback}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        editorSequence: { ...formData.editorSequence, fallback: e.target.value },
+                      })
+                    }
                     className="w-full px-3 py-2 rounded bg-black/60 border border-white/10 text-xs font-mono text-slate-200 focus:border-cyan-400 outline-none"
                   />
                 </div>
               </div>
 
-              <div>
-                <label className="block text-xs font-mono text-slate-400 mb-1">Fallback Backdrop Image URL</label>
-                <input
-                  type="text"
-                  value={formData.editorSequence.fallback}
-                  onChange={(e) => setFormData({
-                    ...formData,
-                    editorSequence: { ...formData.editorSequence, fallback: e.target.value }
-                  })}
-                  className="w-full px-3 py-2 rounded bg-black/60 border border-white/10 text-xs font-mono text-slate-200 focus:border-cyan-400 outline-none"
-                />
-              </div>
+              {/* Beat 02 — chained movement clips */}
+              <ClipChainEditor
+                title="BEAT 02 — BREAKING THE FRAME CLIP CHAIN"
+                hint="Multiple ~8s source clips chained into one continuous movement: blink -> break pose -> move to workstation -> pull up chair -> sit & settle."
+                clips={formData.breakFrame.clips}
+                onChange={(clips) => setFormData({ ...formData, breakFrame: { clips } })}
+              />
+
+              {/* Beat 03 — chained camera-move clips */}
+              <ClipChainEditor
+                title="BEAT 03 — THE CATALYST CLIP CHAIN"
+                hint="Several camera-move clips: over-the-shoulder push -> push toward monitor -> DaVinci timeline activation."
+                clips={formData.catalyst.clips}
+                onChange={(clips) => setFormData({ ...formData, catalyst: { clips } })}
+              />
             </div>
           )}
 

@@ -141,6 +141,40 @@ export function getActiveScene(progress: number): PinnedSceneConfig {
   return getActiveSceneFromProgress(progress).scene;
 }
 
+export interface SceneWindow {
+  scene: PinnedSceneConfig;
+  /** Normalized global progress where this beat begins */
+  globalStart: number;
+  /** Normalized global progress where this beat ends */
+  globalEnd: number;
+  /** This beat's local progress (0.0 – 1.0) for the given global progress */
+  localT: number;
+}
+
+/**
+ * Single source of truth for a beat's scroll window.
+ * Beat components use this instead of hard-coding magic numbers, so pin
+ * distances in PINNED_BEATS can be tuned freely without desyncing the scenes.
+ */
+export function getSceneWindow(sceneId: string, globalProgress: number): SceneWindow {
+  const scene = SCENE_INTERVALS.find((s) => s.id === sceneId) ?? SCENE_INTERVALS[0];
+  const p = Math.max(0, Math.min(1, globalProgress));
+  const span = Math.max(0.0001, scene.globalEnd - scene.globalStart);
+  const localT = Math.max(0, Math.min(1, (p - scene.globalStart) / span));
+  return {
+    scene,
+    globalStart: scene.globalStart,
+    globalEnd: scene.globalEnd,
+    localT,
+  };
+}
+
+/** Visibility test with a small bleed so beats cross-fade during transitions */
+export function isSceneVisible(sceneId: string, globalProgress: number, bleed = 0.03): boolean {
+  const { globalStart, globalEnd } = getSceneWindow(sceneId, globalProgress);
+  return globalProgress >= globalStart - bleed && globalProgress <= globalEnd + bleed;
+}
+
 /**
  * Calculates current interpolated camera coordinates based on active scene and local progress
  */

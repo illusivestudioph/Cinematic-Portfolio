@@ -107,6 +107,27 @@
   box-shadow: 0 0 25px rgba(56, 189, 248, 0.25);
 }
 
+/* Cross-dissolve when a chained source clip cuts to the next clip */
+@keyframes clip-cut {
+  0% { opacity: 0.35; }
+  100% { opacity: 1; }
+}
+.animate-clip-cut {
+  animation: clip-cut 260ms ease-out both;
+}
+
+/* Film gate weave — subtle horizontal drift for raw rushes / rewind feels */
+@keyframes gate-weave {
+  0% { transform: translateX(-1.5px); }
+  25% { transform: translateX(1px); }
+  50% { transform: translateX(-0.5px); }
+  75% { transform: translateX(1.5px); }
+  100% { transform: translateX(-1.5px); }
+}
+.animate-gate-weave {
+  animation: gate-weave 1.1s steps(4) infinite;
+}
+
 /* Hide default browser controls appearance for range inputs */
 input[type=range].cinematic-slider {
   -webkit-appearance: none;

@@ -60,6 +60,10 @@ export const CinematicVideoPlayer: React.FC<CinematicVideoPlayerProps> = ({
       video.pause();
       setIsPlaying(false);
       onPlayStateChange?.(false);
+      // Release the scroll lock when the visitor pauses the reel
+      if (allowScrollLock && scrollPaused) {
+        setScrollPaused(false);
+      }
     } else {
       // First interaction: unmute if user clicks play, providing real audio experience
       if (!hasStarted) {
@@ -168,6 +172,10 @@ export const CinematicVideoPlayer: React.FC<CinematicVideoPlayerProps> = ({
         onEnded={() => {
           setIsPlaying(false);
           onPlayStateChange?.(false);
+          // The reel finished — release the scroll lock so the journey continues
+          if (allowScrollLock && scrollPaused) {
+            setScrollPaused(false);
+          }
         }}
         onClick={togglePlay}
         className="w-full h-full object-cover cursor-pointer"
