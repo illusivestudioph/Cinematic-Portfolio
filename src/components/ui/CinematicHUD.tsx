@@ -80,6 +80,16 @@ export const CinematicHUD: React.FC = () => {
               {isMuted ? 'SOUND OFF' : 'SOUND ON'}
             </span>
           </button>
+
+          {/* Mad Dogs Circular Menu / Drawer Button */}
+          <button
+            onClick={() => window.scrollTo({ top: window.innerHeight * 1.5, behavior: 'smooth' })}
+            className="w-9 h-9 rounded-full bg-black/80 backdrop-blur-md border border-white/20 hover:border-[#7FFF68] flex flex-col items-center justify-center gap-1 transition-all shadow-xl cursor-pointer"
+            title="Menu"
+          >
+            <span className="w-4 h-[1.5px] bg-white rounded-full" />
+            <span className="w-4 h-[1.5px] bg-[#7FFF68] rounded-full" />
+          </button>
         </div>
       </div>
 
@@ -97,12 +107,12 @@ export const CinematicHUD: React.FC = () => {
               className={`group relative flex items-center justify-end cursor-pointer`}
               title={`${scene.code} - ${scene.name}`}
             >
-              <span className="absolute right-6 px-2 py-0.5 rounded bg-black/80 border border-white/10 text-[10px] font-mono text-cyan-300 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+              <span className="absolute right-6 px-2 py-0.5 rounded bg-black/80 border border-white/10 text-[10px] font-mono text-[#7FFF68] whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                 {scene.code} {scene.name}
               </span>
               <div
                 className={`w-1.5 transition-all duration-300 rounded-full ${
-                  isCurrent ? 'h-6 bg-cyan-400 shadow-[0_0_10px_#38bdf8]' : 'h-1.5 bg-slate-700 hover:bg-slate-500'
+                  isCurrent ? 'h-6 bg-[#7FFF68] shadow-[0_0_10px_#7FFF68]' : 'h-1.5 bg-zinc-700 hover:bg-zinc-500'
                 }`}
               />
             </div>
@@ -120,11 +130,11 @@ export const CinematicHUD: React.FC = () => {
         <div className="flex items-center space-x-3 pointer-events-auto">
           <div className="w-24 sm:w-36 h-1 bg-white/10 rounded-full overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full transition-all duration-75"
+              className="h-full bg-gradient-to-r from-[#5EB423] to-[#7FFF68] rounded-full transition-all duration-75 shadow-[0_0_10px_#7FFF68]"
               style={{ width: `${progress * 100}%` }}
             />
           </div>
-          <span className="text-[11px] text-slate-400 font-mono">
+          <span className="text-[11px] text-zinc-400 font-mono">
             {Math.round(progress * 100)}% REEL
           </span>
         </div>
@@ -133,12 +143,12 @@ export const CinematicHUD: React.FC = () => {
         <div className="pointer-events-auto">
           <button
             onClick={handleDeveloperClick}
-            className="text-[11px] text-slate-600 hover:text-slate-400 transition-colors tracking-widest px-2 py-1 rounded cursor-pointer select-none"
+            className="text-[11px] text-zinc-600 hover:text-zinc-400 transition-colors tracking-widest px-2 py-1 rounded cursor-pointer select-none"
             title={developerClicks > 0 ? `${5 - developerClicks} clicks to admin` : 'Developer'}
           >
             Developer
             {developerClicks > 0 && (
-              <span className="ml-1 text-cyan-400">({developerClicks}/5)</span>
+              <span className="ml-1 text-[#7FFF68]">({developerClicks}/5)</span>
             )}
           </button>
         </div>

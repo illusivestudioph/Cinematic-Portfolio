@@ -97,32 +97,41 @@ export const Beat07FooterFade: React.FC = () => {
         className="absolute top-[18%] left-1/2 -translate-x-1/2 flex items-center space-x-3 bg-black/60 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/10 font-mono text-[10px] tracking-[0.25em] uppercase"
         style={{ opacity: Math.max(0, 1 - t * 2.2) }}
       >
-        <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/70" />
+        <span className="w-1.5 h-1.5 rounded-full bg-[#7FFF68]" />
         <span className="text-slate-400">Session archived — 00:02:12:00</span>
       </div>
 
       {/* ============ SEAMLESS CINEMATIC FOOTER ============ */}
       {/* Emerges from the darkness at the bottom — the final destination */}
       <div
-        className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#050608] via-[#050608]/92 to-transparent pt-14 pb-6 px-6 sm:px-12 flex flex-col items-center space-y-4 pointer-events-auto transition-all duration-300"
+        className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#050608] via-[#050608]/95 to-transparent pt-16 pb-8 px-6 sm:px-12 flex flex-col items-center space-y-5 pointer-events-auto transition-all duration-300"
         style={{
           opacity: footerReveal,
           transform: `translateY(${(1 - footerReveal) * 24}px)`,
         }}
       >
-        <div className="w-full max-w-5xl flex flex-col sm:flex-row items-center justify-between pt-4 border-t border-white/10 text-xs font-mono text-slate-400 gap-3">
+        {/* Authentic Mad Dogs Upstairs Button */}
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="maddogs-pill cursor-pointer text-xs py-2.5 px-6 flex items-center gap-2 hover:border-[#7FFF68]"
+        >
+          <span className="font-bricolage uppercase tracking-wider text-white font-bold">Upstairs</span>
+          <span className="text-[#7FFF68] text-sm font-bold">↑</span>
+        </button>
+
+        <div className="w-full max-w-5xl flex flex-col sm:flex-row items-center justify-between pt-6 border-t border-white/10 text-xs font-mono text-slate-400 gap-4">
           <div className="flex items-center space-x-2">
-            <span className="text-white font-bold tracking-wider">{content.studioName}</span>
+            <span className="text-white font-bold tracking-wider font-bricolage uppercase">{content.studioName}</span>
             <span className="text-slate-600">//</span>
-            <span>{content.tagline}</span>
+            <span className="text-slate-300">{content.tagline}</span>
           </div>
 
-          <div className="flex items-center space-x-6 text-[11px] text-slate-500">
+          <div className="flex items-center space-x-6 text-[11px] text-slate-400">
             <a
               href={content.contact.instagram}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-cyan-400 transition-colors"
+              className="hover:text-[#7FFF68] transition-colors"
             >
               INSTAGRAM
             </a>
@@ -130,7 +139,7 @@ export const Beat07FooterFade: React.FC = () => {
               href={content.contact.twitter}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-cyan-400 transition-colors"
+              className="hover:text-[#7FFF68] transition-colors"
             >
               X / TWITTER
             </a>
@@ -138,7 +147,7 @@ export const Beat07FooterFade: React.FC = () => {
               href={content.contact.vimeo}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-cyan-400 transition-colors"
+              className="hover:text-[#7FFF68] transition-colors"
             >
               VIMEO
             </a>
@@ -150,7 +159,7 @@ export const Beat07FooterFade: React.FC = () => {
               title={developerClicks > 0 ? `${5 - developerClicks} clicks to admin` : 'Developer'}
             >
               Developer
-              {developerClicks > 0 && <span className="ml-1 text-cyan-400">({developerClicks}/5)</span>}
+              {developerClicks > 0 && <span className="ml-1 text-[#7FFF68]">({developerClicks}/5)</span>}
             </button>
           </div>
         </div>
@@ -158,7 +167,7 @@ export const Beat07FooterFade: React.FC = () => {
         <div className="text-[10px] font-mono text-slate-600 flex items-center space-x-3">
           <span>© {new Date().getFullYear()} {content.studioName}. ALL RIGHTS RESERVED.</span>
           <span className="text-slate-700">//</span>
-          <span>END OF REEL — BEAT {beat.code} // {beat.name}</span>
+          <span>COMMERCIAL VIDEO POST-PRODUCTION</span>
         </div>
       </div>
 
@@ -167,9 +176,9 @@ export const Beat07FooterFade: React.FC = () => {
         className="absolute bottom-6 left-8 sm:left-12 flex items-center space-x-3 text-slate-500 font-mono text-xs transition-opacity duration-300"
         style={{ opacity: 1 - footerReveal }}
       >
-        <span className="text-cyan-400/80 font-bold">BEAT {beat.code}</span>
+        <span className="text-[#7FFF68] font-bold">ILLUSIVE STUDIO</span>
         <span className="text-slate-700">//</span>
-        <span>{beat.name}</span>
+        <span className="font-bricolage text-slate-300">Commercial Post-Production</span>
       </div>
     </div>
   );

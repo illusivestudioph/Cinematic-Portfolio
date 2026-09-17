@@ -3,6 +3,7 @@ import { usePortfolio } from '../../context/PortfolioContext';
 import { PINNED_BEATS, getSceneWindow, isSceneVisible } from '../../config/timeline';
 import { ScrollClipSequence } from '../media/ScrollClipSequence';
 import { ScrollFrameSequence } from '../media/ScrollFrameSequence';
+import { CinematicBackdrop } from '../media/CinematicBackdrop';
 import { KineticText } from '../animation/KineticText';
 import { StickerBadge } from '../animation/StickerBadge';
 
@@ -57,73 +58,79 @@ export const Beat02BreakFrame: React.FC = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-[#050608]/70 via-transparent to-[#050608]/25 pointer-events-none" />
         </div>
       ) : (
-        /* ============ SERVICES & CAPABILITIES GRID ============ */
-        <div className="relative w-full h-full flex items-center justify-center p-6 sm:p-12 z-20">
-          <div className="w-full max-w-6xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 pointer-events-auto">
-            {[
-              {
-                step: '01',
-                title: 'OFFLINE EDITING',
-                desc: 'Rhythmic commercial cutting, narrative pacing, multi-cam sync, and documentary storytelling.',
-                tag: 'Commercials & Film',
-              },
-              {
-                step: '02',
-                title: 'COLOR GRADING',
-                desc: 'DaVinci Resolve ACES pipeline, 35mm film emulation, custom LUT development, and shot matching.',
-                tag: 'Color Science',
-              },
-              {
-                step: '03',
-                title: 'SOUND DESIGN',
-                desc: 'Dynamic cinematic soundscapes, foley sculpting, vocal treatment, and broadcast-ready loudness mixing.',
-                tag: 'Audio Stems',
-              },
-              {
-                step: '04',
-                title: 'FINAL DELIVERY',
-                desc: 'Cinema DCP, Apple ProRes 4444 XQ, social aspect ratios (9:16, 1:1), and web delivery.',
-                tag: 'Mastering',
-              },
-            ].map((srv) => (
-              <div
-                key={srv.step}
-                className="group relative p-6 rounded-2xl bg-black/80 border border-white/15 backdrop-blur-xl hover:border-[#5EB423] transition-all duration-300 shadow-2xl flex flex-col justify-between"
-              >
-                <div>
-                  <div className="flex items-center justify-between font-mono text-xs text-[#7FFF68] mb-3">
-                    <span className="font-bold">{srv.step}</span>
-                    <span className="text-[10px] uppercase tracking-wider text-zinc-400">{srv.tag}</span>
-                  </div>
-                  <h3 className="font-bricolage text-xl font-extrabold text-white tracking-tight uppercase group-hover:text-[#7FFF68] transition-colors">
-                    {srv.title}
-                  </h3>
-                  <p className="mt-2 text-xs sm:text-sm text-zinc-300 leading-relaxed font-sans font-medium">
-                    {srv.desc}
-                  </p>
-                </div>
-                <div className="mt-6 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-zinc-400">
-                  <span>CAPABILITY</span>
-                  <span className="text-[#5EB423] group-hover:translate-x-1 transition-transform">PROCEED ↗</span>
-                </div>
-              </div>
-            ))}
-          </div>
+        <div className="absolute inset-0">
+          <CinematicBackdrop
+            src={content.editorSequence.fallback}
+            alt="Post-production editorial suite"
+            mode="anchored"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#050608]/90 via-[#050608]/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#050608]/80 via-transparent to-[#050608]/30" />
         </div>
       )}
 
-      {/* Kinetic Scene Title & Badge Overlay */}
-      <div className="absolute top-20 sm:top-24 left-8 sm:left-14 z-30 pointer-events-none flex flex-col items-start gap-2">
-        <StickerBadge text="STUDIO CAPABILITIES" tag="SERVICES // 02" rotate={1.5} variant="green" />
-        <KineticText
-          text="FULL-CYCLE POST PRODUCTION"
-          active={opacity > 0.1}
-          as="h2"
-          className="font-bricolage text-3xl sm:text-5xl font-black tracking-tight text-white uppercase text-glow-white"
-        />
-        <p className="font-bricolage text-sm text-slate-200 font-semibold tracking-wide uppercase">
-          From Raw Sensor Rushes to High-Fidelity Broadcast Master
-        </p>
+      {/* ============ LEFT-PINNED NARRATIVE COLUMN (Mad Dogs Layout) ============ */}
+      <div className="relative w-full h-full flex items-center">
+        <div className="pl-6 sm:pl-12 md:pl-20 lg:pl-28 flex flex-col items-start max-w-xl text-left pointer-events-auto select-none">
+          {/* Sticker Badge */}
+          <div className="mb-3">
+            <StickerBadge text="FULL POST PIPELINE" tag="SERVICES // 02" rotate={1.5} variant="green" />
+          </div>
+
+          <KineticText
+            text="POST-PRODUCTION ARCHITECTURE"
+            active={opacity > 0.1}
+            as="h2"
+            className="font-bricolage text-3xl sm:text-5xl md:text-6xl font-black text-white uppercase tracking-tight leading-none"
+            wordClassName="text-glow-white"
+          />
+
+          <p className="mt-3 font-bricolage text-sm sm:text-base text-zinc-300 font-semibold leading-relaxed">
+            From rough assembly to final theatrical picture lock. We handle offline cuts, precision color grading, and broadcast-ready audio.
+          </p>
+
+          {/* Capabilities Grid */}
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-2.5 w-full">
+            {[
+              { num: '01', title: 'OFFLINE EDITING', sub: 'Commercials · Film · Pacing' },
+              { num: '02', title: 'COLOR SCIENCE', sub: 'DaVinci ACES · Film Print' },
+              { num: '03', title: 'SOUND DESIGN', sub: 'Foley · Stems · Mix' },
+              { num: '04', title: 'FINAL MASTERING', sub: 'ProRes 4444 · Cinema DCP' },
+            ].map((c) => (
+              <div
+                key={c.num}
+                className="p-3 rounded-xl bg-black/75 border border-white/15 backdrop-blur-md flex flex-col justify-center"
+              >
+                <div className="flex items-center justify-between text-[10px] font-mono text-[#7FFF68]">
+                  <span>{c.num}</span>
+                  <span className="text-zinc-500">READY</span>
+                </div>
+                <span className="font-bricolage font-extrabold text-white text-xs sm:text-sm uppercase tracking-wide mt-0.5">
+                  {c.title}
+                </span>
+                <span className="text-[11px] text-zinc-400 font-sans">{c.sub}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Action Pills */}
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <button
+              onClick={() => window.scrollTo({ top: window.innerHeight * 5.0, behavior: 'smooth' })}
+              className="maddogs-cta-pill cursor-pointer text-xs py-2.5 px-6"
+            >
+              <span>SEE OUR SHOWREEL</span>
+              <span>↗</span>
+            </button>
+            <button
+              onClick={() => window.scrollTo({ top: window.innerHeight * 15.0, behavior: 'smooth' })}
+              className="maddogs-pill cursor-pointer text-xs py-2.5 px-5"
+            >
+              <span>DISCUSS RATES</span>
+              <span className="text-[#7FFF68]">✦</span>
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Cinematic shot badge */}

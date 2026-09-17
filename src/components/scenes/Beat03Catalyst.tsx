@@ -114,14 +114,14 @@ export const Beat03Catalyst: React.FC = () => {
 
           {/* DaVinci session chrome while the timeline is live */}
           <div
-            className="absolute top-5 left-1/2 -translate-x-1/2 flex items-center space-x-3 bg-black/75 backdrop-blur-md px-4 py-1.5 rounded-full border border-cyan-400/30 pointer-events-none transition-opacity duration-300"
+            className="absolute top-5 left-1/2 -translate-x-1/2 flex items-center space-x-3 bg-black/80 backdrop-blur-md px-4 py-1.5 rounded-full border border-[#5EB423]/40 shadow-[0_0_20px_rgba(94,180,35,0.25)] pointer-events-none transition-opacity duration-300"
             style={{ opacity: timelineMix }}
           >
-            <Film className="w-3.5 h-3.5 text-cyan-400" />
-            <span className="font-mono text-[11px] tracking-[0.2em] text-cyan-300 uppercase font-bold">
-              DaVinci Resolve — Master_Showreel_Timeline
+            <Film className="w-3.5 h-3.5 text-[#7FFF68]" />
+            <span className="font-mono text-[11px] tracking-[0.2em] text-white uppercase font-bold">
+              DaVinci Resolve Studio — Master_Cut
             </span>
-            <span className="font-mono text-[11px] text-amber-400">24 FPS</span>
+            <span className="font-mono text-[11px] text-[#7FFF68] font-bold">24 FPS</span>
           </div>
         </div>
       )}

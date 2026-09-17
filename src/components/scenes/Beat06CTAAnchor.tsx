@@ -88,15 +88,15 @@ export const Beat06CTAAnchor: React.FC = () => {
 
       {/* ============ EXPORT MOMENT (right side, over the desk) ============ */}
       <div
-        className="absolute right-6 sm:right-12 lg:right-20 top-[16%] sm:top-[20%] w-64 sm:w-80 bg-black/80 backdrop-blur-md rounded-xl border border-cyan-500/40 shadow-[0_0_40px_rgba(56,189,248,0.2)] p-4 pointer-events-none transition-all duration-300"
+        className="absolute right-6 sm:right-12 lg:right-20 top-[16%] sm:top-[20%] w-64 sm:w-80 bg-black/85 backdrop-blur-md rounded-2xl border border-white/20 shadow-[0_15px_35px_rgba(0,0,0,0.8),0_0_20px_rgba(127,255,104,0.15)] p-4 pointer-events-none transition-all duration-300"
         style={{ opacity: t >= 0.33 && t <= 0.8 ? 1 : 0, transform: `translateY(${t >= 0.33 ? 0 : 12}px)` }}
       >
         <div className="flex items-center justify-between text-[10px] font-mono text-slate-400 border-b border-white/10 pb-2">
-          <span className="text-cyan-400 font-bold flex items-center gap-1.5">
+          <span className="text-[#7FFF68] font-bold flex items-center gap-1.5">
             <Send className="w-3 h-3" />
             DELIVERY QUEUE // EXPORT
           </span>
-          <span className={exportDone ? 'text-emerald-400 font-bold' : 'text-amber-400'}>
+          <span className={exportDone ? 'text-[#7FFF68] font-bold' : 'text-zinc-400'}>
             {exportDone ? '100%' : `${Math.round(exportT * 100)}%`}
           </span>
         </div>
@@ -104,18 +104,18 @@ export const Beat06CTAAnchor: React.FC = () => {
         <div className="mt-3 space-y-2 font-mono text-[10px]">
           <div className="flex justify-between text-slate-400">
             <span>ProRes 4444 XQ Master</span>
-            <span className={exportDone ? 'text-emerald-400' : 'text-slate-500'}>{exportDone ? 'DONE' : 'RENDERING'}</span>
+            <span className={exportDone ? 'text-[#7FFF68] font-bold' : 'text-slate-500'}>{exportDone ? 'DONE' : 'ENCODING'}</span>
           </div>
           <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
             <div
-              className={`h-full rounded-full transition-all duration-150 ${exportDone ? 'bg-emerald-400' : 'bg-cyan-400'}`}
-              style={{ width: `${exportT * 100}%`, boxShadow: exportDone ? '0 0 12px #34d399' : '0 0 12px #38bdf8' }}
+              className={`h-full rounded-full transition-all duration-150 ${exportDone ? 'bg-[#7FFF68]' : 'bg-[#5EB423]'}`}
+              style={{ width: `${exportT * 100}%`, boxShadow: exportDone ? '0 0 12px #7FFF68' : '0 0 12px #5EB423' }}
             />
           </div>
           {exportDone && (
-            <div className="flex items-center space-x-1.5 text-emerald-300 animate-clip-cut">
+            <div className="flex items-center space-x-1.5 text-[#7FFF68] font-bold animate-pulse">
               <Check className="w-3 h-3" />
-              <span>MASTER EXPORTED — READY FOR CLIENT</span>
+              <span>MASTER EXPORTED — READY FOR BROADCAST</span>
             </div>
           )}
         </div>
@@ -190,9 +190,9 @@ export const Beat06CTAAnchor: React.FC = () => {
 
       {/* Cinematic shot badge */}
       <div className="absolute bottom-6 left-8 sm:left-12 flex items-center space-x-3 text-slate-400 font-mono text-xs">
-        <span className="text-cyan-400 font-bold">BEAT {beat.code}</span>
+        <span className="text-[#7FFF68] font-bold">ILLUSIVE STUDIO</span>
         <span className="text-slate-600">//</span>
-        <span>{beat.name}</span>
+        <span className="font-bricolage uppercase font-semibold text-slate-300">Direct Commission & Bookings</span>
       </div>
     </div>
   );

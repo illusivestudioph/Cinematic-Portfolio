@@ -45,8 +45,8 @@ export const ScrollFrameSequence: React.FC<ScrollFrameSequenceProps> = ({
     return `${cleanBase}frame_${padded}.webp`;
   }, [baseUrl, fallback, padding]);
 
-  // Draw image to canvas with crisp scaling & optional cinematic frame metadata overlay
-  const drawFrameToCanvas = useCallback((img: HTMLImageElement | null, frameIndex: number, currentProgress: number) => {
+  // Draw image to canvas with crisp scaling & cover geometry
+  const drawFrameToCanvas = useCallback((img: HTMLImageElement | null, _frameIndex: number, currentProgress: number) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d', { alpha: false });
@@ -64,37 +64,13 @@ export const ScrollFrameSequence: React.FC<ScrollFrameSequenceProps> = ({
     if (img && img.complete && img.naturalWidth > 0) {
       // If we are in sequence placeholder mode (no baseUrl yet), apply dynamic scroll framing
       if (!baseUrl) {
+        // Clean pristine rendering without any debug boxes or placeholder text
         ctx.save();
-        // Subtle optical zoom & pan driven by scroll progress
-        const zoom = 1.0 + currentProgress * 0.06;
-        const panX = Math.sin(currentProgress * Math.PI) * 15;
-        const panY = currentProgress * -10;
-        
+        const zoom = 1.0 + currentProgress * 0.04;
         ctx.translate(width / 2, height / 2);
         ctx.scale(zoom, zoom);
-        ctx.translate(-width / 2 + panX, -height / 2 + panY);
+        ctx.translate(-width / 2, -height / 2);
         ctx.drawImage(img, 0, 0, width, height);
-        ctx.restore();
-
-        // Overlay subtle cinematic film registration graticules
-        ctx.save();
-        ctx.strokeStyle = 'rgba(56, 189, 248, 0.25)';
-        ctx.lineWidth = 1.5;
-
-        // 2.39:1 Cinema scope crop guides
-        const scopeHeight = width / 2.39;
-        const scopeTop = (height - scopeHeight) / 2;
-        ctx.strokeRect(30, scopeTop, width - 60, scopeHeight);
-
-        // Technical sequence stamp
-        const padFrame = String(frameIndex).padStart(padding, '0');
-        const padTotal = String(frameCount).padStart(padding, '0');
-        ctx.font = '14px monospace';
-        ctx.fillStyle = 'rgba(56, 189, 248, 0.75)';
-        ctx.fillText(`SEQ_PLACEHOLDER // FRAME: ${padFrame}/${padTotal} (24 FPS)`, 45, height - 40);
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-        ctx.fillText(`CANVAS SCRUB: ${(currentProgress * 100).toFixed(1)}% // [DOG FRAMES READY]`, width - 450, height - 40);
-
         ctx.restore();
       } else {
         // Direct clean frame render for real WebP sequences
