@@ -1,198 +1,182 @@
-export interface SceneConfig {
+export interface CameraCoordinates {
+  x: number;       // px horizontal translation
+  y: number;       // px vertical translation
+  z: number;       // px depth translation
+  rotateX: number; // degrees pitch
+  rotateY: number; // degrees yaw
+  rotateZ: number; // degrees roll
+  scale: number;   // uniform scale
+}
+
+export interface PinnedSceneConfig {
   id: string;
   name: string;
   code: string;
-  start: number; // 0.00 to 1.00
-  end: number;   // 0.00 to 1.00
+  pinDistanceVh: number; // Viewport height units of pinned scroll distance
   timecode: string;
   description: string;
-  camera: {
-    x: number;       // px
-    y: number;       // px
-    z: number;       // px (depth)
-    rotateX: number; // degrees
-    rotateY: number; // degrees
-    rotateZ: number; // degrees
-    scale: number;
-  };
+  cameraStart: CameraCoordinates;
+  cameraEnd: CameraCoordinates;
 }
 
-export const SCENES: Record<string, SceneConfig> = {
-  ident: {
-    id: 'ident',
-    name: 'STUDIO IDENT',
-    code: '01',
-    start: 0.00,
-    end: 0.05,
-    timecode: '00:00:00:00',
-    description: 'Black screen into grand studio typography, then fades completely out.',
-    camera: { x: 0, y: 0, z: 0, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1 },
-  },
+export const PINNED_SCENES: Record<string, PinnedSceneConfig> = {
   editor: {
     id: 'editor',
-    name: 'THE EDITOR',
-    code: '02',
-    start: 0.05,
-    end: 0.15,
-    timecode: '00:00:05:00',
-    description: 'Wide shot of dark editing suite, slow dolly in toward editor at desk.',
-    camera: { x: 0, y: 0, z: -300, rotateX: 2, rotateY: 0, rotateZ: 0, scale: 1.05 },
-  },
-  monitor: {
-    id: 'monitor',
-    name: 'THE STRETCH & MONITOR',
-    code: '03',
-    start: 0.15,
-    end: 0.25,
-    timecode: '00:00:15:00',
-    description: 'Editor stretches, arm comes down, camera accelerates toward primary monitor.',
-    camera: { x: 0, y: -20, z: -800, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1.3 },
-  },
-  editWorld: {
-    id: 'editWorld',
-    name: 'ENTER THE EDIT',
-    code: '04',
-    start: 0.25,
-    end: 0.40,
-    timecode: '00:00:25:00',
-    description: 'Camera punches through monitor glass into 3D NLE tracks, waveforms, and timecodes.',
-    camera: { x: 0, y: 0, z: -1500, rotateX: -3, rotateY: 2, rotateZ: 0, scale: 1.5 },
+    name: 'THE EDITOR & DESK',
+    code: '01',
+    pinDistanceVh: 250,
+    timecode: '00:00:00:00',
+    description: 'Editor seated with studio ident overlay -> stretch -> arm down -> push into monitor.',
+    cameraStart: { x: 0, y: 0, z: 0, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1 },
+    cameraEnd:   { x: 0, y: -20, z: -850, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1.55 },
   },
   timeline: {
     id: 'timeline',
-    name: 'TRAVEL THROUGH TIMELINE',
-    code: '05',
-    start: 0.40,
-    end: 0.52,
-    timecode: '00:00:40:00',
-    description: 'Spatial traversal through RAW -> CUTS -> B-ROLL -> AUDIO -> MOTION -> COLOR.',
-    camera: { x: 200, y: 30, z: -2300, rotateX: -1, rotateY: -4, rotateZ: 0.5, scale: 1.7 },
-  },
-  footage: {
-    id: 'footage',
-    name: 'ENTER THE FOOTAGE',
-    code: '06',
-    start: 0.52,
-    end: 0.60,
-    timecode: '00:00:52:00',
-    description: 'Selected clip expands to fill viewport, surrounding timeline falls away.',
-    camera: { x: 0, y: 0, z: -3200, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 2.1 },
+    name: 'MONITOR / EDITING WORLD',
+    code: '02',
+    pinDistanceVh: 300,
+    timecode: '00:00:25:00',
+    description: 'Punches through monitor glass into 3D NLE tracks, waveforms, milestones -> locks onto selected clip.',
+    cameraStart: { x: 0, y: 0, z: -850, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1.55 },
+    cameraEnd:   { x: 0, y: 0, z: -3200, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 2.3 },
   },
   showreel: {
     id: 'showreel',
     name: 'THE SHOWREEL',
-    code: '07',
-    start: 0.60,
-    end: 0.72,
-    timecode: '00:01:00:00',
-    description: 'Actual high-definition portfolio reel playing with full custom controls and audio.',
-    camera: { x: 0, y: 0, z: -4000, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1 },
+    code: '03',
+    pinDistanceVh: 200,
+    timecode: '00:00:55:00',
+    description: 'Enters footage horizon into dominant 16:9 MP4 showreel. Custom controls & audio on play.',
+    cameraStart: { x: 0, y: 0, z: -3800, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1 },
+    cameraEnd:   { x: 0, y: 0, z: -3800, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1 },
   },
   studio: {
     id: 'studio',
-    name: 'PULL OUT INTO STUDIO',
-    code: '08',
-    start: 0.72,
-    end: 0.80,
-    timecode: '00:01:20:00',
-    description: 'Camera pulls back in 3D, revealing the reel playing on a huge studio monitor.',
-    camera: { x: 0, y: -40, z: -3300, rotateX: 4, rotateY: -3, rotateZ: 0, scale: 0.9 },
+    name: 'STUDIO REVEAL',
+    code: '04',
+    pinDistanceVh: 250,
+    timecode: '00:01:15:00',
+    description: 'Camera pulls backward in 3D: reel shrinks to monitor, revealing full edit suite & desk.',
+    cameraStart: { x: 0, y: 0, z: -3800, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1 },
+    cameraEnd:   { x: 0, y: -30, z: -2600, rotateX: 3.5, rotateY: -2, rotateZ: 0, scale: 0.88 },
   },
   projects: {
     id: 'projects',
-    name: 'SELECTED WORK',
-    code: '09',
-    start: 0.80,
-    end: 0.90,
+    name: 'PROJECT DESTINATIONS',
+    code: '05',
+    pinDistanceVh: 300,
     timecode: '00:01:30:00',
-    description: 'Spatial project monitors (featuring CRIMEXBT) with in-situ video playback.',
-    camera: { x: -150, y: 0, z: -2400, rotateX: 2, rotateY: 5, rotateZ: 0, scale: 1.1 },
+    description: 'Camera navigates through studio toward CRIMEXBT monitor; dominant interactive project playback.',
+    cameraStart: { x: 0, y: -30, z: -2600, rotateX: 3.5, rotateY: -2, rotateZ: 0, scale: 0.88 },
+    cameraEnd:   { x: -120, y: 0, z: -1950, rotateX: 1.5, rotateY: 4, rotateZ: 0, scale: 1.2 },
   },
   process: {
     id: 'process',
     name: 'BEHIND THE EDIT',
-    code: '10',
-    start: 0.90,
-    end: 0.96,
+    code: '06',
+    pinDistanceVh: 250,
     timecode: '00:01:45:00',
-    description: '6 spatial milestone stations: RAW -> EDIT -> MOTION -> SOUND -> COLOR -> FINAL.',
-    camera: { x: 120, y: 20, z: -1400, rotateX: -2, rotateY: -3, rotateZ: 0, scale: 1.2 },
+    description: 'Travel through 6 spatial milestones: RAW -> EDIT -> MOTION -> SOUND -> COLOR -> FINAL.',
+    cameraStart: { x: -120, y: 0, z: -1950, rotateX: 1.5, rotateY: 4, rotateZ: 0, scale: 1.2 },
+    cameraEnd:   { x: 100, y: 15, z: -1350, rotateX: -2, rotateY: -3, rotateZ: 0, scale: 1.15 },
   },
   about: {
     id: 'about',
-    name: 'THE EDITOR BEHIND THE TIMELINE',
-    code: '11',
-    start: 0.96,
-    end: 0.98,
+    name: 'THE PERSON BEHIND THE TIMELINE',
+    code: '07',
+    pinDistanceVh: 200,
     timecode: '00:01:58:00',
-    description: 'Cinematic profile, storytelling philosophy, and craft statement.',
-    camera: { x: 0, y: 0, z: -600, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1.05 },
+    description: 'Pinned camera at editorial craft statement, philosophy, metrics & toolkit.',
+    cameraStart: { x: 100, y: 15, z: -1350, rotateX: -2, rotateY: -3, rotateZ: 0, scale: 1.15 },
+    cameraEnd:   { x: 0, y: 0, z: -650, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1.05 },
   },
-  contact: {
-    id: 'contact',
+  cta: {
+    id: 'cta',
     name: 'START A PROJECT',
-    code: '12',
-    start: 0.98,
-    end: 1.00,
-    timecode: '00:02:05:00',
-    description: 'GOT FOOTAGE? LET\'S MAKE SOMETHING OUT OF IT. Fade to black.',
-    camera: { x: 0, y: 0, z: 0, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1 },
+    code: '08',
+    pinDistanceVh: 200,
+    timecode: '00:02:08:00',
+    description: 'GOT FOOTAGE? -> LET\'S MAKE SOMETHING OUT OF IT. -> START A PROJECT -> Fade to TRUE BLACK.',
+    cameraStart: { x: 0, y: 0, z: -650, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1.05 },
+    cameraEnd:   { x: 0, y: 0, z: 200, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 0.95 },
   },
 };
 
-export const SCENE_LIST = Object.values(SCENES);
+export const PINNED_SCENE_LIST = Object.values(PINNED_SCENES);
+
+// Alias SCENES and SCENE_LIST for backward compatibility
+export const SCENES = PINNED_SCENES;
+export const SCENE_LIST = PINNED_SCENE_LIST;
+
+// Total virtual scroll distance in vh across all pinned scenes
+export const TOTAL_PIN_DISTANCE_VH = PINNED_SCENE_LIST.reduce((acc, s) => acc + s.pinDistanceVh, 0);
+
+// Calculate normalized global thresholds for each pinned scene
+let cumulativeVh = 0;
+export const SCENE_INTERVALS = PINNED_SCENE_LIST.map((scene) => {
+  const startFraction = cumulativeVh / TOTAL_PIN_DISTANCE_VH;
+  cumulativeVh += scene.pinDistanceVh;
+  const endFraction = cumulativeVh / TOTAL_PIN_DISTANCE_VH;
+  return {
+    ...scene,
+    globalStart: startFraction,
+    globalEnd: endFraction,
+  };
+});
 
 /**
- * Given normalized scroll progress (0.0 to 1.0), returns the current active scene
+ * Returns the active scene and local progress (0.0 to 1.0) inside that scene
  */
-export function getActiveScene(progress: number): SceneConfig {
-  const p = Math.max(0, Math.min(1, progress));
-  for (const scene of SCENE_LIST) {
-    if (p >= scene.start && p <= scene.end) {
-      return scene;
+export function getActiveSceneFromProgress(globalProgress: number): {
+  scene: PinnedSceneConfig;
+  sceneIndex: number;
+  localProgress: number;
+} {
+  const p = Math.max(0, Math.min(1, globalProgress));
+  
+  for (let i = 0; i < SCENE_INTERVALS.length; i++) {
+    const item = SCENE_INTERVALS[i];
+    if (p >= item.globalStart && p <= item.globalEnd) {
+      const span = Math.max(0.0001, item.globalEnd - item.globalStart);
+      const local = Math.max(0, Math.min(1, (p - item.globalStart) / span));
+      return { scene: item, sceneIndex: i, localProgress: local };
     }
   }
-  return SCENE_LIST[SCENE_LIST.length - 1];
+
+  const lastIdx = SCENE_INTERVALS.length - 1;
+  return { scene: SCENE_INTERVALS[lastIdx], sceneIndex: lastIdx, localProgress: 1 };
+}
+
+// Backward compatible helper
+export function getActiveScene(progress: number): PinnedSceneConfig {
+  return getActiveSceneFromProgress(progress).scene;
 }
 
 /**
- * Calculates current interpolated camera coordinates based on progress
+ * Calculates current interpolated camera coordinates based on active scene and local progress
  */
-export function interpolateCamera(progress: number) {
-  const p = Math.max(0, Math.min(1, progress));
-  const scenes = SCENE_LIST;
-  
-  // Find current and next scene indices
-  let currentIndex = 0;
-  for (let i = 0; i < scenes.length; i++) {
-    if (p >= scenes[i].start && p <= scenes[i].end) {
-      currentIndex = i;
-      break;
-    }
-  }
+export function interpolateCamera(globalProgress: number): CameraCoordinates & {
+  activeScene: PinnedSceneConfig;
+  localProgress: number;
+} {
+  const { scene, localProgress } = getActiveSceneFromProgress(globalProgress);
 
-  const current = scenes[currentIndex];
-  const next = scenes[Math.min(currentIndex + 1, scenes.length - 1)];
-
-  // Relative progress within the current scene
-  const sceneDuration = Math.max(0.0001, current.end - current.start);
-  const t = Math.max(0, Math.min(1, (p - current.start) / sceneDuration));
-
-  // Smooth cubic easing
-  const ease = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  // Smooth cubic ease for natural camera motion
+  const ease = localProgress < 0.5 
+    ? 4 * localProgress * localProgress * localProgress 
+    : 1 - Math.pow(-2 * localProgress + 2, 3) / 2;
 
   const lerp = (a: number, b: number) => a + (b - a) * ease;
 
   return {
-    x: lerp(current.camera.x, next.camera.x),
-    y: lerp(current.camera.y, next.camera.y),
-    z: lerp(current.camera.z, next.camera.z),
-    rotateX: lerp(current.camera.rotateX, next.camera.rotateX),
-    rotateY: lerp(current.camera.rotateY, next.camera.rotateY),
-    rotateZ: lerp(current.camera.rotateZ, next.camera.rotateZ),
-    scale: lerp(current.camera.scale, next.camera.scale),
-    currentScene: current,
-    nextScene: next,
-    sceneProgress: t,
+    x: lerp(scene.cameraStart.x, scene.cameraEnd.x),
+    y: lerp(scene.cameraStart.y, scene.cameraEnd.y),
+    z: lerp(scene.cameraStart.z, scene.cameraEnd.z),
+    rotateX: lerp(scene.cameraStart.rotateX, scene.cameraEnd.rotateX),
+    rotateY: lerp(scene.cameraStart.rotateY, scene.cameraEnd.rotateY),
+    rotateZ: lerp(scene.cameraStart.rotateZ, scene.cameraEnd.rotateZ),
+    scale: lerp(scene.cameraStart.scale, scene.cameraEnd.scale),
+    activeScene: scene,
+    localProgress,
   };
 }

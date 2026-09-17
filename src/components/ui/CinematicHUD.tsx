@@ -14,8 +14,8 @@ export const CinematicHUD: React.FC = () => {
   } = usePortfolio();
 
 
-  // Hide HUD during Scene 01 Ident (0.00 to 0.05) to let the studio ident be pure film
-  const isIdent = progress < 0.05;
+  // Fade in HUD gently as user starts interacting, subduing it slightly while initial studio title is prominent
+  const isIntroTitle = progress < 0.02;
 
   // Calculate master SMPTE timecode (normalized across ~2:12 duration)
   const totalSeconds = progress * 132; // 2 minutes 12 seconds = 132 seconds
@@ -30,7 +30,7 @@ export const CinematicHUD: React.FC = () => {
       {/* Top Bar HUD */}
       <div 
         className={`flex items-center justify-between transition-opacity duration-500 ${
-          isIdent ? 'opacity-0' : 'opacity-100'
+          isIntroTitle ? 'opacity-40 hover:opacity-100' : 'opacity-100'
         }`}
       >
         {/* Active Shot & Chapter (NO permanent ILLUSIVE STUDIO header as requested) */}
@@ -74,7 +74,7 @@ export const CinematicHUD: React.FC = () => {
       {/* Right Edge: Subtle Chapter Index Dots */}
       <div 
         className={`fixed right-4 top-1/2 -translate-y-1/2 hidden md:flex flex-col items-center space-y-2 pointer-events-auto transition-opacity duration-500 ${
-          isIdent ? 'opacity-0' : 'opacity-60 hover:opacity-100'
+          isIntroTitle ? 'opacity-30' : 'opacity-60 hover:opacity-100'
         }`}
       >
         {SCENE_LIST.map((scene) => {
@@ -101,7 +101,7 @@ export const CinematicHUD: React.FC = () => {
       {/* Bottom Footer Bar */}
       <div 
         className={`flex items-center justify-between text-xs font-mono text-slate-500 transition-opacity duration-500 ${
-          isIdent ? 'opacity-0' : 'opacity-100'
+          isIntroTitle ? 'opacity-50' : 'opacity-100'
         }`}
       >
         {/* Progress Bar & Percentage */}

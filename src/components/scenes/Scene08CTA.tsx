@@ -1,31 +1,40 @@
 import React, { useState } from 'react';
 import { usePortfolio } from '../../context/PortfolioContext';
-import { SCENES } from '../../config/timeline';
+import { PINNED_SCENES } from '../../config/timeline';
 import { Mail, ArrowUpRight, Check } from 'lucide-react';
 
-export const Scene12CTA: React.FC = () => {
+export const Scene08CTA: React.FC = () => {
   const { progress, content } = usePortfolio();
-  const { start, end } = SCENES.contact;
+  const scene = PINNED_SCENES.cta;
+
+  // Scene 08 range: 1750/1950 (0.897) to 1.00
+  const globalStart = 1750 / 1950;
+  const globalEnd = 1.00;
 
   const [isCopied, setIsCopied] = useState(false);
 
-
-  const isVisible = progress >= start - 0.01;
+  const isVisible = progress >= globalStart - 0.02;
   if (!isVisible) return null;
 
-  // Local progress (0.98 to 1.00)
-  const t = Math.max(0, Math.min(1, (progress - start) / (end - start)));
+  // Local progress (0.0 to 1.0)
+  const t = Math.max(0, Math.min(1, (progress - globalStart) / (globalEnd - globalStart)));
 
-  // Sequential text reveal timing:
-  // Phase 1 (t: 0.0 to 0.25): "GOT FOOTAGE?" reveals
-  // Phase 2 (t: 0.25 to 0.55): "LET'S MAKE SOMETHING OUT OF IT." reveals
-  // Phase 3 (t: 0.55 to 0.85): "START A PROJECT" button and contact links active
-  // Phase 4 (t: 0.85 to 1.00): Camera continues movement, fades out completely into TRUE BLACK!
-  
+  // CTA REVEAL PROGRESSION:
+  // Phase 1 (0.00 to 0.25): "GOT FOOTAGE?" reveals prominently
+  // Phase 2 (0.25 to 0.50): "LET'S MAKE SOMETHING OUT OF IT." reveals
+  // Phase 3 (0.50 to 0.80): "START A PROJECT" action button and email copy
+  // Phase 4 (0.80 to 1.00): Camera moves into deep space and fades completely into TRUE BLACK!
+  // "BLACK IS THE END, NOT THE INTRO."
+
   let contentOpacity = 1;
-  if (t > 0.85) {
-    // Fade into pure black at the very end
-    contentOpacity = Math.max(0, (1 - t) / 0.15);
+  let blackOverlayOpacity = 0;
+
+  if (t < 0.1) {
+    contentOpacity = t / 0.1;
+  } else if (t > 0.80) {
+    // Camera travels forward into infinity, fading out into black
+    contentOpacity = Math.max(0, (1 - t) / 0.20);
+    blackOverlayOpacity = Math.min(1, (t - 0.80) / 0.18);
   }
 
   const copyEmail = () => {
@@ -57,8 +66,8 @@ export const Scene12CTA: React.FC = () => {
         <p
           className="mt-4 sm:mt-6 font-syne text-xl sm:text-3xl md:text-4xl font-bold text-cyan-400 uppercase tracking-wide text-glow-cyan transition-all duration-300"
           style={{
-            opacity: t >= 0.25 ? 1 : Math.max(0, (t - 0.1) / 0.15),
-            transform: `translateY(${t >= 0.25 ? 0 : 20}px)`,
+            opacity: t >= 0.22 ? 1 : Math.max(0, (t - 0.08) / 0.14),
+            transform: `translateY(${t >= 0.22 ? 0 : 20}px)`,
           }}
         >
           {content.contact.subheadline}
@@ -68,8 +77,8 @@ export const Scene12CTA: React.FC = () => {
         <div
           className="mt-10 flex flex-col sm:flex-row items-center gap-4 pointer-events-auto transition-all duration-300"
           style={{
-            opacity: t >= 0.45 ? 1 : Math.max(0, (t - 0.3) / 0.15),
-            transform: `translateY(${t >= 0.45 ? 0 : 30}px)`,
+            opacity: t >= 0.40 ? 1 : Math.max(0, (t - 0.25) / 0.15),
+            transform: `translateY(${t >= 0.40 ? 0 : 30}px)`,
           }}
         >
           <a
@@ -93,47 +102,67 @@ export const Scene12CTA: React.FC = () => {
         <div
           className="mt-8 flex items-center space-x-2 text-xs font-mono text-slate-400 pointer-events-auto"
           style={{
-            opacity: t >= 0.5 ? 1 : 0,
+            opacity: t >= 0.45 ? 1 : 0,
           }}
         >
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
           <span>{content.contact.availability}</span>
         </div>
 
-        {/* Social Links */}
+        {/* Social Stems */}
         <div
-          className="flex items-center space-x-6 mt-8 font-mono text-xs text-slate-400 pointer-events-auto"
+          className="mt-12 flex items-center space-x-6 text-xs font-mono text-slate-500 pointer-events-auto"
           style={{
             opacity: t >= 0.55 ? 1 : 0,
           }}
         >
-          <a href={content.contact.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-cyan-400 transition-colors">
-            INSTAGRAM
+          <a
+            href={content.contact.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-cyan-400 transition-colors uppercase tracking-widest"
+          >
+            Instagram
           </a>
-          <span>/</span>
-          <a href={content.contact.vimeo} target="_blank" rel="noopener noreferrer" className="hover:text-cyan-400 transition-colors">
-            VIMEO
+          <span className="text-slate-800">/</span>
+          <a
+            href={content.contact.twitter}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-cyan-400 transition-colors uppercase tracking-widest"
+          >
+            Twitter
           </a>
-          <span>/</span>
-          <a href={content.contact.twitter} target="_blank" rel="noopener noreferrer" className="hover:text-cyan-400 transition-colors">
-            X (TWITTER)
+          <span className="text-slate-800">/</span>
+          <a
+            href={content.contact.vimeo}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-cyan-400 transition-colors uppercase tracking-widest"
+          >
+            Vimeo
           </a>
         </div>
       </div>
 
-      {/* Cinematic Final Blackout Overlay (at t > 0.90, fades into pure black) */}
-      <div 
-        className="fixed inset-0 bg-black pointer-events-none z-50 transition-opacity duration-300"
+      {/* ================= TRUE BLACK FINALE ================= */}
+      {/* 
+        "BLACK IS THE END, NOT THE INTRO."
+        At the conclusion of the entire portfolio reel (t > 0.80), the screen fades to true black.
+      */}
+      <div
+        className="fixed inset-0 bg-black pointer-events-none z-50 transition-opacity duration-200"
         style={{
-          opacity: t > 0.88 ? (t - 0.88) / 0.12 : 0,
+          opacity: blackOverlayOpacity,
+          visibility: blackOverlayOpacity > 0.01 ? 'visible' : 'hidden',
         }}
       />
 
-      {/* Cinematic Scene Label */}
+      {/* Cinematic Shot Badge */}
       <div className="absolute bottom-6 left-8 sm:left-12 flex items-center space-x-3 text-slate-400 font-mono text-xs pointer-events-none">
-        <span className="text-cyan-400 font-bold">SHOT 12</span>
+        <span className="text-cyan-400 font-bold">SHOT {scene.code}</span>
         <span className="text-slate-600">//</span>
-        <span>FINAL CTA & FADE TO BLACK</span>
+        <span>{scene.name}</span>
       </div>
     </div>
   );

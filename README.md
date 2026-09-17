@@ -11,66 +11,52 @@
 
 ---
 
-## 🎬 Core Concept
+## 🎬 Core Concept: Pinned Cinematic Camera Architecture
 
 This is not a conventional portfolio website with generic sections. **The portfolio itself is an interactive cinematic reel.** The visitor controls a 3D camera traveling through the editor's world using scroll.
 
 - **SCROLL = CAMERA MOVEMENT**
 - **CLICK = MEDIA INTERACTION**
+- **PINNING = CAMERA CONTROL MECHANISM** (gives each camera movement enough scroll distance to control comfortably)
 
-The entire experience is continuous and structured as 12 progressive shots:
+The entire experience is continuous and structured as 8 pinned cinematic sequence chapters:
 
 ```
-01 IDENT ──► 02 THE EDITOR ──► 03 STRETCH/MONITOR ──► 04 ENTER THE EDIT ──► 05 TIMELINE TRAVEL
-                                                                                   │
-                                                                                   ▼
-10 PROCESS ◄── 09 SELECTED WORK ◄── 08 STUDIO PULLOUT ◄── 07 SHOWREEL ◄── 06 ENTER FOOTAGE
-     │
-     ▼
-11 ABOUT ──► 12 FINAL CTA ──► [TRUE BLACK]
+01 EDITOR & DESK ──► 02 TIMELINE / EDIT WORLD ──► 03 THE SHOWREEL ──► 04 STUDIO REVEAL
+                                                                               │
+                                                                               ▼
+08 FINAL CTA & BLACK ◄── 07 ABOUT ◄── 06 BEHIND THE EDIT ◄── 05 PROJECTS (CRIMEXBT)
 ```
 
 ---
 
-## 📽️ The 12 Continuous Shots
+## 📽️ The 8 Pinned Cinematic Sequences
 
-| Shot | Time | Scroll % | Scene Name | Description | Key Component |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **01** | `0:00–0:05` | `0–5%` | **Studio Ident** | Starts pitch black $\to$ grand `ILLUSIVE STUDIO` typography $\to$ fades out completely. No permanent branding header. | `src/components/scenes/Scene01Ident.tsx` |
-| **02** | `0:05–0:15` | `5–15%` | **The Editor** | Dark edit room revealed with acoustic diffusers, dual grading monitors, desk, and slow dolly towards the editor. | `src/components/scenes/Scene02Editor.tsx` |
-| **03** | `0:15–0:25` | `15–25%` | **The Stretch & Monitor** | Editor stretches arm upward, arm lowers back down, camera accelerates directly into the monitor screen. | `src/components/scenes/Scene03Stretch.tsx` |
-| **04** | `0:25–0:40` | `25–40%` | **Enter the Edit** | Breaches monitor into 3D NLE tracks (`V1`, `V2`, `V3`, `A1`, `A2`, `A3`), audio waveforms, playhead, timecode, adjustment layers. | `src/components/scenes/Scene04EditWorld.tsx` |
-| **05** | `0:40–0:52` | `40–52%` | **Travel Through Timeline** | Camera traverses `RAW FOOTAGE` $\to$ `CUTS` $\to$ `B-ROLL` $\to$ `AUDIO` $\to$ `MOTION` $\to$ `COLOR`, locking onto target clip. | `src/components/scenes/Scene05TimelineTravel.tsx` |
-| **06** | `0:52–1:00` | `52–60%` | **Enter Selected Footage** | Selected clip becomes enormous, surrounding timeline drops into deep dark, camera punches into footage horizon. | `src/components/scenes/Scene06EnterFootage.tsx` |
-| **07** | `1:00–1:20+`| `60–72%` | **The Showreel** | Dominant high-definition visual ($85\text{--}100\%$ viewport). Custom player with unmuted audio playback on user play. Camera scroll lock holds while watching. | `src/components/scenes/Scene07Showreel.tsx` |
-| **08** | `1:20–1:30` | `72–80%` | **Pull Out into Studio** | Holds final reel frame, camera pulls backward in 3D, revealing the reel playing on a large monitor in the studio environment. | `src/components/scenes/Scene08PullOut.tsx` |
-| **09** | `1:30–1:45` | `80–90%` | **Selected Work** | Spatial project corridor. Dominant destination: `CRIMEXBT` with interactive video and editorial dossier. | `src/components/scenes/Scene09Projects.tsx` |
-| **10** | `1:45–1:58` | `90–96%` | **Behind the Edit** | 6 post-production milestones: `RAW` $\to$ `EDIT` $\to$ `MOTION` $\to$ `SOUND` $\to$ `COLOR` $\to$ `FINAL`. | `src/components/scenes/Scene10Process.tsx` |
-| **11** | `1:58–2:05` | `96–98%` | **About** | "The Person Behind the Timeline", editorial philosophy, metrics, and software stack. | `src/components/scenes/Scene11About.tsx` |
-| **12** | `2:05–2:12` | `98–100%`| **Final CTA $\to$ Black** | `GOT FOOTAGE?` $\to$ `LET'S MAKE SOMETHING OUT OF IT.` $\to$ `START A PROJECT` button $\to$ ends on pure **BLACK**. | `src/components/scenes/Scene12CTA.tsx` |
+| Shot | Pin Distance | Scene Name | Description | Key Component |
+| :--- | :--- | :--- | :--- | :--- |
+| **01** | `~250vh` | **The Editor & Desk** | Starts immediately on the editor seated at desk (not black!). `ILLUSIVE STUDIO` title overlays and fades out. Editor stretches, arm lowers, camera accelerates toward monitor. | `src/components/scenes/Scene01Editor.tsx` |
+| **02** | `~300vh` | **Monitor / Editing World** | Breaches monitor glass into 3D NLE tracks (`V1-V3`, `A1-A2`), traverses audio waveforms and post milestones, locking onto target clip. | `src/components/scenes/Scene02Timeline.tsx` |
+| **03** | `~200vh` | **The Showreel** | Hero clip balloons into dominant 16:9 MP4 showreel. Custom controls & audio on play. Camera scroll lock holds while watching. | `src/components/scenes/Scene03Showreel.tsx` |
+| **04** | `~250vh` | **Studio Reveal** | Camera pulls backward in 3D: reel shrinks to monitor, revealing full edit suite, desk, and client stations. | `src/components/scenes/Scene04PullOut.tsx` |
+| **05** | `~300vh` | **Project Destinations** | Camera navigates through studio toward `CRIMEXBT` monitor destination; dominant interactive project playback and editorial dossier. | `src/components/scenes/Scene05Projects.tsx` |
+| **06** | `~250vh` | **Behind the Edit (Process)** | Travel through 6 spatial milestones: `RAW` $\to$ `EDIT` $\to$ `MOTION` $\to$ `SOUND` $\to$ `COLOR` $\to$ `FINAL` inside the studio world. | `src/components/scenes/Scene06Process.tsx` |
+| **07** | `~200vh` | **The Person Behind the Timeline** | Pinned camera at editorial craft statement, philosophy, completed edit metrics & software toolkit. | `src/components/scenes/Scene07About.tsx` |
+| **08** | `~200vh` | **Start a Project $\to$ True Black** | `GOT FOOTAGE?` $\to$ `LET'S MAKE SOMETHING OUT OF IT.` $\to$ `START A PROJECT` button $\to$ camera moves into deep space and fades to **TRUE BLACK**! | `src/components/scenes/Scene08CTA.tsx` |
 
 ---
 
 ## 🛠️ Architecture & Features
 
-- **2.5D CSS/GSAP Spatial Camera Rig**: 3D perspective (`1200px`) stage with film grain, CRT scanlines, dynamic anamorphic lens flares, and vignette.
-- **Master Normalized Timeline**: Single source of truth (`src/config/timeline.ts`) managing all 12 scenes and camera coordinates (`x, y, z, rotateX, rotateY, rotateZ, scale`) with cubic interpolation.
-- **Smooth Physics Scrolling**: Integrated Lenis smooth scroll and GSAP `ScrollTrigger` scrubbing over an `850vh` distance.
-- **Cinematic Video Player Engine**: Custom HTML5 video player with SMPTE timecode display, scrub bar, mute/volume controls, and camera scroll lock toggle.
-- **WebP Sequence Loader**: Configurable sequence endpoint with sliding window preloading ($\pm 5$ frames), canvas rendering, and high-res fallback.
-- **Hidden Admin Gate**: Subtle "Developer" button in footer; 5 clicks opens the Admin Gate. Only `yhanlhester@gmail.com` is authorized via Google OAuth or direct verification.
-- **Content Management System**: Live in-browser editing of showreel MP4, WebP sequences, project videos/thumbnails/metadata, project ordering, and copy.
-- **Supabase Integration**: Optional real-time cloud persistence for assets and metadata.
+- **Pinned Cinematic Camera Stages**: Pinned ScrollTriggers across ~1950vh total scroll depth provide ample scrub precision for every camera move.
+- **Immediate Visual Start**: The website starts immediately in the editor's suite with title overlay fading out as scroll begins (no opening black gap).
+- **True Black Finale**: "Black is the end, not the intro." Screen fades to pitch black exclusively after the Scene 08 CTA.
+- **Interpolated WebP Sequences**: `ScrollFrameSequence` uses a `requestAnimationFrame` damping loop between target scroll progress and current frame, preventing frame tearing or flickering.
+- **Cinematic Video Engine**: HTML5 video with custom scrub controls, SMPTE timecodes, real audio playback, and scroll pause support.
+- **Hidden Admin Gate**: Subtle "Developer" button in footer; 5 clicks opens the Admin Gate with access restricted to `yhanlhester@gmail.com`.
 
 ---
 
 ## 🚀 Getting Started
-
-### Prerequisites
-- Node.js 20.19+ or 22+
-- npm
-
-### Installation
 
 ```bash
 # Clone the repository
@@ -83,28 +69,6 @@ npm install
 # Start local development server
 npm run dev
 ```
-
-The site will be running at `http://localhost:5173/`.
-
-### Production Build
-
-```bash
-npm run build
-npm run preview
-```
-
----
-
-## 🔐 Environment Variables (Optional Supabase Sync)
-
-Create a `.env` file in the project root:
-
-```env
-VITE_SUPABASE_URL=https://your-supabase-project.supabase.co
-VITE_SUPABASE_ANON_KEY=your-anon-key
-```
-
-If Supabase is not configured, the app seamlessly runs using local persistent cache and the default master configuration.
 
 ---
 

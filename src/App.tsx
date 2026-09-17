@@ -1,23 +1,20 @@
 import React, { useRef } from 'react';
 import { PortfolioProvider } from './context/PortfolioContext';
 import { useScrollTimeline } from './hooks/useScrollTimeline';
+import { TOTAL_PIN_DISTANCE_VH } from './config/timeline';
 import { CameraRig } from './components/camera/CameraRig';
 import { CinematicHUD } from './components/ui/CinematicHUD';
 import { AdminGateModal } from './components/admin/AdminGateModal';
 
-// The 12 Shots of the Cinematic Portfolio Reel
-import { Scene01Ident } from './components/scenes/Scene01Ident';
-import { Scene02Editor } from './components/scenes/Scene02Editor';
-import { Scene03Stretch } from './components/scenes/Scene03Stretch';
-import { Scene04EditWorld } from './components/scenes/Scene04EditWorld';
-import { Scene05TimelineTravel } from './components/scenes/Scene05TimelineTravel';
-import { Scene06EnterFootage } from './components/scenes/Scene06EnterFootage';
-import { Scene07Showreel } from './components/scenes/Scene07Showreel';
-import { Scene08PullOut } from './components/scenes/Scene08PullOut';
-import { Scene09Projects } from './components/scenes/Scene09Projects';
-import { Scene10Process } from './components/scenes/Scene10Process';
-import { Scene11About } from './components/scenes/Scene11About';
-import { Scene12CTA } from './components/scenes/Scene12CTA';
+// Pinned Cinematic Sequence Chapters
+import { Scene01Editor } from './components/scenes/Scene01Editor';
+import { Scene02Timeline } from './components/scenes/Scene02Timeline';
+import { Scene03Showreel } from './components/scenes/Scene03Showreel';
+import { Scene04PullOut } from './components/scenes/Scene04PullOut';
+import { Scene05Projects } from './components/scenes/Scene05Projects';
+import { Scene06Process } from './components/scenes/Scene06Process';
+import { Scene07About } from './components/scenes/Scene07About';
+import { Scene08CTA } from './components/scenes/Scene08CTA';
 
 const PortfolioReelApp: React.FC = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -27,31 +24,30 @@ const PortfolioReelApp: React.FC = () => {
     <div ref={containerRef} className="relative w-full bg-[#050608]">
       {/* 
         Master Scroll Track:
-        Provides the physical scroll distance (800vh) that Lenis and GSAP ScrollTrigger 
-        map to the 0.00 -> 1.00 normalized master timeline.
+        Provides generous physical scroll distance (~1950vh) so each pinned camera sequence
+        has comfortable, precise scrub control without passing content too quickly.
       */}
-      <div className="h-[850vh] w-full pointer-events-none" />
+      <div 
+        style={{ height: `${TOTAL_PIN_DISTANCE_VH}vh` }} 
+        className="w-full pointer-events-none" 
+      />
 
-      {/* 2.5D Spatial Camera Rig & All 12 Scene Sets */}
+      {/* 2.5D Spatial Camera Rig & Pinned Scene Sets */}
       <CameraRig>
-        <Scene01Ident />
-        <Scene02Editor />
-        <Scene03Stretch />
-        <Scene04EditWorld />
-        <Scene05TimelineTravel />
-        <Scene06EnterFootage />
-        <Scene07Showreel />
-        <Scene08PullOut />
-        <Scene09Projects />
-        <Scene10Process />
-        <Scene11About />
-        <Scene12CTA />
+        <Scene01Editor />
+        <Scene02Timeline />
+        <Scene03Showreel />
+        <Scene04PullOut />
+        <Scene05Projects />
+        <Scene06Process />
+        <Scene07About />
+        <Scene08CTA />
       </CameraRig>
 
       {/* Persistent Cinematic HUD Overlay */}
       <CinematicHUD />
 
-      {/* Hidden Admin Gate Modal (5 clicks on Developer) */}
+      {/* Hidden Admin Gate Modal (5 clicks on Developer in footer) */}
       <AdminGateModal />
     </div>
   );

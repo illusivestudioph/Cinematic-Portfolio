@@ -1,33 +1,37 @@
 import React, { useState } from 'react';
 import { usePortfolio } from '../../context/PortfolioContext';
-import { SCENES } from '../../config/timeline';
+import { PINNED_SCENES } from '../../config/timeline';
 import { CinematicVideoPlayer } from '../media/CinematicVideoPlayer';
-import { Sparkles, ChevronRight } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 
-
-export const Scene09Projects: React.FC = () => {
+export const Scene05Projects: React.FC = () => {
   const { progress, content } = usePortfolio();
-  const { start, end } = SCENES.projects;
+  const scene = PINNED_SCENES.projects;
+
+  // Scene 05 range: 1000/1950 (0.513) to 1300/1950 (0.667)
+  const globalStart = 1000 / 1950;
+  const globalEnd = 1300 / 1950;
 
   const [activeProjectIdx, setActiveProjectIdx] = useState(0);
 
-  const isVisible = progress >= start - 0.03 && progress <= end + 0.03;
+  const isVisible = progress >= globalStart - 0.03 && progress <= globalEnd + 0.03;
   if (!isVisible) return null;
 
-  // Local progress (0.80 to 0.90)
-  const t = Math.max(0, Math.min(1, (progress - start) / (end - start)));
+  // Local progress (0.0 to 1.0)
+  const t = Math.max(0, Math.min(1, (progress - globalStart) / (globalEnd - globalStart)));
 
   // Opacity
-  const opacity = t < 0.1 ? t / 0.1 : t > 0.9 ? Math.max(0, (1 - t) / 0.1) : 1;
+  const opacity = t < 0.1 ? t / 0.1 : t > 0.92 ? Math.max(0, (1 - t) / 0.08) : 1;
 
-  // Spatial corridor navigation:
-  // t: 0.0 to 0.5 -> focused on primary destination CRIMEXBT (approaches, becomes dominant)
-  // t: 0.5 to 1.0 -> camera dollies laterally to secondary project destinations
+  // SPATIAL TRAVEL TO CRIMEXBT DESTINATION:
+  // Phase 1 (0.0 to 0.45): Camera travels laterally through studio and approaches CRIMEXBT monitor
+  // Phase 2 (0.45 to 0.85): CRIMEXBT monitor expands to dominant view (interactive video & editorial dossier)
+  // Phase 3 (0.85 to 1.00): Camera gently floats and prepares handoff to Process chamber
   const currentProject = content.projects[activeProjectIdx] || content.projects[0];
 
-  // Camera approach to CRIMEXBT:
-  const scale = t < 0.5 ? 0.9 + (t / 0.5) * 0.2 : 1.1 - ((t - 0.5) / 0.5) * 0.05;
-  const lateralX = t < 0.4 ? 0 : -(t - 0.4) * 200;
+  const scale = t < 0.5 ? 0.88 + (t / 0.5) * 0.22 : 1.10 - ((t - 0.5) / 0.5) * 0.05;
+  const lateralX = t < 0.4 ? (t / 0.4) * -120 : -120;
+  const depthZ = t < 0.5 ? (t / 0.5) * 300 : 300;
 
   return (
     <div
@@ -36,14 +40,14 @@ export const Scene09Projects: React.FC = () => {
         opacity,
       }}
     >
-      <div 
+      <div
         className="w-[94vw] max-w-6xl h-[82vh] flex flex-col justify-between preserve-3d will-change-transform"
         style={{
-          transform: `translate3d(${lateralX}px, 0, 0) scale(${scale})`,
+          transform: `translate3d(${lateralX}px, 0, ${depthZ}px) scale(${scale})`,
         }}
       >
-        {/* Destination Switcher / Corridor Waypoint HUD */}
-        <div className="flex items-center justify-between px-4 py-2 bg-black/80 border border-white/10 rounded-xl backdrop-blur-md pointer-events-auto shadow-2xl">
+        {/* Destination Waypoint Selector / Studio HUD */}
+        <div className="flex items-center justify-between px-4 py-2 bg-black/85 border border-white/10 rounded-xl backdrop-blur-md pointer-events-auto shadow-2xl">
           <div className="flex items-center space-x-3">
             <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping" />
             <span className="font-mono text-xs font-bold uppercase tracking-wider text-cyan-400">
@@ -51,7 +55,7 @@ export const Scene09Projects: React.FC = () => {
             </span>
           </div>
 
-          {/* Destination Tabs (Spatial Stations) */}
+          {/* Spatial Station Buttons */}
           <div className="flex items-center space-x-2">
             {content.projects.map((proj, idx) => (
               <button
@@ -72,7 +76,7 @@ export const Scene09Projects: React.FC = () => {
 
         {/* The Dominant Destination Screen */}
         <div className="relative flex-1 my-3 flex flex-col lg:flex-row items-center gap-6 preserve-3d">
-          {/* Main Video Screen */}
+          {/* Main Video Monitor */}
           <div className="w-full lg:w-2/3 h-full flex flex-col justify-center pointer-events-auto">
             <CinematicVideoPlayer
               key={currentProject.id}
@@ -81,12 +85,12 @@ export const Scene09Projects: React.FC = () => {
               title={currentProject.title}
               subtitle={`${currentProject.category} // ${currentProject.year}`}
               aspectRatio="16/9"
-              isActive={progress >= start && progress <= end}
-              className="w-full h-full border-cyan-500/40 shadow-[0_0_50px_rgba(56,189,248,0.25)]"
+              isActive={progress >= globalStart && progress <= globalEnd}
+              className="w-full h-full border-cyan-500/40 shadow-[0_0_60px_rgba(56,189,248,0.25)]"
             />
           </div>
 
-          {/* Project Editorial Dossier / Spatial Meta Sidebar */}
+          {/* Project Editorial Dossier */}
           <div className="w-full lg:w-1/3 flex flex-col justify-between p-5 rounded-xl bg-slate-950/90 border border-white/10 backdrop-blur-md pointer-events-auto shadow-2xl space-y-4">
             <div>
               <div className="flex items-center justify-between text-[11px] font-mono text-slate-400 border-b border-white/10 pb-2 mb-3">
@@ -101,29 +105,29 @@ export const Scene09Projects: React.FC = () => {
                 {currentProject.role}
               </p>
 
-              <p className="mt-3 text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
+              <p className="text-xs font-sans text-slate-300 mt-3 leading-relaxed">
                 {currentProject.description}
               </p>
             </div>
 
-            {/* Editorial Metrics */}
+            {/* Metrics Chips */}
             {currentProject.metrics && (
-              <div className="grid grid-cols-3 gap-2 py-3 border-y border-white/10">
+              <div className="grid grid-cols-3 gap-2 pt-3 border-t border-white/10">
                 {currentProject.metrics.map((m, i) => (
-                  <div key={i} className="text-center p-2 rounded bg-black/50 border border-white/5">
-                    <div className="font-mono text-[10px] text-slate-400 uppercase">{m.label}</div>
-                    <div className="font-mono text-xs font-bold text-cyan-300 mt-0.5">{m.value}</div>
+                  <div key={i} className="p-2 rounded bg-black/60 border border-white/5 flex flex-col">
+                    <span className="text-[10px] font-mono text-slate-400">{m.label}</span>
+                    <span className="text-xs font-mono font-bold text-cyan-300 mt-0.5">{m.value}</span>
                   </div>
                 ))}
               </div>
             )}
 
-            {/* Tools Used */}
-            <div className="flex flex-wrap gap-1.5 pt-1">
+            {/* Toolkit Tags */}
+            <div className="flex flex-wrap gap-1.5 pt-2">
               {currentProject.tools.map((tool, i) => (
                 <span
                   key={i}
-                  className="px-2 py-0.5 rounded text-[10px] font-mono bg-white/5 text-slate-300 border border-white/10"
+                  className="px-2 py-0.5 rounded text-[10px] font-mono bg-white/5 border border-white/10 text-slate-400"
                 >
                   {tool}
                 </span>
@@ -131,22 +135,13 @@ export const Scene09Projects: React.FC = () => {
             </div>
           </div>
         </div>
-
-        {/* Footer Hint */}
-        <div className="flex items-center justify-between text-xs font-mono text-slate-400 px-2 pointer-events-none">
-          <div className="flex items-center space-x-2">
-            <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-            <span>CLICK PLAY TO RUN FULL AUDIO & EDITORIAL TIMELINE</span>
-          </div>
-          <span className="text-cyan-400">SCROLL TO TRAVEL TO EDITING PROCESS</span>
-        </div>
       </div>
 
-      {/* Cinematic Scene Label */}
+      {/* Cinematic Shot Badge */}
       <div className="absolute bottom-6 left-8 sm:left-12 flex items-center space-x-3 text-slate-400 font-mono text-xs pointer-events-none">
-        <span className="text-cyan-400 font-bold">SHOT 09</span>
+        <span className="text-cyan-400 font-bold">SHOT {scene.code}</span>
         <span className="text-slate-600">//</span>
-        <span>SELECTED WORK DESTINATIONS</span>
+        <span>{scene.name} (CRIMEXBT & SELECTS)</span>
       </div>
     </div>
   );

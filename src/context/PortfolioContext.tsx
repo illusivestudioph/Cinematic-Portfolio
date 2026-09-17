@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { getActiveScene, type SceneConfig } from '../config/timeline';
+import { getActiveSceneFromProgress, type PinnedSceneConfig } from '../config/timeline';
 import type { PortfolioContent, ProjectItem } from '../config/content';
 import { INITIAL_PORTFOLIO_CONTENT } from '../config/content';
 
@@ -8,7 +8,9 @@ import { loadPortfolioContent, savePortfolioContent, isAuthorizedEmail, supabase
 interface PortfolioContextType {
   progress: number;
   setProgress: (p: number) => void;
-  activeScene: SceneConfig;
+  activeScene: PinnedSceneConfig;
+  localProgress: number;
+  sceneIndex: number;
   content: PortfolioContent;
   updateContent: (newContent: PortfolioContent) => Promise<boolean>;
   isMuted: boolean;
@@ -43,7 +45,7 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [scrollPaused, setScrollPaused] = useState(false);
 
-  const activeScene = getActiveScene(progress);
+  const { scene: activeScene, localProgress, sceneIndex } = getActiveSceneFromProgress(progress);
 
   // Load content on mount
   useEffect(() => {
@@ -111,6 +113,8 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         progress,
         setProgress,
         activeScene,
+        localProgress,
+        sceneIndex,
         content,
         updateContent,
         isMuted,

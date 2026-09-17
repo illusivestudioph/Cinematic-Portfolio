@@ -1,23 +1,26 @@
 import React from 'react';
 import { usePortfolio } from '../../context/PortfolioContext';
-import { SCENES } from '../../config/timeline';
+import { PINNED_SCENES } from '../../config/timeline';
 
-
-export const Scene11About: React.FC = () => {
+export const Scene07About: React.FC = () => {
   const { progress, content } = usePortfolio();
-  const { start, end } = SCENES.about;
+  const scene = PINNED_SCENES.about;
 
-  const isVisible = progress >= start - 0.02 && progress <= end + 0.02;
+  // Scene 07 range: 1550/1950 (0.795) to 1750/1950 (0.897)
+  const globalStart = 1550 / 1950;
+  const globalEnd = 1750 / 1950;
+
+  const isVisible = progress >= globalStart - 0.03 && progress <= globalEnd + 0.03;
   if (!isVisible) return null;
 
-  // Local progress (0.96 to 0.98)
-  const t = Math.max(0, Math.min(1, (progress - start) / (end - start)));
+  // Local progress (0.0 to 1.0)
+  const t = Math.max(0, Math.min(1, (progress - globalStart) / (globalEnd - globalStart)));
 
-  // Opacity: fades in cleanly, holds, then leads to Scene 12
-  const opacity = t < 0.15 ? t / 0.15 : t > 0.85 ? Math.max(0, (1 - t) / 0.15) : 1;
+  // Opacity: camera holds rock-solid while About copy is revealed and read
+  const opacity = t < 0.1 ? t / 0.1 : t > 0.9 ? Math.max(0, (1 - t) / 0.1) : 1;
 
-  // Gentle push forward
-  const depthZ = -100 + t * 200;
+  // Gentle floating depth
+  const depthZ = -80 + t * 160;
 
   return (
     <div
@@ -26,13 +29,13 @@ export const Scene11About: React.FC = () => {
         opacity,
       }}
     >
-      <div 
+      <div
         className="w-[90vw] max-w-5xl flex flex-col items-center text-center preserve-3d will-change-transform"
         style={{
           transform: `translate3d(0, 0, ${depthZ}px)`,
         }}
       >
-        {/* Subtle Category Marker */}
+        {/* Category Tag */}
         <div className="flex items-center space-x-3 mb-6">
           <span className="w-8 h-[1px] bg-cyan-400" />
           <span className="font-mono text-xs text-cyan-400 uppercase tracking-[0.35em]">
@@ -41,12 +44,12 @@ export const Scene11About: React.FC = () => {
           <span className="w-8 h-[1px] bg-cyan-400" />
         </div>
 
-        {/* Cinematic Headline */}
+        {/* Headline */}
         <h2 className="font-syne text-3xl sm:text-5xl md:text-6xl font-black text-white uppercase tracking-tight max-w-4xl text-glow-white leading-tight">
           &quot;{content.about.headline}&quot;
         </h2>
 
-        {/* Philosophy & Narrative Body */}
+        {/* Narrative Statement */}
         <div className="mt-8 max-w-3xl space-y-4 text-slate-300 font-sans text-sm sm:text-base md:text-lg leading-relaxed pointer-events-auto">
           {content.about.bio.map((paragraph, idx) => (
             <p key={idx} className="opacity-90">
@@ -55,10 +58,10 @@ export const Scene11About: React.FC = () => {
           ))}
         </div>
 
-        {/* Editorial Stats Row */}
+        {/* Stats Row */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-8 mt-10 w-full max-w-3xl pt-8 border-t border-white/10 pointer-events-auto">
           {content.about.stats.map((st, i) => (
-            <div key={i} className="flex flex-col items-center p-3 rounded-xl bg-slate-950/60 border border-white/5 shadow-xl">
+            <div key={i} className="flex flex-col items-center p-3.5 rounded-xl bg-slate-950/70 border border-white/5 shadow-xl">
               <span className="font-mono text-2xl sm:text-3xl font-bold text-cyan-400">
                 {st.value}
               </span>
@@ -69,7 +72,7 @@ export const Scene11About: React.FC = () => {
           ))}
         </div>
 
-        {/* Suite Toolkit Badges */}
+        {/* Toolkit Badges */}
         <div className="flex flex-wrap items-center justify-center gap-2 mt-8 pointer-events-auto">
           {content.about.software.map((sw, i) => (
             <span
@@ -82,11 +85,11 @@ export const Scene11About: React.FC = () => {
         </div>
       </div>
 
-      {/* Cinematic Scene Label */}
+      {/* Cinematic Shot Badge */}
       <div className="absolute bottom-6 left-8 sm:left-12 flex items-center space-x-3 text-slate-400 font-mono text-xs pointer-events-none">
-        <span className="text-cyan-400 font-bold">SHOT 11</span>
+        <span className="text-cyan-400 font-bold">SHOT {scene.code}</span>
         <span className="text-slate-600">//</span>
-        <span>ABOUT THE CRAFT</span>
+        <span>{scene.name}</span>
       </div>
     </div>
   );
