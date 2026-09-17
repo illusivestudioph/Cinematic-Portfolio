@@ -37,7 +37,7 @@ export const CinematicHUD: React.FC = () => {
         <div className="flex items-center space-x-3 bg-black/60 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/10 pointer-events-auto shadow-lg">
           <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#38bdf8]" />
           <span className="font-mono text-xs font-bold text-cyan-300 tracking-wider">
-            SHOT {activeScene.code}
+            BEAT {activeScene.code}
           </span>
           <span className="text-slate-600 font-mono text-xs">//</span>
           <span className="font-mono text-xs text-slate-300 tracking-wider uppercase hidden sm:inline">
@@ -101,7 +101,7 @@ export const CinematicHUD: React.FC = () => {
       {/* Bottom Footer Bar */}
       <div 
         className={`flex items-center justify-between text-xs font-mono text-slate-500 transition-opacity duration-500 ${
-          isIntroTitle ? 'opacity-50' : 'opacity-100'
+          isIntroTitle || progress > 0.90 ? 'opacity-0 pointer-events-none' : 'opacity-100'
         }`}
       >
         {/* Progress Bar & Percentage */}

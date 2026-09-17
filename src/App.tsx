@@ -6,15 +6,14 @@ import { CameraRig } from './components/camera/CameraRig';
 import { CinematicHUD } from './components/ui/CinematicHUD';
 import { AdminGateModal } from './components/admin/AdminGateModal';
 
-// Pinned Cinematic Sequence Chapters
-import { Scene01Editor } from './components/scenes/Scene01Editor';
-import { Scene02Timeline } from './components/scenes/Scene02Timeline';
-import { Scene03Showreel } from './components/scenes/Scene03Showreel';
-import { Scene04PullOut } from './components/scenes/Scene04PullOut';
-import { Scene05Projects } from './components/scenes/Scene05Projects';
-import { Scene06Process } from './components/scenes/Scene06Process';
-import { Scene07About } from './components/scenes/Scene07About';
-import { Scene08CTA } from './components/scenes/Scene08CTA';
+// The 7 Continuous Cinematic Beats
+import { Beat01StaticIllusion } from './components/scenes/Beat01StaticIllusion';
+import { Beat02BreakFrame } from './components/scenes/Beat02BreakFrame';
+import { Beat03Catalyst } from './components/scenes/Beat03Catalyst';
+import { Beat04ShowreelPeak } from './components/scenes/Beat04ShowreelPeak';
+import { Beat05Deconstruction } from './components/scenes/Beat05Deconstruction';
+import { Beat06CTAAnchor } from './components/scenes/Beat06CTAAnchor';
+import { Beat07FooterFade } from './components/scenes/Beat07FooterFade';
 
 const PortfolioReelApp: React.FC = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -24,24 +23,23 @@ const PortfolioReelApp: React.FC = () => {
     <div ref={containerRef} className="relative w-full bg-[#050608]">
       {/* 
         Master Scroll Track:
-        Provides generous physical scroll distance (~1950vh) so each pinned camera sequence
-        has comfortable, precise scrub control without passing content too quickly.
+        Provides generous physical scroll distance (~2000vh) across all 7 cinematic beats.
+        The footer is reached only after experiencing all 7 beats.
       */}
       <div 
         style={{ height: `${TOTAL_PIN_DISTANCE_VH}vh` }} 
         className="w-full pointer-events-none" 
       />
 
-      {/* 2.5D Spatial Camera Rig & Pinned Scene Sets */}
+      {/* 2.5D Spatial Camera Rig & Pinned Beat Sequences */}
       <CameraRig>
-        <Scene01Editor />
-        <Scene02Timeline />
-        <Scene03Showreel />
-        <Scene04PullOut />
-        <Scene05Projects />
-        <Scene06Process />
-        <Scene07About />
-        <Scene08CTA />
+        <Beat01StaticIllusion />
+        <Beat02BreakFrame />
+        <Beat03Catalyst />
+        <Beat04ShowreelPeak />
+        <Beat05Deconstruction />
+        <Beat06CTAAnchor />
+        <Beat07FooterFade />
       </CameraRig>
 
       {/* Persistent Cinematic HUD Overlay */}

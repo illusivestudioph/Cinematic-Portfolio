@@ -19,99 +19,89 @@ export interface PinnedSceneConfig {
   cameraEnd: CameraCoordinates;
 }
 
-export const PINNED_SCENES: Record<string, PinnedSceneConfig> = {
-  editor: {
-    id: 'editor',
-    name: 'THE EDITOR & DESK',
+export const PINNED_BEATS: Record<string, PinnedSceneConfig> = {
+  staticIllusion: {
+    id: 'staticIllusion',
+    name: 'STATIC ILLUSION',
     code: '01',
     pinDistanceVh: 250,
     timecode: '00:00:00:00',
-    description: 'Editor seated with studio ident overlay -> stretch -> arm down -> push into monitor.',
+    description: 'Editor completely still on the RIGHT, clean negative space on LEFT with studio title.',
     cameraStart: { x: 0, y: 0, z: 0, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1 },
-    cameraEnd:   { x: 0, y: -20, z: -850, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1.55 },
+    cameraEnd:   { x: 30, y: 0, z: -100, rotateX: 0, rotateY: 1, rotateZ: 0, scale: 1.05 },
   },
-  timeline: {
-    id: 'timeline',
-    name: 'MONITOR / EDITING WORLD',
+  breakFrame: {
+    id: 'breakFrame',
+    name: 'BREAKING THE FRAME',
     code: '02',
     pinDistanceVh: 300,
-    timecode: '00:00:25:00',
-    description: 'Punches through monitor glass into 3D NLE tracks, waveforms, milestones -> locks onto selected clip.',
-    cameraStart: { x: 0, y: 0, z: -850, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1.55 },
-    cameraEnd:   { x: 0, y: 0, z: -3200, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 2.3 },
+    timecode: '00:00:15:00',
+    description: 'Blink -> break pose -> pull chair -> sit at desk in the edit suite.',
+    cameraStart: { x: 30, y: 0, z: -100, rotateX: 0, rotateY: 1, rotateZ: 0, scale: 1.05 },
+    cameraEnd:   { x: 0, y: -20, z: -450, rotateX: 2, rotateY: -1, rotateZ: 0, scale: 1.25 },
   },
-  showreel: {
-    id: 'showreel',
-    name: 'THE SHOWREEL',
+  catalyst: {
+    id: 'catalyst',
+    name: 'THE CATALYST',
     code: '03',
-    pinDistanceVh: 200,
-    timecode: '00:00:55:00',
-    description: 'Enters footage horizon into dominant 16:9 MP4 showreel. Custom controls & audio on play.',
-    cameraStart: { x: 0, y: 0, z: -3800, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1 },
-    cameraEnd:   { x: 0, y: 0, z: -3800, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1 },
+    pinDistanceVh: 350,
+    timecode: '00:00:35:00',
+    description: 'Camera pushes over the shoulder -> keyboard shortcut -> DaVinci Resolve timeline fills monitor.',
+    cameraStart: { x: 0, y: -20, z: -450, rotateX: 2, rotateY: -1, rotateZ: 0, scale: 1.25 },
+    cameraEnd:   { x: 0, y: 0, z: -1200, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1.9 },
   },
-  studio: {
-    id: 'studio',
-    name: 'STUDIO REVEAL',
+  showreelPeak: {
+    id: 'showreelPeak',
+    name: 'SHOWREEL PEAK',
     code: '04',
     pinDistanceVh: 250,
-    timecode: '00:01:15:00',
-    description: 'Camera pulls backward in 3D: reel shrinks to monitor, revealing full edit suite & desk.',
-    cameraStart: { x: 0, y: 0, z: -3800, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1 },
-    cameraEnd:   { x: 0, y: -30, z: -2600, rotateX: 3.5, rotateY: -2, rotateZ: 0, scale: 0.88 },
+    timecode: '00:00:55:00',
+    description: 'Monitor expands into the REAL showreel MP4 -> fullscreen montage with audio & custom controls.',
+    cameraStart: { x: 0, y: 0, z: -1200, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1.9 },
+    cameraEnd:   { x: 0, y: 0, z: -1200, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1.9 },
   },
-  projects: {
-    id: 'projects',
-    name: 'PROJECT DESTINATIONS',
+  deconstruction: {
+    id: 'deconstruction',
+    name: 'DECONSTRUCTION',
     code: '05',
-    pinDistanceVh: 300,
-    timecode: '00:01:30:00',
-    description: 'Camera navigates through studio toward CRIMEXBT monitor; dominant interactive project playback.',
-    cameraStart: { x: 0, y: -30, z: -2600, rotateX: 3.5, rotateY: -2, rotateZ: 0, scale: 0.88 },
-    cameraEnd:   { x: -120, y: 0, z: -1950, rotateX: 1.5, rotateY: 4, rotateZ: 0, scale: 1.2 },
+    pinDistanceVh: 350,
+    timecode: '00:01:20:00',
+    description: 'Finished edit rewinds -> layers strip away -> raw footage / grading / node tree / editing process.',
+    cameraStart: { x: 0, y: 0, z: -1200, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1.9 },
+    cameraEnd:   { x: 40, y: -10, z: -2000, rotateX: -2, rotateY: 3, rotateZ: 0, scale: 1.4 },
   },
-  process: {
-    id: 'process',
-    name: 'BEHIND THE EDIT',
+  ctaAnchor: {
+    id: 'ctaAnchor',
+    name: 'CTA ANCHOR',
     code: '06',
-    pinDistanceVh: 250,
+    pinDistanceVh: 300,
     timecode: '00:01:45:00',
-    description: 'Travel through 6 spatial milestones: RAW -> EDIT -> MOTION -> SOUND -> COLOR -> FINAL.',
-    cameraStart: { x: -120, y: 0, z: -1950, rotateX: 1.5, rotateY: 4, rotateZ: 0, scale: 1.2 },
-    cameraEnd:   { x: 100, y: 15, z: -1350, rotateX: -2, rotateY: -3, rotateZ: 0, scale: 1.15 },
+    description: 'Camera pulls back to original desk -> editor presses Export -> looks into camera -> CTA in LEFT space.',
+    cameraStart: { x: 40, y: -10, z: -2000, rotateX: -2, rotateY: 3, rotateZ: 0, scale: 1.4 },
+    cameraEnd:   { x: 0, y: 0, z: 0, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1 },
   },
-  about: {
-    id: 'about',
-    name: 'THE PERSON BEHIND THE TIMELINE',
+  footerFade: {
+    id: 'footerFade',
+    name: 'FOOTER FADE',
     code: '07',
     pinDistanceVh: 200,
-    timecode: '00:01:58:00',
-    description: 'Pinned camera at editorial craft statement, philosophy, metrics & toolkit.',
-    cameraStart: { x: 100, y: 15, z: -1350, rotateX: -2, rotateY: -3, rotateZ: 0, scale: 1.15 },
-    cameraEnd:   { x: 0, y: 0, z: -650, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1.05 },
-  },
-  cta: {
-    id: 'cta',
-    name: 'START A PROJECT',
-    code: '08',
-    pinDistanceVh: 200,
-    timecode: '00:02:08:00',
-    description: 'GOT FOOTAGE? -> LET\'S MAKE SOMETHING OUT OF IT. -> START A PROJECT -> Fade to TRUE BLACK.',
-    cameraStart: { x: 0, y: 0, z: -650, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1.05 },
-    cameraEnd:   { x: 0, y: 0, z: 200, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 0.95 },
+    timecode: '00:02:05:00',
+    description: 'Editor turns back to monitor -> becomes silhouette -> bottom darkens -> seamless footer.',
+    cameraStart: { x: 0, y: 0, z: 0, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1 },
+    cameraEnd:   { x: 0, y: 15, z: 150, rotateX: 2, rotateY: 0, rotateZ: 0, scale: 0.95 },
   },
 };
 
-export const PINNED_SCENE_LIST = Object.values(PINNED_SCENES);
+export const PINNED_SCENES = PINNED_BEATS;
+export const PINNED_SCENE_LIST = Object.values(PINNED_BEATS);
 
-// Alias SCENES and SCENE_LIST for backward compatibility
-export const SCENES = PINNED_SCENES;
+export const SCENES = PINNED_BEATS;
 export const SCENE_LIST = PINNED_SCENE_LIST;
 
-// Total virtual scroll distance in vh across all pinned scenes
+// Total virtual scroll distance across all 7 beats: 250 + 300 + 350 + 250 + 350 + 300 + 200 = 2000vh
 export const TOTAL_PIN_DISTANCE_VH = PINNED_SCENE_LIST.reduce((acc, s) => acc + s.pinDistanceVh, 0);
 
-// Calculate normalized global thresholds for each pinned scene
+// Calculate normalized global thresholds for each pinned beat
 let cumulativeVh = 0;
 export const SCENE_INTERVALS = PINNED_SCENE_LIST.map((scene) => {
   const startFraction = cumulativeVh / TOTAL_PIN_DISTANCE_VH;
@@ -147,7 +137,6 @@ export function getActiveSceneFromProgress(globalProgress: number): {
   return { scene: SCENE_INTERVALS[lastIdx], sceneIndex: lastIdx, localProgress: 1 };
 }
 
-// Backward compatible helper
 export function getActiveScene(progress: number): PinnedSceneConfig {
   return getActiveSceneFromProgress(progress).scene;
 }
@@ -161,7 +150,6 @@ export function interpolateCamera(globalProgress: number): CameraCoordinates & {
 } {
   const { scene, localProgress } = getActiveSceneFromProgress(globalProgress);
 
-  // Smooth cubic ease for natural camera motion
   const ease = localProgress < 0.5 
     ? 4 * localProgress * localProgress * localProgress 
     : 1 - Math.pow(-2 * localProgress + 2, 3) / 2;

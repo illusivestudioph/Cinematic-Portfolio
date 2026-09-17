@@ -11,47 +11,61 @@
 
 ---
 
-## 🎬 Core Concept: Pinned Cinematic Camera Architecture
+## 🎬 Core Concept: The 7-Beat Continuous Cinematic Sequence
 
-This is not a conventional portfolio website with generic sections. **The portfolio itself is an interactive cinematic reel.** The visitor controls a 3D camera traveling through the editor's world using scroll.
+This is not a conventional portfolio website. **The portfolio itself is an interactive cinematic reel.** The visitor controls a 3D camera traveling through the editor's world using scroll.
 
 - **SCROLL = CAMERA MOVEMENT**
 - **CLICK = MEDIA INTERACTION**
-- **PINNING = CAMERA CONTROL MECHANISM** (gives each camera movement enough scroll distance to control comfortably)
+- **SECTION PINNING = CAMERA CONTROL MECHANISM** (provides comfortable scroll distance for every cinematic movement)
 
-The entire experience is continuous and structured as 8 pinned cinematic sequence chapters:
+The website experience is substantially longer (~2000vh total scroll depth). The footer is reached only after experiencing all 7 beats:
 
 ```
-01 EDITOR & DESK ──► 02 TIMELINE / EDIT WORLD ──► 03 THE SHOWREEL ──► 04 STUDIO REVEAL
-                                                                               │
-                                                                               ▼
-08 FINAL CTA & BLACK ◄── 07 ABOUT ◄── 06 BEHIND THE EDIT ◄── 05 PROJECTS (CRIMEXBT)
+STATIC PORTRAIT (BEAT 01)
+  │
+  ▼
+BREAK FRAME & SIT AT DESK (BEAT 02)
+  │
+  ▼
+CAMERA PUSHES TO MONITOR & DAVINCI TIMELINE (BEAT 03)
+  │
+  ▼
+REAL SHOWREEL MONTAGE (BEAT 04)
+  │
+  ▼
+DECONSTRUCTION (REWIND / NODE TREE / RAW LOG) (BEAT 05)
+  │
+  ▼
+CAMERA PULLBACK TO DESK / EXPORT / LOOK INTO CAMERA / CTA (BEAT 06)
+  │
+  ▼
+TURN BACK TO MONITOR / SILHOUETTE / FOOTER FADE (BEAT 07)
 ```
 
 ---
 
-## 📽️ The 8 Pinned Cinematic Sequences
+## 📽️ The 7 Cinematic Beats
 
-| Shot | Pin Distance | Scene Name | Description | Key Component |
+| Beat | Pin Distance | Title | Cinematic Choreography | Component |
 | :--- | :--- | :--- | :--- | :--- |
-| **01** | `~250vh` | **The Editor & Desk** | Starts immediately on the editor seated at desk (not black!). `ILLUSIVE STUDIO` title overlays and fades out. Editor stretches, arm lowers, camera accelerates toward monitor. | `src/components/scenes/Scene01Editor.tsx` |
-| **02** | `~300vh` | **Monitor / Editing World** | Breaches monitor glass into 3D NLE tracks (`V1-V3`, `A1-A2`), traverses audio waveforms and post milestones, locking onto target clip. | `src/components/scenes/Scene02Timeline.tsx` |
-| **03** | `~200vh` | **The Showreel** | Hero clip balloons into dominant 16:9 MP4 showreel. Custom controls & audio on play. Camera scroll lock holds while watching. | `src/components/scenes/Scene03Showreel.tsx` |
-| **04** | `~250vh` | **Studio Reveal** | Camera pulls backward in 3D: reel shrinks to monitor, revealing full edit suite, desk, and client stations. | `src/components/scenes/Scene04PullOut.tsx` |
-| **05** | `~300vh` | **Project Destinations** | Camera navigates through studio toward `CRIMEXBT` monitor destination; dominant interactive project playback and editorial dossier. | `src/components/scenes/Scene05Projects.tsx` |
-| **06** | `~250vh` | **Behind the Edit (Process)** | Travel through 6 spatial milestones: `RAW` $\to$ `EDIT` $\to$ `MOTION` $\to$ `SOUND` $\to$ `COLOR` $\to$ `FINAL` inside the studio world. | `src/components/scenes/Scene06Process.tsx` |
-| **07** | `~200vh` | **The Person Behind the Timeline** | Pinned camera at editorial craft statement, philosophy, completed edit metrics & software toolkit. | `src/components/scenes/Scene07About.tsx` |
-| **08** | `~200vh` | **Start a Project $\to$ True Black** | `GOT FOOTAGE?` $\to$ `LET'S MAKE SOMETHING OUT OF IT.` $\to$ `START A PROJECT` button $\to$ camera moves into deep space and fades to **TRUE BLACK**! | `src/components/scenes/Scene08CTA.tsx` |
+| **01** | `~250vh` | **Static Illusion** | Opens immediately on the editor completely still on the **RIGHT**, clean negative space on the **LEFT** with `ILLUSIVE STUDIO` title ident. No black opening. | `src/components/scenes/Beat01StaticIllusion.tsx` |
+| **02** | `~300vh` | **Breaking the Frame** | Blink $\to$ break pose $\to$ pull chair $\to$ sit at desk in the edit suite. | `src/components/scenes/Beat02BreakFrame.tsx` |
+| **03** | `~350vh` | **The Catalyst** | Camera pushes over the shoulder $\to$ keyboard shortcut trigger $\to$ DaVinci Resolve timeline fills monitor. | `src/components/scenes/Beat03Catalyst.tsx` |
+| **04** | `~250vh` | **Showreel Peak** | Monitor expands into the user's **REAL showreel MP4** $\to$ fullscreen montage with audio & custom controls. | `src/components/scenes/Beat04ShowreelPeak.tsx` |
+| **05** | `~350vh` | **Deconstruction** | Finished edit rewinds $\to$ layers strip away $\to$ DaVinci node tree $\to$ color grade $\to$ audio stems $\to$ raw sensor rushes. | `src/components/scenes/Beat05Deconstruction.tsx` |
+| **06** | `~300vh` | **CTA Anchor** | Camera pulls back to original desk composition $\to$ editor presses Export $\to$ looks directly at camera $\to$ CTA appears in **LEFT negative space**. | `src/components/scenes/Beat06CTAAnchor.tsx` |
+| **07** | `~200vh` | **Footer Fade** | Editor turns back to monitor $\to$ becomes silhouette $\to$ bottom gradually darkens $\to$ seamlessly becomes the footer with subtle Developer trigger. | `src/components/scenes/Beat07FooterFade.tsx` |
 
 ---
 
-## 🛠️ Architecture & Features
+## 🛠️ Architecture & Performance
 
-- **Pinned Cinematic Camera Stages**: Pinned ScrollTriggers across ~1950vh total scroll depth provide ample scrub precision for every camera move.
-- **Immediate Visual Start**: The website starts immediately in the editor's suite with title overlay fading out as scroll begins (no opening black gap).
-- **True Black Finale**: "Black is the end, not the intro." Screen fades to pitch black exclusively after the Scene 08 CTA.
-- **Interpolated WebP Sequences**: `ScrollFrameSequence` uses a `requestAnimationFrame` damping loop between target scroll progress and current frame, preventing frame tearing or flickering.
-- **Cinematic Video Engine**: HTML5 video with custom scrub controls, SMPTE timecodes, real audio playback, and scroll pause support.
+- **Pinned Camera Rig**: 3D perspective (`1200px`) stage with film grain, dynamic anamorphic lens flares, CRT scanlines, and vignette.
+- **Master Normalized Timeline**: Single source of truth (`src/config/timeline.ts`) managing all 7 beats with cubic interpolation and ample scrub distance (~2000vh).
+- **Smooth Physics Scrolling**: Integrated Lenis smooth scroll and GSAP `ScrollTrigger` scrubbing over the full sequence.
+- **Cinematic Video Engine**: Real MP4 playback with custom controls, unmuted audio upon play, and scroll-locking support during playback.
+- **Interpolated WebP Sequences**: `ScrollFrameSequence` uses a `requestAnimationFrame` damping loop between target scroll progress and rendered canvas frame, eliminating frame tearing or flashing.
 - **Hidden Admin Gate**: Subtle "Developer" button in footer; 5 clicks opens the Admin Gate with access restricted to `yhanlhester@gmail.com`.
 
 ---
