@@ -68,48 +68,34 @@ export const Beat01StaticIllusion: React.FC = () => {
         {/* RIGHT SIDE: The Static Editor Portrait */}
         {/* Completely still pose, atmospheric studio lighting */}
         <div className="relative w-full lg:w-1/2 h-[75vh] flex items-center justify-end">
-          {content.editorSequence.baseUrl ? (
-            <div className="w-full max-w-xl h-full rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
-              <ScrollFrameSequence
-                baseUrl={content.editorSequence.baseUrl}
-                frameCount={content.editorSequence.frameCount}
-                fallback={content.editorSequence.fallback}
-                progress={0} // completely still in Beat 1
-                alt="Static Editor Portrait"
-              />
-            </div>
-          ) : (
-            <div className="relative w-full max-w-xl h-full flex flex-col items-center justify-center">
-              {/* Soft studio backlighting */}
-              <div className="absolute inset-0 bg-radial from-cyan-950/20 via-transparent to-transparent rounded-full blur-3xl pointer-events-none" />
-              
-              {/* Grading Monitor Glow & Desktop Silhouette */}
-              <div className="relative w-[85%] h-[60%] rounded-2xl bg-black border-2 border-cyan-500/30 shadow-[0_0_80px_rgba(56,189,248,0.25)] p-3 flex flex-col justify-between overflow-hidden">
-                <div className="flex items-center justify-between text-[10px] font-mono text-slate-400 border-b border-white/10 pb-1.5">
-                  <span className="text-cyan-400 flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-                    STANDBY // 24FPS
-                  </span>
-                  <span>DAVINCI RESOLVE</span>
-                </div>
-
-                <div className="relative flex-1 my-2 rounded bg-slate-950 overflow-hidden flex items-center justify-center">
-                  <img
-                    src={content.editorSequence.fallback}
-                    alt="Edit suite setup"
-                    className="w-full h-full object-cover opacity-75"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+          {(() => {
+            const seqConfig = content.sequences?.beat01Static || content.editorSequence;
+            return seqConfig.baseUrl ? (
+              <div className="w-full max-w-xl h-full rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+                <ScrollFrameSequence
+                  baseUrl={seqConfig.baseUrl}
+                  frameCount={seqConfig.frameCount}
+                  padding={seqConfig.padding}
+                  fallback={seqConfig.fallback}
+                  progress={0} // completely still in Beat 1
+                  alt="Static Editor Portrait"
+                />
+              </div>
+            ) : (
+              <div className="relative w-full max-w-xl h-[70vh] rounded-2xl overflow-hidden border border-white/10 shadow-2xl flex items-center justify-center">
+                <img
+                  src={seqConfig.fallback}
+                  alt="Static Editor Still Portrait"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none" />
+                <div className="absolute top-4 right-4 font-mono text-[10px] text-cyan-400 bg-black/80 px-3 py-1 rounded border border-cyan-500/30 flex items-center space-x-2">
+                  <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+                  <span>STUDIO_STANDBY // 24 FPS</span>
                 </div>
               </div>
-
-              {/* Seated Editor in foreground (Still Portrait) */}
-              <div className="relative -mt-12 flex flex-col items-center">
-                <div className="w-52 sm:w-64 h-32 bg-gradient-to-t from-black via-[#08090d] to-slate-900/80 rounded-t-full border-t border-white/10 shadow-2xl" />
-                <div className="w-72 sm:w-80 h-3 bg-slate-950 border-t border-white/10" />
-              </div>
-            </div>
-          )}
+            );
+          })()}
         </div>
       </div>
 

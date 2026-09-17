@@ -1,6 +1,7 @@
 import React from 'react';
 import { usePortfolio } from '../../context/PortfolioContext';
 import { PINNED_BEATS } from '../../config/timeline';
+import { ScrollFrameSequence } from '../media/ScrollFrameSequence';
 
 export const Beat07FooterFade: React.FC = () => {
   const { progress, content, handleDeveloperClick, developerClicks } = usePortfolio();
@@ -21,47 +22,49 @@ export const Beat07FooterFade: React.FC = () => {
   // Phase 2 (0.40 - 0.75): Backlighting fades, editor dissolves into deep silhouette
   // Phase 3 (0.75 - 1.00): Bottom darkens into true black seamlessly becoming the footer
 
-  const turnBackDegree = Math.max(0, 25 - t * 50);
   const silhouetteDarken = Math.min(1, t * 1.5);
   const footerReveal = Math.min(1, Math.max(0, (t - 0.35) / 0.5));
+
+  const seqConfig = content.sequences?.beat07FooterFade || content.editorSequence;
 
   return (
     <div
       className="absolute inset-0 flex flex-col items-center justify-between pointer-events-none transition-opacity duration-150 z-30"
       style={{ opacity: 1 }}
     >
-      {/* Top / Center Visual: Editor as Silhouette facing the glowing monitor */}
-      <div className="relative w-full flex-1 flex flex-col items-center justify-center preserve-3d">
-        {/* Glow from monitor fading into deep shadow */}
-        <div
-          className="relative w-[75vw] sm:w-[580px] h-64 sm:h-80 rounded-2xl bg-black border border-white/10 shadow-[0_0_80px_rgba(56,189,248,0.15)] p-3 flex flex-col justify-between overflow-hidden transition-opacity duration-300"
-          style={{
-            opacity: Math.max(0.2, 1 - t * 0.7),
-          }}
-        >
-          <div className="flex items-center justify-between text-[9px] font-mono text-slate-500 border-b border-white/5 pb-1">
-            <span>SESSION_ARCHIVED</span>
-            <span>00:02:12:00</span>
+      {/* Top / Center Visual: Editor as Silhouette facing the monitor in deep shadow */}
+      <div className="relative w-full flex-1 flex flex-col items-center justify-center">
+        {seqConfig.baseUrl ? (
+          <div className="w-[85vw] max-w-4xl h-[60vh] rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+            <ScrollFrameSequence
+              baseUrl={seqConfig.baseUrl}
+              frameCount={seqConfig.frameCount}
+              padding={seqConfig.padding}
+              fallback={seqConfig.fallback}
+              progress={t}
+              alt="Editor Silhouette Sequence"
+            />
           </div>
-
-          <div className="relative flex-1 my-2 rounded bg-slate-950/80 flex items-center justify-center">
-            <div className="w-16 h-16 rounded-full border border-cyan-500/20 flex items-center justify-center">
-              <div className="w-2 h-2 rounded-full bg-cyan-400/50" />
+        ) : (
+          <div
+            className="relative w-[85vw] max-w-3xl h-[55vh] rounded-2xl overflow-hidden border border-white/10 shadow-[0_0_90px_rgba(0,0,0,0.9)] flex items-center justify-center transition-all duration-300"
+            style={{
+              filter: `brightness(${Math.max(0.15, 1 - silhouetteDarken * 0.85)})`,
+            }}
+          >
+            <img
+              src={seqConfig.fallback}
+              alt="Editor in Deep Silhouette"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent pointer-events-none" />
+            
+            <div className="absolute top-4 left-4 font-mono text-[10px] text-slate-500 bg-black/80 px-3 py-1 rounded border border-white/5 flex items-center space-x-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-500/60" />
+              <span>SESSION_ARCHIVED // 00:02:12:00</span>
             </div>
           </div>
-        </div>
-
-        {/* Editor Silhouette in foreground (facing forward back to monitor) */}
-        <div
-          className="relative -mt-16 flex flex-col items-center will-change-transform transition-all duration-200"
-          style={{
-            transform: `rotateY(${turnBackDegree}deg)`,
-            filter: `brightness(${1 - silhouetteDarken * 0.8})`,
-          }}
-        >
-          <div className="w-14 h-18 rounded-full bg-black border border-white/5 mb-1" />
-          <div className="w-56 sm:w-68 h-32 bg-black rounded-t-full border-t border-white/5 shadow-2xl" />
-        </div>
+        )}
       </div>
 
       {/* ================= SEAMLESS CINEMATIC FOOTER ================= */}

@@ -23,20 +23,32 @@ export interface ProcessStage {
   visualMetric: string;
 }
 
+export interface WebPSequenceConfig {
+  baseUrl: string;
+  frameCount: number;
+  padding: number;
+  fallback: string;
+}
+
 export interface PortfolioContent {
   studioName: string;
   tagline: string;
   authorizedEmail: string;
   
-  // Scene 02/03 WebP Sequence settings
-  editorSequence: {
-    baseUrl: string;
-    frameCount: number;
-    padding: number;
-    fallback: string;
+  // Legacy alias for compatibility
+  editorSequence: WebPSequenceConfig;
+
+  // Dedicated WebP sequences for the scroll-controlled beats
+  sequences: {
+    beat01Static: WebPSequenceConfig;
+    beat02BreakFrame: WebPSequenceConfig;
+    beat03Catalyst: WebPSequenceConfig;
+    beat05Deconstruction: WebPSequenceConfig;
+    beat06CTAAnchor: WebPSequenceConfig;
+    beat07FooterFade: WebPSequenceConfig;
   };
 
-  // Scene 07 Showreel
+  // Scene 04 Showreel (REAL MP4 VIDEO, not WebP)
   showreel: {
     title: string;
     subtitle: string;
@@ -81,11 +93,49 @@ export const INITIAL_PORTFOLIO_CONTENT: PortfolioContent = {
   authorizedEmail: "yhanlhester@gmail.com",
 
   editorSequence: {
-    // Configurable Supabase WebP sequence endpoint. Empty by default to use the rich procedural fallback.
     baseUrl: "",
     frameCount: 120,
     padding: 4,
     fallback: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=1920&q=85",
+  },
+
+  sequences: {
+    beat01Static: {
+      baseUrl: "",
+      frameCount: 120,
+      padding: 4,
+      fallback: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=1920&q=85", // Studio suite, editor still
+    },
+    beat02BreakFrame: {
+      baseUrl: "",
+      frameCount: 120,
+      padding: 4,
+      fallback: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=1920&q=85", // Hands on console, sitting at desk
+    },
+    beat03Catalyst: {
+      baseUrl: "",
+      frameCount: 120,
+      padding: 4,
+      fallback: "https://images.unsplash.com/photo-1535016120720-40c646be5580?auto=format&fit=crop&w=1920&q=85", // Over-shoulder push to NLE monitor
+    },
+    beat05Deconstruction: {
+      baseUrl: "",
+      frameCount: 140,
+      padding: 4,
+      fallback: "https://images.unsplash.com/photo-1518173946687-a4c8a383392e?auto=format&fit=crop&w=1920&q=85", // Color grading suite / raw film deconstruct
+    },
+    beat06CTAAnchor: {
+      baseUrl: "",
+      frameCount: 120,
+      padding: 4,
+      fallback: "https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?auto=format&fit=crop&w=1920&q=85", // Studio pullback, direct view
+    },
+    beat07FooterFade: {
+      baseUrl: "",
+      frameCount: 100,
+      padding: 4,
+      fallback: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=1920&q=85", // Silhouette facing monitor
+    },
   },
 
   showreel: {

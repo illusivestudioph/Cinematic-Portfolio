@@ -28,7 +28,7 @@ export const Beat02BreakFrame: React.FC = () => {
   let chairY = 0;
   let chairRotate = 0;
   let bodyLeanZ = 0;
-  let cameraDollyZ = t * 350;
+  let cameraDollyZ = t * 60; // Subtle camera dolly push
 
   if (t < 0.25) {
     const p = t / 0.25;
@@ -44,30 +44,33 @@ export const Beat02BreakFrame: React.FC = () => {
     bodyLeanZ = p * 40;
   }
 
+  const seqConfig = content.sequences?.beat02BreakFrame || content.editorSequence;
+
   return (
     <div
-      className="absolute inset-0 flex items-center justify-center preserve-3d pointer-events-none transition-opacity duration-100 z-20"
+      className="absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-100 z-20"
       style={{ opacity }}
     >
       <div
-        className="relative w-[94vw] max-w-6xl h-[80vh] flex items-center justify-center preserve-3d will-change-transform"
+        className="relative w-[94vw] max-w-6xl h-[80vh] flex items-center justify-center will-change-transform"
         style={{
           transform: `translate3d(0, 0, ${cameraDollyZ}px)`,
         }}
       >
-        {content.editorSequence.baseUrl ? (
+        {seqConfig.baseUrl ? (
           <div className="w-[85vw] max-w-5xl h-[70vh] rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
             <ScrollFrameSequence
-              baseUrl={content.editorSequence.baseUrl}
-              frameCount={content.editorSequence.frameCount}
-              fallback={content.editorSequence.fallback}
+              baseUrl={seqConfig.baseUrl}
+              frameCount={seqConfig.frameCount}
+              padding={seqConfig.padding}
+              fallback={seqConfig.fallback}
               progress={t}
-              alt="Breaking The Frame"
+              alt="Breaking The Frame Sequence"
             />
           </div>
         ) : (
           /* ================= PROCEDURAL CHOREOGRAPHY SET ================= */
-          <div className="relative w-full h-full flex flex-col items-center justify-center preserve-3d">
+          <div className="relative w-full h-full flex flex-col items-center justify-center">
             {/* Monitor glow expanding */}
             <div className="relative w-[80vw] sm:w-[620px] h-72 sm:h-88 rounded-2xl bg-black border-2 border-cyan-500/40 shadow-[0_0_80px_rgba(56,189,248,0.3)] p-3.5 flex flex-col justify-between overflow-hidden">
               <div className="flex items-center justify-between text-[10px] font-mono text-slate-400 border-b border-white/10 pb-1.5">
@@ -80,8 +83,8 @@ export const Beat02BreakFrame: React.FC = () => {
 
               <div className="relative flex-1 my-2 rounded bg-slate-950 overflow-hidden flex items-center justify-center">
                 <img
-                  src={content.editorSequence.fallback}
-                  alt="Editor Monitor View"
+                  src={seqConfig.fallback}
+                  alt="Editor Sitting at Desk"
                   className="w-full h-full object-cover opacity-85"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
@@ -89,7 +92,7 @@ export const Beat02BreakFrame: React.FC = () => {
 
               <div className="h-5 flex items-center justify-between text-[9px] font-mono text-slate-400 border-t border-white/10 pt-1">
                 <span>PROJECT: MASTER_SHOWREEL_TIMELINE</span>
-                <span className="text-cyan-400">READY</span>
+                <span className="text-cyan-400 font-bold">READY</span>
               </div>
             </div>
 
