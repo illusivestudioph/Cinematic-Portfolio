@@ -1,0 +1,131 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-sans: 'Inter', system-ui, sans-serif;
+    --font-syne: 'Syne', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    background-color: #050608;
+    color: #f1f5f9;
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+    width: 100%;
+    min-height: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #090b10;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 2px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #38bdf8;
+  }
+}
+
+.font-syne {
+  font-family: 'Syne', sans-serif;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.font-sans {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* 3D Spatial Rig Helpers */
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.perspective-stage {
+  perspective: 1000px;
+  perspective-origin: 50% 50%;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Cinematic film grain & vignette */
+.film-grain {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+.cinematic-vignette {
+  background: radial-gradient(circle at center, transparent 40%, rgba(5, 6, 8, 0.85) 95%);
+}
+
+.anamorphic-flare {
+  background: linear-gradient(90deg, transparent 0%, rgba(56, 189, 248, 0.15) 30%, rgba(168, 85, 247, 0.25) 50%, rgba(56, 189, 248, 0.15) 70%, transparent 100%);
+}
+
+/* Subtle CRT Scanline */
+.crt-scanlines {
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0),
+    rgba(255,255,255,0) 50%,
+    rgba(0, 0, 0, 0.3) 50%,
+    rgba(0, 0, 0, 0.3)
+  );
+  background-size: 100% 4px;
+}
+
+/* Glowing text and borders */
+.text-glow-cyan {
+  text-shadow: 0 0 20px rgba(56, 189, 248, 0.6), 0 0 40px rgba(56, 189, 248, 0.2);
+}
+
+.text-glow-white {
+  text-shadow: 0 0 25px rgba(255, 255, 255, 0.8), 0 0 50px rgba(255, 255, 255, 0.3);
+}
+
+.border-glow-cyan {
+  box-shadow: 0 0 25px rgba(56, 189, 248, 0.25);
+}
+
+/* Hide default browser controls appearance for range inputs */
+input[type=range].cinematic-slider {
+  -webkit-appearance: none;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  height: 4px;
+}
+
+input[type=range].cinematic-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  background: #38bdf8;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.8);
+  transition: transform 0.1s ease;
+}
+
+input[type=range].cinematic-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.3);
+}
