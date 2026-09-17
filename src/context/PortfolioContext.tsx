@@ -28,6 +28,7 @@ interface PortfolioContextType {
   scrollPaused: boolean;
   setScrollPaused: (paused: boolean) => void;
   userEmail: string | null;
+  setUserEmail: (email: string | null) => void;
   signOutAdmin: () => Promise<void>;
 }
 
@@ -41,8 +42,12 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [activeModalProject, setActiveModalProject] = useState<ProjectItem | null>(null);
   const [developerClicks, setDeveloperClicks] = useState(0);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
-  const [isAuthenticatedAdmin, setIsAuthenticatedAdmin] = useState(false);
-  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [isAuthenticatedAdmin, setIsAuthenticatedAdmin] = useState(() => {
+    return typeof window !== 'undefined' && sessionStorage.getItem('illusive_admin_auth') === 'true';
+  });
+  const [userEmail, setUserEmail] = useState<string | null>(() => {
+    return typeof window !== 'undefined' && sessionStorage.getItem('illusive_admin_auth') === 'true' ? 'Admin' : null;
+  });
   const [scrollPaused, setScrollPaused] = useState(false);
 
   const { scene: activeScene, localProgress, sceneIndex } = getActiveSceneFromProgress(progress);
@@ -103,6 +108,9 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     if (supabase) {
       await supabase.auth.signOut();
     }
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem('illusive_admin_auth');
+    }
     setIsAuthenticatedAdmin(false);
     setUserEmail(null);
   };
@@ -132,6 +140,7 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         scrollPaused,
         setScrollPaused,
         userEmail,
+        setUserEmail,
         signOutAdmin,
       }}
     >

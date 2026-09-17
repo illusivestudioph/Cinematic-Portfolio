@@ -79,7 +79,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
             ILLUSIVE STUDIO // ADMIN GATE CONSOLE
           </h2>
           <span className="text-xs font-mono text-cyan-300/70 bg-cyan-950/80 px-2 py-0.5 rounded border border-cyan-500/30">
-            {userEmail || 'yhanlhester@gmail.com'}
+            {userEmail || 'STUDIO_ADMIN'}
           </span>
         </div>
 
